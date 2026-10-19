@@ -87,8 +87,17 @@ def call(path, params, key, retries=3):
     q = urllib.parse.urlencode(dict(params, crtfc_key=key))
     for i in range(retries):
         try:
+            time.sleep(0.12)   # 요청 간격 (OpenDART 과다 요청 제한 회피)
             with urllib.request.urlopen(f"{API}/{path}.json?{q}", timeout=20) as r:
-                return json.load(r)
+                d = json.load(r)
+            st = d.get("status")
+            if st == "020" and i < retries - 1:   # 요청 제한 초과: 잠시 쉬고 재시도
+                print(f"{path}: 020 요청 제한, 재시도", file=sys.stderr)
+                time.sleep(5 * (i + 1))
+                continue
+            if st not in ("000", "013"):
+                print(f"{path} {params.get('corp_code', '')}: {st} {d.get('message')}", file=sys.stderr)
+            return d
         except Exception as e:
             if i == retries - 1:
                 print(f"{path}: {e}", file=sys.stderr)
@@ -309,9 +318,12 @@ def main():
         api = next((a for pat, a in DETAIL_API if re.search(pat, top["report_nm"])), None)
         rcepts = {e["rcept_no"] for e in items}
         first = min(e["rcept_dt"] for e in items)
-        if api and c.get("latest") != top["rcept_no"]:
+        # 새 정정공시가 붙었거나, 이전 조회가 비었으면 (최대 5회) 다시 조회
+        retry = c.get("row") is None and c.get("tries", 0) < 5
+        if api and (c.get("latest") != top["rcept_no"] or retry):
             row = fetch_detail(key, api, top["corp_code"], first, top["rcept_dt"], rcepts)
-            c = {"api": api, "row": row, "latest": top["rcept_no"], "at": now.isoformat(timespec="minutes")}
+            tries = 0 if row else (c.get("tries", 0) + 1 if c.get("latest") == top["rcept_no"] else 1)
+            c = dict(c, api=api, row=row, latest=top["rcept_no"], at=now.isoformat(timespec="minutes"), tries=tries)
             fetched += 1
         # 주주배정·일반공모 유상증자는 증권신고서로 발행가·일정을 보강 (진행 중이면 1시간마다 갱신)
         method = ((c.get("row") or {}).get("ic_mthn") or "")
