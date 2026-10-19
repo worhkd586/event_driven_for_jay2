@@ -2,480 +2,227 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: trading-desk dashboard — fixed sidebar nav, hero, filter card, per-event tables, slide-in detail sheet. Single dark look. */
+/* Layout: schedule-first desk — top bar, 2-week agenda strip, category tabs, per-category milestone grid (dates as columns), slide-in detail sheet. Single dark look. */
 :root {
   --bg: #0a0d12;
-  --side: #0d1117;
   --surface: #11161f;
   --sunken: #171d29;
-  --raise: #1b2230;
+  --line: #222a37;
   --fg: #e6e9f0;
   --muted: #8a93a6;
-  --line: #222a37;
+  --faint: #5c6576;
   --accent: #3db5e6;
   --accent-soft: rgba(61, 181, 230, 0.14);
   --pos: #3cc77f;
   --neg: #f0566a;
   --up: #ff5c6c;
-  --up-soft: rgba(255, 92, 108, 0.14);
   --down: #5e9dff;
-  --down-soft: rgba(94, 157, 255, 0.14);
   --warn: #e8b04a;
-  --font-display: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  /* 분류 색 (점·띠에만 사용) */
+  --c-rights: #3db5e6; --c-bonus: #a28bff; --c-tender: #f2a65a; --c-split: #ec6fa9;
+  --c-merge: #5fd3a6; --c-exchange: #e3cf5b; --c-transfer: #8fb6ff; --c-bw: #b9c0cf;
   --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   color-scheme: dark;
 }
-
 * { box-sizing: border-box; }
-body {
-  background: var(--bg); color: var(--fg);
-  font-family: var(--font-body); font-size: 14px; line-height: 1.55;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 0 48px;
-}
-.wrap { max-width: 1240px; margin: 0 auto; display: grid; gap: 20px; }
-.num, .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-.up { color: var(--up); } .down { color: var(--down); }
-button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 14px; line-height: 1.5; }
+button, input, select { font: inherit; color: inherit; }
+a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.pos { color: var(--pos); } .neg { color: var(--neg); } .dim { color: var(--muted); } .faint { color: var(--faint); }
+.up { color: var(--up); } .down { color: var(--down); }
 
 /* top bar */
-.topbar {
-  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px;
-  padding-block: 28px 18px; border-bottom: 1px solid var(--line);
-}
-.brand { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
-.brand h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 34px; letter-spacing: 0.01em; line-height: 1; }
-.brand p { margin: 0; color: var(--muted); }
-.clock { display: flex; gap: 18px; flex-wrap: wrap; color: var(--muted); font-size: 13px; }
-.clock b { color: var(--fg); font-weight: 500; }
-.session-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; background: var(--sunken); color: var(--fg); font-size: 12px; }
-.session-pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
-.session-pill[data-live="1"]::before { background: var(--up); }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(10, 13, 18, 0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.top-in, .page { max-width: 1440px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top-in { display: flex; align-items: center; gap: 12px 20px; flex-wrap: wrap; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+.mark { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; background: linear-gradient(135deg, #2aa3d8, #1b6fb5); color: #fff; font-weight: 700; font-size: 13px; }
+.brand b { font-size: 16px; }
+.brand span { color: var(--muted); font-size: 12px; margin-left: 2px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; padding: 3px; background: var(--surface); }
+.seg button { border: 0; background: transparent; padding: 6px 14px; border-radius: 7px; cursor: pointer; font-weight: 600; color: var(--muted); }
+.seg button small { font-family: var(--font-mono); font-weight: 500; margin-left: 6px; }
+.seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.sync { font-size: 12px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.sync::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+.sync.ok::before { background: var(--pos); } .sync.late::before { background: var(--warn); }
 
-.notice { font-size: 12.5px; color: var(--muted); background: var(--accent-soft); border-radius: 6px; padding: 8px 12px; }
-.notice b { color: var(--accent); font-weight: 600; }
+.page { padding-block: 18px 64px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.page > * { min-width: 0; }
+#grids { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.card { border: 1px solid var(--line); background: var(--surface); border-radius: 14px; min-width: 0; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; padding: 14px 16px 10px; }
+.sec-head h2 { margin: 0; font-size: 15px; font-weight: 700; }
+.sec-head p { margin: 0; font-size: 12px; color: var(--muted); }
 
-/* main grid */
-.main { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; align-items: start; }
-@media (max-width: 920px) { .main { grid-template-columns: minmax(0, 1fr); } }
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; min-width: 0; }
-.panel-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding: 14px 16px 10px; }
-.panel-head h2 { margin: 0; font-size: 15px; font-weight: 700; }
-.eyebrow { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+/* agenda strip */
+.agenda { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(210px, 1fr); gap: 10px; overflow-x: auto; padding: 0 16px 16px; scroll-snap-type: x proximity; }
+.day { border: 1px solid var(--line); border-radius: 12px; background: var(--bg); min-width: 0; scroll-snap-align: start; display: flex; flex-direction: column; }
+.day.today { border-color: rgba(61, 181, 230, 0.6); box-shadow: inset 0 0 0 1px rgba(61, 181, 230, 0.25); }
+.day-h { display: flex; justify-content: space-between; align-items: baseline; padding: 9px 12px 7px; border-bottom: 1px solid var(--line); }
+.day-h b { font-family: var(--font-mono); font-size: 15px; }
+.day-h span { font-size: 12px; color: var(--muted); }
+.day.today .day-h span { color: var(--accent); font-weight: 600; }
+.day ul { list-style: none; margin: 0; padding: 6px; display: grid; gap: 4px; }
+.ag { display: grid; grid-template-columns: 4px minmax(0, 1fr) auto; gap: 2px 9px; align-items: center; width: 100%; text-align: left; border: 0; background: transparent; padding: 6px 7px; border-radius: 8px; cursor: pointer; }
+.ag:hover { background: var(--sunken); }
+.ag i { grid-row: span 2; align-self: stretch; border-radius: 2px; background: var(--cc, var(--muted)); }
+.ag b { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ag small { grid-column: 2; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ag em { grid-row: 1 / span 2; grid-column: 3; font-style: normal; font-family: var(--font-mono); font-size: 12px; }
+.ag.est small::after { content: " ≈"; color: var(--warn); }
+.day .none { padding: 14px 12px; font-size: 12px; color: var(--faint); }
 
-/* filter chips */
-.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 12px; }
-.chip { border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer; color: var(--muted); }
-.chip:hover { color: var(--fg); border-color: var(--muted); }
-.chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+/* filters */
+.bar { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; padding: 12px 16px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tab { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: var(--bg); border-radius: 9px; padding: 6px 11px; cursor: pointer; font-weight: 600; font-size: 13px; }
+.tab::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--cc, var(--muted)); }
+.tab[data-k="all"]::before { display: none; }
+.tab small { font-family: var(--font-mono); color: var(--muted); font-weight: 500; }
+.tab[aria-pressed="true"] { border-color: var(--cc, var(--accent)); background: var(--sunken); }
+.tools { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-left: auto; font-size: 13px; }
+.tools input[type="search"] { width: 220px; max-width: 100%; padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.tools label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; color: var(--muted); white-space: nowrap; }
+.tools input { accent-color: var(--accent); }
 
-/* calendar */
-.cal { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); max-height: 560px; overflow-y: auto; }
-.day-label { position: sticky; top: 0; z-index: 1; background: var(--sunken); padding: 5px 16px; font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; }
-.day-label .num { color: var(--fg); }
-.ev { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 4px 12px; align-items: start; padding: 10px 16px; border-bottom: 1px solid var(--line); cursor: pointer; border-left: 3px solid transparent; }
-.ev:hover { background: var(--sunken); }
-.ev[aria-current="true"] { border-left-color: var(--accent); background: var(--accent-soft); }
-.ev-time { font-size: 12px; color: var(--muted); padding-top: 2px; }
-.ev-main { min-width: 0; }
-.ev-name { font-weight: 600; }
-.ev-name small { font-weight: 400; color: var(--muted); font-size: 11.5px; margin-left: 4px; }
-.ev-note { color: var(--muted); font-size: 12.5px; overflow-wrap: anywhere; }
-.ev-side { display: grid; justify-items: end; gap: 4px; }
-.tag { font-size: 11px; padding: 1px 7px; border-radius: 4px; background: var(--sunken); white-space: nowrap; }
-.bias { font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 4px; white-space: nowrap; }
-.bias.pos { color: var(--up); background: var(--up-soft); }
-.bias.neg { color: var(--down); background: var(--down-soft); }
-.bias.mix { color: var(--muted); background: var(--sunken); }
-.mine { color: var(--accent); font-size: 11px; }
-.del { border: 0; background: transparent; color: var(--muted); cursor: pointer; font-size: 11px; padding: 0; text-decoration: underline; }
-.empty { padding: 24px 16px; color: var(--muted); text-align: center; }
-
-/* add form */
-details.add { border-top: 1px solid var(--line); }
-details.add summary { cursor: pointer; padding: 10px 16px; font-size: 13px; color: var(--accent); font-weight: 600; }
-.add-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 0 16px 16px; }
-.add-form .full { grid-column: 1 / -1; }
-.field { display: grid; gap: 4px; min-width: 0; }
-.field label { font-size: 12px; color: var(--muted); }
-.field input, .field select { width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
-.btn { border: 1px solid var(--fg); background: var(--fg); color: var(--bg); border-radius: 6px; padding: 7px 14px; font-weight: 600; cursor: pointer; }
-.btn:hover { opacity: 0.88; }
-.form-msg { font-size: 12px; color: var(--muted); align-self: center; }
-
-/* playbook */
-.pb-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
-.pb-title h2 { font-size: 20px; }
-.pb-select { padding: 6px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); max-width: 100%; }
-.dart { padding: 0 16px 6px; font-size: 12.5px; color: var(--muted); }
-.dart code { font-family: var(--font-mono); font-size: 12px; background: var(--sunken); padding: 1px 6px; border-radius: 4px; color: var(--fg); }
-.stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-block: 1px solid var(--line); margin-top: 8px; }
-@media (max-width: 560px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .stats > div:last-child { grid-column: 1 / -1; } }
-.stats > div { padding: 10px 16px; border-right: 1px solid var(--line); min-width: 0; }
-.stats > div:last-child { border-right: 0; }
-.stats .k { font-size: 11.5px; color: var(--muted); }
-.stats .v { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 18px; font-weight: 500; }
-.chart-box { padding: 12px 8px 4px; position: relative; }
-.chart-box svg { width: 100%; height: auto; display: block; }
-.chart-legend { display: flex; gap: 14px; flex-wrap: wrap; padding: 0 16px 8px; font-size: 12px; color: var(--muted); }
-.chart-legend i { display: inline-block; width: 14px; height: 8px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
-.tip { position: absolute; pointer-events: none; background: var(--fg); color: var(--bg); font-size: 12px; padding: 4px 8px; border-radius: 5px; white-space: nowrap; transform: translate(-50%, -120%); }
-.rules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); }
-@media (max-width: 720px) { .rules { grid-template-columns: minmax(0, 1fr); } }
-.rule { padding: 12px 16px 16px; border-right: 1px solid var(--line); min-width: 0; }
-.rule:last-child { border-right: 0; }
-@media (max-width: 720px) { .rule { border-right: 0; border-bottom: 1px solid var(--line); } .rule:last-child { border-bottom: 0; } }
-.rule h3 { margin: 0 0 6px; font-size: 13px; display: flex; align-items: center; gap: 6px; }
-.rule h3::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--rc, var(--muted)); }
-.rule.entry { --rc: var(--up); } .rule.exit { --rc: var(--accent); } .rule.risk { --rc: var(--down); }
-.rule ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 13px; }
-
-/* feed */
-.toolbar { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; padding: 0 16px 10px; }
-.toolbar input[type="search"] { flex: 1 1 160px; min-width: 0; padding: 6px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
-.toolbar label.tog { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); cursor: pointer; white-space: nowrap; }
-.feed-status { padding: 0 16px 10px; font-size: 12px; color: var(--muted); }
-.feed-status b { color: var(--fg); font-weight: 500; }
-.ev-flags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
-.flag { font-size: 11px; padding: 0 6px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
-.flag.amend { border-color: var(--accent); color: var(--accent); }
-.flag.warn { border-color: var(--up); color: var(--up); }
-.ap { font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 4px; white-space: nowrap; background: var(--accent-soft); color: var(--accent); }
-.ap.unk { background: var(--sunken); color: var(--muted); font-weight: 500; }
-.ev-actions { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px; font-size: 12px; }
-.ev-actions a { color: var(--accent); }
-.hist-btn { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 1px 10px; font-size: 12px; cursor: pointer; color: var(--fg); }
-.hist-btn:hover { border-color: var(--muted); }
-.hist-btn[aria-expanded="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-.hist { list-style: none; margin: 8px 0 0; padding: 0 0 0 10px; border-left: 2px solid var(--line); display: grid; gap: 4px; font-size: 12px; }
-.hist li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 8px; color: var(--muted); }
-.hist a { color: var(--fg); overflow-wrap: anywhere; }
-.more { display: block; width: calc(100% - 32px); margin: 10px 16px; padding: 7px; border: 1px dashed var(--line); background: transparent; border-radius: 6px; color: var(--muted); cursor: pointer; }
-.more:hover { color: var(--fg); border-color: var(--muted); }
-.cal .day-label .rel { color: var(--muted); }
-
-/* timeline + calculator */
-.sect { border-top: 1px solid var(--line); padding: 12px 16px 16px; }
-.sect h3 { margin: 0 0 10px; font-size: 13px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-.sect h3 small { font-weight: 400; color: var(--muted); font-size: 12px; }
-.steps-wrap { overflow-x: auto; }
-.steps { list-style: none; margin: 0; padding: 0 0 4px; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(118px, 1fr); }
-.steps li { position: relative; padding: 18px 10px 0 0; font-size: 12.5px; }
-.steps li::before { content: ""; position: absolute; top: 5px; left: 0; right: 0; height: 2px; background: var(--line); }
-.steps li::after { content: ""; position: absolute; top: 0; left: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 2px solid var(--muted); box-sizing: border-box; }
-.steps li.key::after { border-color: var(--accent); background: var(--accent); }
-.steps b { display: block; font-weight: 600; }
-.steps span { color: var(--muted); font-size: 11.5px; }
-.calc { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px; }
-@media (max-width: 640px) { .calc { grid-template-columns: minmax(0, 1fr); } }
-.calc-in { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 10px; align-content: start; }
-.calc-in input { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; }
-.calc-note { margin: 8px 0 0; font-size: 12px; color: var(--muted); }
-/* sizing ticket */
-.ticket { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 0; }
-@media (max-width: 920px) { .ticket { grid-template-columns: minmax(0, 1fr); } }
-.ticket-in { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; padding: 4px 16px 16px; align-content: start; }
-.ticket-in .field input, .ticket-in .field select { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; }
-.ticket-in .field select { text-align: left; font-family: var(--font-body); }
-.ticket-out { border-left: 1px solid var(--line); padding: 4px 16px 16px; min-width: 0; }
-@media (max-width: 920px) { .ticket-out { border-left: 0; border-top: 1px solid var(--line); padding-top: 12px; } }
-.order { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; padding: 6px 0 12px; border-bottom: 1px dashed var(--line); }
-.order .side { font-weight: 700; font-size: 13px; padding: 2px 8px; border-radius: 4px; }
-.order .side.buy { color: var(--up); background: var(--up-soft); }
-.order .side.sell { color: var(--down); background: var(--down-soft); }
-.order .qty { font-family: var(--font-mono); font-size: 28px; font-weight: 500; }
-.order .qty small { font-size: 14px; color: var(--muted); font-family: var(--font-body); }
-.kv { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; margin: 0; }
-@media (max-width: 480px) { .kv { grid-template-columns: minmax(0, 1fr); } }
-.kv > div { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
-.kv dt { color: var(--muted); }
-.kv dd { margin: 0; font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; }
-.warn { margin-top: 10px; font-size: 12.5px; color: var(--up); }
-.limits { margin-top: 12px; font-size: 12.5px; color: var(--muted); }
-.limits .bar { position: relative; height: 26px; margin-top: 6px; background: var(--sunken); border-radius: 4px; }
-.limits .mk { position: absolute; top: 0; bottom: 0; width: 2px; }
-.limits .mk span { position: absolute; top: 100%; transform: translateX(-50%); font-size: 10.5px; white-space: nowrap; padding-top: 2px; }
-.limits .zone { position: absolute; top: 0; bottom: 0; }
-footer { font-size: 12px; color: var(--muted); }
-@media (prefers-reduced-motion: no-preference) { .ev, .chip { transition: background-color .15s, color .15s; } }
-
-/* ---------- dashboard shell (overrides above) ---------- */
-[hidden] { display: none !important; }
-body { padding: 0; background: var(--bg); color: var(--fg); }
-.app { display: grid; grid-template-columns: 264px minmax(0, 1fr); min-height: 100vh; }
-.side { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; height: 100vh; display: flex; flex-direction: column; gap: 14px;
-  background: var(--side); border-right: 1px solid var(--line); padding: 18px 14px; padding-left: max(14px, env(safe-area-inset-left, 0px)); }
-.brand { display: flex; align-items: center; gap: 12px; padding: 4px 6px 14px; border-bottom: 1px solid var(--line); }
-.brand-mark { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; background: linear-gradient(135deg, #2aa3d8, #1b6fb5); color: #fff; font-weight: 700; font-size: 15px; flex: none; }
-.brand b { display: block; font-size: 15px; }
-.brand span { font-size: 12px; color: var(--muted); }
-.nav { display: grid; gap: 6px; }
-.nav button { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 2px 12px; align-items: center; text-align: left; padding: 10px 12px; border-radius: 10px; border: 1px solid transparent; background: transparent; cursor: pointer; color: var(--fg); }
-.nav button svg { grid-row: span 2; width: 20px; height: 20px; stroke: var(--muted); fill: none; stroke-width: 1.7; }
-.nav button b { font-size: 14px; font-weight: 600; }
-.nav button small { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.nav button:hover { background: var(--sunken); }
-.nav button[aria-current="page"] { background: var(--accent-soft); border-color: rgba(61, 181, 230, 0.35); }
-.nav button[aria-current="page"] svg { stroke: var(--accent); }
-.nav .cnt { justify-self: start; }
-.live { margin-top: auto; border: 1px solid var(--line); background: var(--surface); border-radius: 14px; padding: 14px; font-size: 12.5px; color: var(--muted); display: grid; gap: 8px; }
-.live .eyebrow { color: var(--accent); letter-spacing: 0.14em; }
-.live b { color: var(--fg); font-weight: 500; }
-.dot { display: inline-flex; align-items: center; gap: 6px; }
-.dot::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
-.dot.ok::before { background: var(--pos); }
-.dot.late::before { background: var(--warn); }
-
-.main-col { min-width: 0; padding-block: 22px 60px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.main-in { max-width: 1280px; margin: 0 auto; display: grid; gap: 18px; }
-.hero { border: 1px solid var(--line); border-radius: 18px; padding: 22px 24px; background:
-  radial-gradient(120% 140% at 0% 0%, rgba(61, 181, 230, 0.18), transparent 55%), linear-gradient(180deg, #0f1824, #0c121b);
-  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 24px; }
-.hero .eyebrow { color: var(--accent); letter-spacing: 0.22em; }
-.hero h1 { margin: 6px 0 6px; font-size: 26px; font-weight: 700; line-height: 1.25; text-wrap: balance; }
-.hero p { margin: 0; color: var(--muted); max-width: 62ch; }
-.kpis { display: flex; flex-wrap: wrap; gap: 8px; }
-.kpi { border: 1px solid var(--line); background: rgba(10, 13, 18, 0.55); border-radius: 12px; padding: 8px 12px; min-width: 104px; }
-.kpi span { display: block; font-size: 11.5px; color: var(--muted); }
-.kpi b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 20px; font-weight: 500; }
-
-.card { border: 1px solid var(--line); background: var(--surface); border-radius: 16px; min-width: 0; }
-.filters { padding: 16px 18px; display: grid; gap: 14px; }
-.frow { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 2fr); gap: 12px; }
-@media (max-width: 760px) { .frow { grid-template-columns: minmax(0, 1fr); } }
-.filters label.lab { display: block; font-size: 12.5px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
-.filters input[type="date"], .filters input[type="search"] { width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 9px; background: var(--bg); color: var(--fg); }
-.tchips { display: flex; flex-wrap: wrap; gap: 6px; }
-.tchip { border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 9px; padding: 6px 12px; font-size: 13px; cursor: pointer; font-weight: 600; }
-.tchip small { color: var(--muted); font-weight: 400; margin-left: 4px; font-family: var(--font-mono); }
-.tchip:hover { border-color: var(--muted); }
-.tchip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-.tchip.reset { color: var(--muted); }
-.subf { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; border: 1px dashed var(--line); border-radius: 10px; padding: 10px 12px; font-size: 13px; }
-.subf .lab { margin: 0 !important; }
-.subf label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
-.subf input { accent-color: var(--accent); }
-
-.tcard-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; padding: 14px 16px 10px; border-bottom: 1px solid var(--line); }
-.tcard-head h2 { margin: 0; font-size: 15px; font-weight: 700; }
-.tcard-head span { font-size: 12px; color: var(--muted); }
-.twrap { overflow-x: auto; }
-table.ev-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 860px; }
-.ev-table th { text-align: left; font-weight: 600; color: var(--muted); font-size: 12px; padding: 10px 12px; white-space: nowrap; border-bottom: 1px solid var(--line); }
-.ev-table th.r, .ev-table td.r { text-align: right; }
-.ev-table td { padding: 11px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; vertical-align: top; }
-.ev-table td.cwrap { white-space: normal; min-width: 150px; max-width: 280px; }
-.ev-table tbody tr { cursor: pointer; }
-.ev-table tbody tr:hover { background: var(--sunken); }
-.ev-table tbody tr[aria-selected="true"] { background: var(--accent-soft); }
-.ev-table tbody tr:last-child td { border-bottom: 0; }
-.ev-table .corp b { font-weight: 600; }
-.ev-table .corp small { display: block; color: var(--muted); font-size: 11.5px; }
-.num, .ev-table td.r { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-.pos { color: var(--pos); } .neg { color: var(--neg); } .dim { color: var(--muted); }
-.pill { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); margin: 2px 4px 0 0; white-space: nowrap; }
-.pill.ap { border-color: rgba(61, 181, 230, 0.5); color: var(--accent); }
-.pill.amend { border-color: rgba(232, 176, 74, 0.5); color: var(--warn); }
-.pill.warn { border-color: rgba(240, 86, 106, 0.5); color: var(--neg); }
-.board-empty { padding: 36px 18px; text-align: center; color: var(--muted); }
+/* category grids */
+.grid-card { border-left: 3px solid var(--cc, var(--line)); }
+.grid-card .sec-head h2::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: var(--cc); margin-right: 8px; transform: translateY(-1px); }
+.twrap { overflow-x: auto; border-top: 1px solid var(--line); }
+table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ms th { background: var(--surface); text-align: left; font-size: 11.5px; font-weight: 600; color: var(--muted); padding: 9px 10px; white-space: nowrap; border-bottom: 1px solid var(--line); }
+.ms th.r, .ms td.r { text-align: right; }
+.ms th.d { border-left: 1px solid var(--line); text-align: center; }
+.ms th.metric { color: var(--fg); }
+.ms td { padding: 9px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; vertical-align: middle; }
+.ms td.d { border-left: 1px solid var(--line); text-align: center; min-width: 74px; }
+.ms tbody tr { cursor: pointer; }
+.ms tbody tr:hover { background: var(--sunken); }
+.ms tbody tr[aria-selected="true"] { background: var(--accent-soft); }
+.ms tbody tr:last-child td { border-bottom: 0; }
+.corp b { font-weight: 600; }
+.corp small { display: block; font-size: 11px; color: var(--muted); }
+.corp .tg { display: inline-block; font-size: 10.5px; padding: 0 5px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); margin-left: 4px; vertical-align: 1px; }
+.corp .tg.ap { color: var(--accent); border-color: rgba(61, 181, 230, 0.45); }
+.big { font-family: var(--font-mono); font-size: 15px; font-weight: 600; }
+/* date cell */
+.dc { display: grid; gap: 1px; justify-items: center; line-height: 1.25; }
+.dc b { font-family: var(--font-mono); font-weight: 500; font-size: 13px; }
+.dc small { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); }
+.dc.done b, .dc.done small { color: var(--faint); }
+.dc.next b { color: var(--accent); font-weight: 600; }
+.dc.next small { color: var(--accent); }
+.dc.soon small { color: var(--warn); }
+.dc.est b::after { content: "≈"; color: var(--warn); margin-left: 1px; font-size: 11px; }
+.dc.none b { color: var(--faint); font-weight: 400; }
+/* progress track */
+.track { position: relative; width: 132px; height: 16px; }
+.track::before { content: ""; position: absolute; left: 0; right: 0; top: 7px; height: 2px; background: var(--line); border-radius: 1px; }
+.track .fill { position: absolute; left: 0; top: 7px; height: 2px; background: var(--cc, var(--accent)); border-radius: 1px; }
+.track i { position: absolute; top: 4px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--bg); border: 2px solid var(--faint); }
+.track i.done { background: var(--cc, var(--accent)); border-color: var(--cc, var(--accent)); }
+.track .now { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--fg); border-radius: 1px; }
+.empty { padding: 28px 16px; text-align: center; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); padding: 0 2px; }
+.legend b { font-family: var(--font-mono); font-weight: 500; }
+.legend .nx { color: var(--accent); } .legend .es { color: var(--warn); }
 
 /* drawer */
 .scrim { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.55); z-index: 30; }
-.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(600px, 100%); z-index: 31; background: #0e131b; border-left: 1px solid var(--line);
-  display: flex; flex-direction: column; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); padding-right: env(safe-area-inset-right, 0px);
-  box-shadow: -24px 0 60px rgba(0, 0, 0, 0.45); }
-@media (prefers-reduced-motion: no-preference) { .drawer { animation: slide .22s ease-out; } @keyframes slide { from { transform: translateX(24px); opacity: .6; } to { transform: none; opacity: 1; } } }
-.dhead { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 20px 22px 12px; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(560px, 100%); z-index: 31; background: #0e131b; border-left: 1px solid var(--line);
+  display: flex; flex-direction: column; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); padding-right: env(safe-area-inset-right, 0px); box-shadow: -24px 0 60px rgba(0, 0, 0, 0.45); }
+@media (prefers-reduced-motion: no-preference) { .drawer { animation: slide .2s ease-out; } @keyframes slide { from { transform: translateX(24px); opacity: .6; } to { transform: none; opacity: 1; } } }
+.dhead { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 18px 20px 10px; border-bottom: 1px solid var(--line); }
 .dhead h2 { margin: 0; font-size: 18px; }
-.dhead p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
-.xbtn { border: 0; background: transparent; color: var(--fg); font-size: 22px; line-height: 1; cursor: pointer; padding: 4px 8px; border-radius: 8px; }
+.dhead p { margin: 3px 0 0; color: var(--muted); font-size: 12.5px; overflow-wrap: anywhere; }
+.xbtn { border: 0; background: transparent; font-size: 22px; line-height: 1; cursor: pointer; padding: 4px 8px; border-radius: 8px; }
 .xbtn:hover { background: var(--sunken); }
-.dbody { overflow-y: auto; padding: 0 22px 28px; display: grid; gap: 16px; align-content: start; }
-.dtitle { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
-.dtitle h3 { margin: 0; font-size: 17px; line-height: 1.4; overflow-wrap: anywhere; }
-.dtitle small { display: block; color: var(--muted); margin-top: 2px; }
-.btn-out { display: inline-block; border: 1px solid var(--line); background: var(--sunken); color: var(--fg); border-radius: 9px; padding: 8px 14px; font-weight: 600; font-size: 13px; text-decoration: none; white-space: nowrap; cursor: pointer; }
-.btn-out:hover { border-color: var(--muted); }
-.kv2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px; margin: 0; }
+.dbody { overflow-y: auto; padding: 16px 20px 28px; display: grid; gap: 14px; align-content: start; }
+.box { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--surface); }
+.box h3 { margin: 0 0 10px; font-size: 13.5px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.box h3 small { font-weight: 400; color: var(--muted); }
+.hero2 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.hero2 div { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--bg); min-width: 0; }
+.hero2 > div > span { display: block; font-size: 11.5px; color: var(--muted); }
+.hero2 b { font-family: var(--font-mono); font-size: 19px; font-weight: 600; }
+.hero2 > div > small { display: block; font-size: 11.5px; color: var(--muted); }
+@media (max-width: 480px) { .hero2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tl { list-style: none; margin: 0; padding: 0; }
+.tl li { display: grid; grid-template-columns: 12px 116px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px dashed var(--line); font-size: 13px; }
+.tl li:last-child { border-bottom: 0; }
+.tl li::before { content: ""; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--faint); transform: translateY(1px); }
+.tl li.done { color: var(--faint); }
+.tl li.done::before { background: var(--faint); }
+.tl li.next { color: var(--fg); font-weight: 600; }
+.tl li.next::before { border-color: var(--accent); background: var(--accent); }
+.tl li em { font-style: normal; font-size: 11px; color: var(--warn); }
+.tl li .dd { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.tl li.next .dd { color: var(--accent); }
+.kv2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; margin: 0; }
 .kv2 > div { min-width: 0; }
 .kv2 .full { grid-column: 1 / -1; }
-.kv2 dt { font-size: 12px; color: var(--muted); }
-.kv2 dd { margin: 2px 0 0; font-size: 14px; overflow-wrap: anywhere; white-space: pre-wrap; }
-.box { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--surface); }
-.box h4 { margin: 0 0 12px; font-size: 13.5px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-.box h4 small { font-weight: 400; color: var(--muted); }
-.quote { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
-.quote b { font-family: var(--font-mono); font-size: 26px; font-weight: 500; }
-.tl { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
-.tl li { display: grid; grid-template-columns: 14px 86px minmax(0, 1fr); gap: 10px; align-items: baseline; padding: 5px 0; font-size: 13px; position: relative; }
-.tl li::before { content: ""; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--muted); box-sizing: border-box; transform: translateY(1px); }
-.tl li.done { color: var(--muted); }
-.tl li.done::before { background: var(--muted); }
-.tl li.next::before { border-color: var(--accent); background: var(--accent); }
-.tl li.next { color: var(--fg); font-weight: 600; }
-.hist2 { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; font-size: 12.5px; }
-.hist2 li { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 8px; }
-.hist2 a { color: var(--fg); overflow-wrap: anywhere; }
-.pbmini { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; font-size: 12.5px; }
-@media (max-width: 560px) { .pbmini { grid-template-columns: minmax(0, 1fr); } }
-.pbmini b { display: block; font-size: 12px; margin-bottom: 4px; }
-.pbmini ul { margin: 0; padding-left: 16px; display: grid; gap: 3px; color: var(--muted); }
+.kv2 dt { font-size: 11.5px; color: var(--muted); }
+.kv2 dd { margin: 2px 0 0; font-size: 13.5px; overflow-wrap: anywhere; white-space: pre-wrap; }
+.btn-out { display: inline-block; border: 1px solid var(--line); background: var(--sunken); border-radius: 9px; padding: 7px 13px; font-weight: 600; font-size: 13px; text-decoration: none; white-space: nowrap; cursor: pointer; }
+.btn-out:hover { border-color: var(--muted); }
+.hist { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 12.5px; }
+.hist li { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 8px; }
+.hist a { overflow-wrap: anywhere; }
 
-/* reused panels in dark */
-.panel { border-radius: 16px; }
-.pb-select, .field input, .field select { background: var(--bg); color: var(--fg); }
-.notice { background: var(--accent-soft); color: var(--muted); }
-.notice b { color: var(--accent); }
-
-@media (max-width: 900px) {
-  .app { grid-template-columns: minmax(0, 1fr); }
-  .side { position: sticky; top: env(safe-area-inset-top, 0px); height: auto; z-index: 20; flex-direction: row; align-items: center; padding: 10px 12px;
-    padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px)); border-right: 0; border-bottom: 1px solid var(--line); overflow-x: auto; }
-  .brand { border: 0; padding: 0 6px 0 0; }
-  .brand div { display: none; }
-  .nav { display: flex; gap: 4px; }
-  .nav button { grid-template-columns: auto; padding: 8px 10px; }
-  .nav button svg, .nav button small { display: none; }
-  .nav button b { font-size: 13px; white-space: nowrap; }
-  .live { display: none; }
+@media (max-width: 720px) {
+  .brand span { display: none; }
+  .tools { margin-left: 0; width: 100%; }
+  .tools input[type="search"] { width: 100%; }
 }
 </style>
 
-<div class="app">
-  <aside class="side" aria-label="메뉴">
-    <div class="brand">
-      <span class="brand-mark" aria-hidden="true">EB</span>
-      <div><b>이벤트 북</b><span>DART 이벤트 드리븐 데스크</span></div>
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><span class="mark" aria-hidden="true">EB</span><b>이벤트 북</b><span>패리티 · 이벤트 일정</span></div>
+    <div class="seg" role="group" aria-label="보기">
+      <button type="button" data-view="active" aria-pressed="true">진행 중<small id="n-active">–</small></button>
+      <button type="button" data-view="past" aria-pressed="false">지난 이벤트<small id="n-past">–</small></button>
     </div>
-    <nav class="nav" id="nav">
-      <button type="button" data-view="active" aria-current="page">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-        <b>진행 중 이벤트</b><small>일정이 남은 공시만 모아 봅니다</small>
-      </button>
-      <button type="button" data-view="past">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>
-        <b>지난 이벤트</b><small>종료된 이벤트 조회</small>
-      </button>
-      <button type="button" data-view="playbook">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg>
-        <b>플레이북</b><small>유형별 전략과 계산기</small>
-      </button>
-      <button type="button" data-view="sizing">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h8"/></svg>
-        <b>포지션 사이징</b><small>호가단위·리스크 계산</small>
-      </button>
-    </nav>
-    <div class="live" aria-live="polite">
-      <span class="eyebrow">LIVE MONITORING</span>
-      <div>DART 수집 <b class="num" id="sync-dart">—</b><br>시세·화면 갱신 <b class="num" id="sync-view">—</b></div>
-      <span class="dot" id="sync-dot">불러오는 중</span>
+    <span class="sync" id="sync">불러오는 중</span>
+  </div>
+</header>
+
+<main class="page">
+  <section class="card" id="agenda-card" aria-labelledby="agenda-h">
+    <div class="sec-head">
+      <h2 id="agenda-h">다가오는 일정 · 2주</h2>
+      <p>날짜별로 걸린 마일스톤입니다. 숫자는 유상증자 패리티, 매수청구 이벤트는 청구가 괴리입니다. ≈ 는 영업일로 계산한 추정일입니다.</p>
     </div>
-  </aside>
+    <div class="agenda" id="agenda"></div>
+  </section>
 
-  <main class="main-col">
-    <div class="main-in">
-      <section class="hero" aria-labelledby="hero-title">
-        <div>
-          <span class="eyebrow" id="hero-eyebrow">DART EVENT MONITOR</span>
-          <h1 id="hero-title">진행 중인 이벤트</h1>
-          <p id="hero-desc">신주상장·합병기일·분할기일 같은 마지막 일정이 아직 지나지 않은 공시입니다. 행을 누르면 상세 항목과 주가, 패리티가 열립니다.</p>
-        </div>
-        <div class="kpis" id="kpis"></div>
-      </section>
-
-      <div id="view-board">
-        <div class="main-in">
-          <section class="card filters" aria-label="필터">
-            <div class="frow">
-              <div><label class="lab" for="f-from">시작일 (공시일)</label><input type="date" id="f-from"></div>
-              <div><label class="lab" for="f-to">종료일 (공시일)</label><input type="date" id="f-to"></div>
-              <div><label class="lab" for="f-q">키워드</label><input type="search" id="f-q" placeholder="기업명, 종목코드 또는 공시 제목"></div>
-            </div>
-            <div class="tchips" id="tchips" role="group" aria-label="이벤트 유형"></div>
-            <div class="subf" id="subf">
-              <span class="lab">증자 방식</span>
-              <label for="m-pub"><input type="radio" name="method" id="m-pub" value="pub" checked> 주주배정·일반공모</label>
-              <label for="m-all"><input type="radio" name="method" id="m-all" value="all"> 전체</label>
-              <label for="m-3rd"><input type="radio" name="method" id="m-3rd" value="third"> 제3자배정</label>
-              <span class="dim" style="font-size:12px">유상증자는 기본으로 주주배정·일반공모만 보여 줍니다.</span>
-              <span class="lab" style="margin-left:8px">매수청구권</span>
-              <label for="f-ap"><input type="checkbox" id="f-ap"> 있는 이벤트만</label>
-            </div>
-          </section>
-          <div id="board" class="main-in" aria-live="polite"></div>
-        </div>
+  <section class="card">
+    <div class="bar">
+      <div class="tabs" id="tabs" role="group" aria-label="분류"></div>
+      <div class="tools">
+        <input type="search" id="q" placeholder="기업명·종목코드 검색" aria-label="기업 검색">
+        <label for="f-3rd"><input type="checkbox" id="f-3rd"> 제3자배정 유상증자 포함</label>
+        <label for="f-ap"><input type="checkbox" id="f-ap"> 매수청구권 있는 것만</label>
       </div>
-
-      <div id="view-playbook" hidden>
-        <p class="notice"><b>예시 값</b> · 수익률 곡선·승률과 계산기 기본값은 화면 구성을 보여주기 위한 가정치입니다. 실제 백테스트 결과로 교체해서 쓰세요.</p>
-            <section class="panel" aria-labelledby="pb-name">
-      <div class="panel-head">
-        <div class="pb-title">
-          <span class="eyebrow">플레이북</span>
-          <h2 id="pb-name"></h2>
-        </div>
-        <label class="sr" for="pb-type" hidden>유형 선택</label>
-        <select class="pb-select" id="pb-type" aria-label="플레이북 유형 선택"></select>
-      </div>
-      <p class="dart" id="pb-dart"></p>
-      <div class="stats" id="pb-stats"></div>
-      <div class="chart-box" id="chart-box">
-        <svg id="chart" viewBox="0 0 680 280" role="img" aria-label="이벤트 전후 누적 초과수익률"></svg>
-        <div class="tip" id="tip" hidden></div>
-      </div>
-      <div class="chart-legend">
-        <span><i style="background: var(--accent)"></i>평균 CAR (vs KOSPI/KOSDAQ)</span>
-        <span><i style="background: var(--accent-soft)"></i>±1σ 범위</span>
-        <span>T0 = 이사회 결의 공시 후 첫 거래 가능 시점</span>
-      </div>
-      <div class="sect">
-        <h3>주요 일정 흐름 <small>통상 순서 · 건별 공시로 확인</small></h3>
-        <div class="steps-wrap"><ol class="steps" id="pb-steps"></ol></div>
-      </div>
-      <div class="sect">
-        <h3><span id="calc-h">계산기</span> <small>입력값은 예시입니다</small></h3>
-        <div class="calc">
-          <form class="calc-in" id="calc-in" novalidate></form>
-          <div id="calc-out" aria-live="polite"></div>
-        </div>
-        <p class="calc-note" id="calc-note"></p>
-      </div>
-      <div class="rules" id="pb-rules"></div>
-    </section>
-      </div>
-
-      <div id="view-sizing" hidden>
-          <section class="panel" aria-labelledby="tk-h">
-    <div class="panel-head">
-      <h2 id="tk-h">포지션 사이징</h2>
-      <span class="eyebrow">KRX 호가단위 · 가격제한폭 반영</span>
-    </div>
-    <div class="ticket">
-      <form class="ticket-in" id="tk" novalidate>
-        <div class="field"><label for="t-side">방향</label><select id="t-side"><option value="buy">매수 (롱)</option><option value="sell">매도 (숏·대차)</option></select></div>
-        <div class="field"><label for="t-cap">운용 한도 (원)</label><input id="t-cap" inputmode="numeric" value="500,000,000"></div>
-        <div class="field"><label for="t-risk">1회 리스크 (%)</label><input id="t-risk" inputmode="decimal" value="0.5"></div>
-        <div class="field"><label for="t-maxw">종목 최대 비중 (%)</label><input id="t-maxw" inputmode="decimal" value="20"></div>
-        <div class="field"><label for="t-prev">전일 종가</label><input id="t-prev" inputmode="numeric" value="22,850"></div>
-        <div class="field"><label for="t-entry">진입가</label><input id="t-entry" inputmode="numeric" value="23,470"></div>
-        <div class="field"><label for="t-stop">손절가</label><input id="t-stop" inputmode="numeric" value="22,280"></div>
-        <div class="field"><label for="t-target">목표가</label><input id="t-target" inputmode="numeric" value="25,900"></div>
-        <div class="field"><label for="t-fee">수수료 (%, 편도)</label><input id="t-fee" inputmode="decimal" value="0.015"></div>
-        <div class="field"><label for="t-tax">거래세 (%, 매도 시)</label><input id="t-tax" inputmode="decimal" value="0.20"></div>
-      </form>
-      <div class="ticket-out" id="tk-out" aria-live="polite"></div>
     </div>
   </section>
-        <p class="dim" style="font-size:12px;margin:10px 0 0">수수료·거래세 기본값은 가정치입니다. 데스크의 실제 요율로 바꿔 쓰세요. 정적 VI는 전일 종가 ±10% 근사입니다.</p>
-      </div>
-    </div>
-  </main>
-</div>
+
+  <div class="legend" aria-label="표 읽는 법">
+    <span><b class="nx">10.24 · D-5</b> 다음 일정</span>
+    <span><b class="es">≈</b> 영업일 기준 추정일 (공휴일 미반영)</span>
+    <span><b class="faint">10.02</b> 지난 일정</span>
+    <span>행 정렬: 다음 일정이 가까운 순 · 행을 누르면 전체 일정과 상세</span>
+  </div>
+
+  <div id="grids" aria-live="polite"></div>
+</main>
 
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="d-title" hidden>
@@ -491,646 +238,309 @@ table.ev-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wi
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
   var fmt = function (x, d) { return Number(x).toLocaleString("ko-KR", { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); };
-  var sgn = function (x, d) { return (x > 0 ? "+" : "") + Number(x).toFixed(d == null ? 1 : d); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var WD = ["일", "월", "화", "수", "목", "금", "토"];
-  function kstNow() { return new Date(Date.now() + 9 * 3600e3); }
-  function todayKey() { return kstNow().toISOString().slice(0, 10); }
-  var state = { view: "active", type: "rights", calc: {}, filter: "all", q: "", from: "", to: "", method: "pub", onlyAp: false, sel: null, histOpen: false };
-
-  // ---- 이벤트 유형별 플레이북 (수익률·승률은 예시 값) ----
-  // pts: [T, 누적초과수익률 %] 키포인트, sd: 표준편차 기본값
-  var TYPES = {
-    rights: {
-      name: "유상증자", bias: "neg", side: "발행회사",
-      dart: ["주요사항보고서(유상증자결정)", "증권신고서(지분증권)", "투자설명서"],
-      n: 168, win: 71, t1: -6.4, hold: "T0~신주상장",
-      pts: [[-5, 0], [-1, -0.6], [0, -6.8], [2, -8.1], [10, -9.4], [20, -10.6]], sd: 3.4,
-      steps: [["이사회 결의", "주요사항보고서", 1], ["증권신고서 제출", "예정발행가·할인율"], ["권리락", "신주배정기준일 전 거래일", 1], ["신주인수권증서 거래", "증서 상장·매매"], ["확정발행가 산정", "청약일 전 기준"], ["구주주 청약", "실권주 일반공모"], ["납입·신주상장", "상장일 매도 물량", 1]],
-      entry: ["배정방식부터 구분: 주주배정·일반공모는 하방, 제3자배정(전략적 투자자)은 상방 사례 많음", "증자 규모 시총 대비 20% 이상, 할인율 25% 이상 주주배정은 T0 반등 시 숏 (대차 확인)", "신주인수권증서 이론가 대비 증서 할인 시 증서 매수 + 본주 숏 차익"],
-      exit: ["권리락일 절반 커버", "신주 상장 전일 전량 커버 (상장일 물량 출회 회피)", "최대주주 100% 청약·추가 출자 공시 시 즉시 커버"],
-      risk: ["확정발행가가 예정가보다 낮아지면 희석 확대", "시설투자 목적 + 업황 호재면 반등", "대차 리콜과 공매도 규제, 상한가 근접 숏 금지"]
-    },
-    bonus: {
-      name: "무상증자", bias: "mix", side: "발행회사",
-      dart: ["주요사항보고서(무상증자결정)"],
-      n: 97, win: 58, t1: 8.7, hold: "T0~T+2",
-      pts: [[-5, 0], [-1, 0.8], [0, 9.2], [1, 11.4], [5, 7.0], [10, 4.1], [20, 1.8]], sd: 6.5,
-      steps: [["이사회 결의", "배정비율 공시", 1], ["신주배정기준일 공고", ""], ["권리락", "기준일 전 거래일 · 기준가 조정", 1], ["신주배정기준일", ""], ["신주상장", "유통주식 증가", 1]],
-      entry: ["T0 상한가 미진입, 첫 눌림에서만 짧게", "1주당 배정 1주 이상일 때만 관심", "권리락 후 '싸 보이는 착시' 반등은 별도 트레이드로 분리"],
-      exit: ["T+1~T+2 고점권 분할 청산", "VI 발동 후 재개 5분 내 고점 갱신 실패 시 정리", "권리락일 전 전량 정리 기본"],
-      risk: ["펀더멘털 변화 없는 수급 이벤트", "T+5 이후 평균 되돌림이 큼", "신주상장일 물량 출회"]
-    },
-    tender: {
-      name: "공개매수", bias: "pos", side: "대상회사",
-      dart: ["공개매수신고서", "공개매수설명서", "공개매수결과보고서"],
-      n: 41, win: 82, t1: 16.8, hold: "T0~결제일",
-      pts: [[-5, 0], [-1, 1.4], [0, 17.5], [2, 18.6], [10, 19.0], [20, 19.3]], sd: 4.0,
-      steps: [["공개매수 공고·신고서", "매수가·수량·기간", 1], ["대상회사 의견표명", ""], ["청약 기간", "20~60일", 1], ["정정·경쟁 공개매수", "가격 상향 가능"], ["결과 공고", "안분 비율 확정"], ["결제", "미매수분 반환", 1]],
-      entry: ["공개매수가 대비 괴리율이 남았을 때만 차익거래", "전량 매수인지, 상한이 있어 안분 매수인지 먼저 확인", "경쟁 공개매수·가격 상향 가능성은 상방 옵션"],
-      exit: ["응모 후 결제 대기 또는 괴리 축소 시 장내 매도", "자진 상폐 목적이면 잔여 주식 처리 방식 확인", "경쟁 매수자 등장 시 재평가"],
-      risk: ["안분 매수 시 미매수분이 결과 공고 후 급락", "철회 조건과 자금조달 증빙 확인", "자금이 묶이는 기간 대비 연환산 수익률로 비교"]
-    },
-    split: {
-      name: "물적분할", bias: "neg", side: "분할회사(모회사)",
-      dart: ["주요사항보고서(회사분할결정)", "주주보호방안"],
-      n: 64, win: 68, t1: -4.6, hold: "T0~주총",
-      pts: [[-5, 0], [-1, -0.5], [0, -4.8], [3, -6.2], [10, -5.4], [20, -4.6]], sd: 3.0,
-      steps: [["이사회 결의", "분할 대상 사업부", 1], ["주총 기준일", ""], ["반대의사 통지", "주총 전"], ["임시주총", "특별결의", 1], ["주식매수청구", "반대주주 하방 보호"], ["분할기일", "신설법인 설립", 1], ["자회사 상장 추진", "중복상장 할인"]],
-      entry: ["핵심 사업부 분할 + 자회사 상장 계획 언급 시 T0 반등 숏", "주식매수청구가 아래로 밀리면 매수청구가를 하방으로 두고 롱", "국민연금·외국인 지분율 높으면 주총 부결 가능성 반영"],
-      exit: ["주총 결과 공시 직후 방향 정리", "매수청구 롱은 청구 행사 또는 매수청구가 근접 시 청산", "자회사 비상장 확약 등 주주보호방안 발표 시 숏 커버"],
-      risk: ["주총 부결·철회 시 급반등", "매수청구 규모가 한도를 넘으면 분할 무산 조항", "인적분할 병행 여부 확인"]
-    },
-    merge: {
-      name: "인수합병", bias: "mix", side: "피합병(대상)회사",
-      dart: ["주요사항보고서(회사합병결정)", "주요사항보고서(회사분할합병결정)", "주요사항보고서(회사분할결정) · 인적분할", "최대주주변경을수반하는주식양수도계약체결"],
-      n: 112, win: 64, t1: 7.2, hold: "T0~합병기일",
-      pts: [[-5, 0], [-1, 1.5], [0, 7.8], [3, 8.6], [10, 8.9], [20, 9.4]], sd: 5.5,
-      steps: [["이사회 결의", "합병비율 공시", 1], ["증권신고서", "외부평가"], ["주총 기준일", ""], ["임시주총", "반대의사 통지 주주", 1], ["주식매수청구", "주총 후 20일 이내"], ["채권자 이의", ""], ["합병기일", ""], ["신주상장", "대상주 거래정지 후 전환", 1]],
-      entry: ["합병비율 스프레드: 대상 매수 + 존속(인수)사 비율만큼 숏", "스프레드 연환산이 조달·대차비용보다 클 때만", "계열사 합병은 합병비율이 시가 기준이라 소수주주 불리 이슈 확인", "인적분할은 재상장 기준가와 지주사 전환 공개매수(현물출자) 연계 여부 확인"],
-      exit: ["스프레드 1% 이내 수렴 시 청산", "신주상장 전 대상주 거래정지일 전에 포지션 정리 또는 상장일 숏 커버 계획", "매수청구가가 시가 위면 청구 행사로 청산"],
-      risk: ["주총 부결·매수청구 한도 초과로 합병 무산", "소규모합병은 존속회사 주주에게 매수청구권 없음", "공정위·해외 기업결합 심사 지연", "존속사 숏 대차 리콜"]
-    },
-    exchange: {
-      name: "주식교환", bias: "pos", side: "완전자회사 대상",
-      dart: ["주요사항보고서(주식교환ㆍ이전결정)", "증권신고서(주식의포괄적교환ㆍ이전)"],
-      n: 58, win: 74, t1: 9.1, hold: "T0~교환일",
-      pts: [[-5, 0], [-1, 0.9], [0, 9.6], [2, 10.8], [10, 11.2], [20, 11.5]], sd: 4.2,
-      steps: [["이사회 결의", "교환비율 공시", 1], ["주총 기준일", ""], ["임시주총", "소규모 교환은 이사회 갈음", 1], ["주식매수청구", "반대주주"], ["교환일", "자회사 상장폐지"], ["모회사 신주상장", "", 1]],
-      entry: ["교환비율 스프레드: 자회사 매수 + 모회사 비율만큼 숏", "자회사 측 매수청구가가 시가 위면 하방 보호", "모회사가 자사주로 교환하면 신주 희석 없음"],
-      exit: ["스프레드 수렴 또는 교환일 전 정리", "모회사 신주상장일 숏 커버", "매수청구가 > 시가면 청구 행사"],
-      risk: ["주총 부결 시 자회사 주가 원위치", "교환비율 산정 불공정 소송", "모회사 숏 대차 비용"]
-    },
-    bw: {
-      name: "BW 발행 (공모)", bias: "neg", side: "발행회사",
-      dart: ["주요사항보고서(신주인수권부사채권발행결정)", "증권신고서(채무증권)"],
-      n: 143, win: 62, t1: -3.6, hold: "T0~워런트 상장",
-      pts: [[-5, 0], [-1, -0.4], [0, -3.9], [3, -5.1], [10, -6.0], [20, -6.8]], sd: 3.2,
-      steps: [["이사회 결의", "발행금액·행사가", 1], ["증권신고서", "구주주 우선배정"], ["구주주 청약", "실권분 일반공모"], ["납입", ""], ["신주인수권증권 상장", "분리형 워런트 매매", 1], ["행사가 조정(리픽싱)", "하한 확인"], ["행사 기간", "오버행", 1]],
-      entry: ["발행금액 ÷ 시총 10% 이상이면 T0 반등 시 숏", "청약 배정 BW 받고 워런트 상장 후 매도 + 본주 헤지 (워런트 차익)", "행사가 대비 현재가 괴리로 행사 가능성 판단"],
-      exit: ["워런트 상장일 워런트 매도·헤지 해제", "행사가 리픽싱 하한 도달 후 숏 커버", "행사 물량 출회 확인 후 정리"],
-      risk: ["리픽싱 하한까지 내려가면 희석 최대", "자금 사용 목적이 운영자금·차환이면 더 약함", "워런트 상장 첫날 가격 변동 큼"]
-    },
-    transfer: {
-      name: "영업양수도", bias: "mix", side: "양수·양도 회사",
-      dart: ["주요사항보고서(영업양수결정)", "주요사항보고서(영업양도결정)"],
-      n: 38, win: 57, t1: 2.1, hold: "T0~매수청구 지급",
-      pts: [[-5, 0], [-1, 0.4], [0, 2.4], [3, 2.9], [10, 2.2], [20, 1.9]], sd: 3.6,
-      steps: [["이사회 결의", "양수도 가액 공시", 1], ["주총 기준일", ""], ["반대의사 통지", "주총 전"], ["임시주총", "특별결의", 1], ["주식매수청구", "주총 후 20일 이내"], ["양수도 기일", "", 1]],
-      entry: ["양수 대가가 자기자본 대비 클수록 반응 큼, 시너지와 고가 인수 여부를 먼저 판단", "매수청구가가 시가 위면 매수청구 차익 (반대의사 통지 일정 필수)", "양도 측은 매각대금 사용처(특별배당·자사주) 확인"],
-      exit: ["주총 결과 공시 직후 방향 정리", "매수청구 롱은 청구 행사로 청산", "계약 해제·취소 공시 시 즉시 재평가"],
-      risk: ["매수청구 규모가 한도를 넘으면 계약 해제 조항", "중요한 영업 여부에 따라 매수청구권 유무가 달라짐", "공정위 기업결합 심사"]
-    }
-  };
-  var ORDER = ["rights", "bonus", "tender", "split", "merge", "exchange", "transfer", "bw"];
-  var BIAS_LABEL = { pos: "상방", neg: "하방", mix: "양방" };
-
-  // ---- 유형별 계산기 ----
-  var pct = function (x) { return { v: (x > 0 ? "+" : "") + (x * 100).toFixed(2) + "%", c: x >= 0 ? "up" : "down" }; };
-  var won = function (x) { return { v: fmt(Math.round(x)) + "원" }; };
-  function spreadCalc(lbl) {
-    return {
-      title: lbl.title,
-      fields: [["tgt", lbl.tgt, 12350], ["acq", lbl.acq, 31800], ["ratio", lbl.ratio, 0.4127], ["days", "완료까지 일수", 74], ["appr", lbl.tgt.replace("주가", "매수청구가"), 11900], ["lot", lbl.tgt.replace("주가", "매수 수량"), 10000]],
-      out: function (v) {
-        var implied = v.acq * v.ratio, sp = implied / v.tgt - 1;
-        return [["내재가치 (" + lbl.acq.replace(" 주가", "") + " × 비율)", won(implied)], ["스프레드", pct(sp)], ["연환산", pct(sp * 365 / Math.max(1, v.days))],
-          ["매수청구가 하방", pct(v.appr / v.tgt - 1)], ["헤지 숏 수량", { v: fmt(Math.round(v.lot * v.ratio)) + "주" }], ["기대 차익 (수렴 시)", won((implied - v.tgt) * v.lot)]];
-      },
-      note: lbl.note
-    };
-  }
-  var CALC = {
-    rights: {
-      title: "권리락 이론가 (TERP)",
-      fields: [["p", "기준주가", 9870], ["disc", "할인율 (%)", 25], ["r", "증자비율 (구주 1주당 신주)", 0.45]],
-      out: function (v) {
-        var I = roundTick(v.p * (1 - v.disc / 100), 0), terp = (v.p + v.r * I) / (1 + v.r);
-        return [["예정발행가", won(I)], ["권리락 이론가", won(terp)], ["권리락 하락폭", pct(terp / v.p - 1)], ["신주인수권증서 이론가", won(terp - I)], ["희석률", { v: (v.r / (1 + v.r) * 100).toFixed(1) + "%" }]];
-      },
-      note: "실제 발행가는 기준일 전 가중산술평균주가로 산정하고 확정발행가에서 다시 바뀝니다."
-    },
-    bonus: {
-      title: "권리락 기준가",
-      fields: [["p", "권리락 전일 종가", 15200], ["r", "배정비율 (1주당)", 1]],
-      out: function (v) {
-        var b = v.p / (1 + v.r);
-        return [["권리락 기준가", won(b)], ["호가단위 반영", won(roundTick(b, 0))], ["기준가 하락폭", pct(b / v.p - 1)], ["주식수 증가", { v: "×" + (1 + v.r).toFixed(2) }]];
-      },
-      note: "기준가 = 전일 종가 × 기존 주식수 ÷ (기존 + 신주). 상하한가 ±30%는 조정된 기준가에서 계산합니다."
-    },
-    tender: {
-      title: "공개매수 기대수익",
-      fields: [["p", "현재가", 17600], ["o", "공개매수가", 18500], ["a", "예상 매수비율 (%)", 100], ["f", "미매수분 예상가", 14000], ["days", "결제까지 일수", 28]],
-      out: function (v) {
-        var a = v.a / 100, ev = a * v.o + (1 - a) * v.f, r = ev / v.p - 1, be = (v.p - v.f) / (v.o - v.f);
-        return [["괴리율 (전량 매수 시)", pct(v.o / v.p - 1)], ["기대가치", won(ev)], ["기대수익", pct(r)], ["연환산", pct(r * 365 / Math.max(1, v.days))], ["손익분기 매수비율", { v: (be * 100).toFixed(1) + "%" }]];
-      },
-      note: "응모 예정 수량이 매수 예정 수량을 넘으면 안분 비례로 매수하고 나머지는 돌려받습니다."
-    },
-    split: {
-      title: "분할 후 SOTP와 매수청구가",
-      fields: [["p", "현재가", 48500], ["appr", "주식매수청구가", 46300], ["newco", "신설법인 가치 (억원)", 32000], ["remain", "존속 사업가치 (억원)", 18000], ["disc", "자회사 지분 할인율 (%)", 40], ["shares", "발행주식수 (만주)", 10200]],
-      out: function (v) {
-        var sh = v.shares * 1e4, rem = v.remain * 1e8 / sh, sub = v.newco * (1 - v.disc / 100) * 1e8 / sh, sotp = rem + sub;
-        return [["존속 사업 주당가치", won(rem)], ["자회사 지분 주당가치 (할인 후)", won(sub)], ["SOTP 주당가치", won(sotp)], ["현재가 대비", pct(sotp / v.p - 1)], ["매수청구가 하방", pct(v.appr / v.p - 1)]];
-      },
-      note: "자회사 상장 시 지주 할인이 커지는 점을 할인율로 반영합니다. 순차입금이 있으면 존속 사업가치에서 빼서 넣으세요."
-    },
-    merge: spreadCalc({ title: "합병비율 스프레드", tgt: "대상 주가", acq: "존속사 주가", ratio: "합병비율 (대상 1주당)", note: "대상주는 합병기일 전후 거래정지 구간이 있어 그 기간 동안 헤지만 남습니다. 대차비용을 연환산 수익에서 빼세요." }),
-    exchange: (function () {
-      var c = spreadCalc({ title: "교환비율 스프레드", tgt: "자회사 주가", acq: "모회사 주가", ratio: "교환비율 (자회사 1주당)", note: "모회사가 자사주로 교환 대가를 주면 신주상장 물량이 없어 숏 커버 부담이 작습니다." });
-      c.fields = [["tgt", "자회사 주가", 8420], ["acq", "모회사 주가", 30500], ["ratio", "교환비율 (자회사 1주당)", 0.2856], ["days", "완료까지 일수", 52], ["appr", "자회사 매수청구가", 8150], ["lot", "자회사 매수 수량", 20000]];
-      return c;
-    })(),
-    transfer: {
-      title: "매수청구 차익",
-      fields: [["p", "현재가", 10850], ["appr", "주식매수청구가", 11600], ["days", "대금 지급까지 일수", 75], ["cost", "보유비용 (연 %)", 4.5]],
-      out: function (v) {
-        var g = v.appr / v.p - 1, c = v.cost / 100 * v.days / 365;
-        return [["차익 (세전)", pct(g)], ["보유비용", pct(-c)], ["순수익", pct(g - c)], ["연환산 순수익", pct((g - c) * 365 / Math.max(1, v.days))]];
-      },
-      note: "반대의사 통지를 주총 전에 해야 청구할 수 있습니다. 주총 기준일 이후 매수분은 청구 대상이 아닌지 확인하세요."
-    },
-    bw: {
-      title: "희석률과 워런트 가치",
-      fields: [["p", "현재가", 23900], ["x", "행사가", 21450], ["amt", "발행금액 (억원)", 300], ["shares", "발행주식수 (만주)", 2850], ["floor", "리픽싱 하한 (%)", 70]],
-      out: function (v) {
-        var sh = v.shares * 1e4, n0 = v.amt * 1e8 / v.x, xf = roundTick(v.x * v.floor / 100, 0), n1 = v.amt * 1e8 / xf;
-        return [["행사 시 신주", { v: fmt(Math.round(n0)) + "주" }], ["희석률 (현재 행사가)", { v: (n0 / sh * 100).toFixed(1) + "%" }], ["리픽싱 하한 행사가", won(xf)], ["최대 희석률 (하한)", { v: (n1 / sh * 100).toFixed(1) + "%" }], ["워런트 내재가치 (주당)", won(Math.max(0, v.p - v.x))], ["현재가 vs 행사가", pct(v.p / v.x - 1)]];
-      },
-      note: "공모 BW는 분리형 발행이 가능해 신주인수권증권이 따로 상장됩니다. 행사 개시일과 리픽싱 조건은 증권신고서에서 확인하세요."
-    }
-  };
-
-
-  // ---- 플레이북 ----
-  function series(T) {
-    var out = [];
-    for (var t = -5; t <= 20; t++) {
-      var p = T.pts, v = p[p.length - 1][1];
-      for (var i = 0; i < p.length - 1; i++) {
-        if (t >= p[i][0] && t <= p[i + 1][0]) { var r = (t - p[i][0]) / (p[i + 1][0] - p[i][0]); v = p[i][1] + r * (p[i + 1][1] - p[i][1]); break; }
-      }
-      v += t === 0 || t === -5 ? 0 : Math.sin(t * 1.7 + T.n) * 0.18;
-      var sd = t === -5 ? 0 : T.sd * (0.35 + 0.65 * Math.min(1, Math.sqrt(Math.abs(t) + 1) / 4.6));
-      out.push({ t: t, v: v, sd: sd });
-    }
-    return out;
-  }
-  function niceTicks(lo, hi) {
-    var span = hi - lo, step = [1, 2, 2.5, 5, 10].map(function (s) { return s * Math.pow(10, Math.floor(Math.log10(span / 5))); }).find(function (s) { return span / s <= 6; }) || span / 5;
-    var a = Math.floor(lo / step) * step, b = Math.ceil(hi / step) * step, ticks = [];
-    for (var x = a; x <= b + 1e-9; x += step) ticks.push(+x.toFixed(4));
-    return ticks;
-  }
-  function renderChart(T) {
-    var S = series(T), W = 680, H = 280, L = 46, R = 58, TOP = 14, B = 34;
-    var lo = Math.min(0, Math.min.apply(null, S.map(function (s) { return s.v - s.sd; })));
-    var hi = Math.max(0, Math.max.apply(null, S.map(function (s) { return s.v + s.sd; })));
-    var ticks = niceTicks(lo, hi); lo = ticks[0]; hi = ticks[ticks.length - 1];
-    var x = function (t) { return L + (t + 5) / 25 * (W - L - R); };
-    var y = function (v) { return TOP + (hi - v) / (hi - lo) * (H - TOP - B); };
-    var g = "";
-    ticks.forEach(function (v) {
-      g += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(v) + '" y2="' + y(v) + '" stroke="var(--line)" stroke-width="' + (v === 0 ? 1.4 : 1) + '"' + (v === 0 ? "" : ' stroke-dasharray="2 4"') + "/>";
-      g += '<text x="' + (L - 8) + '" y="' + (y(v) + 4) + '" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--font-mono)">' + (v > 0 ? "+" : "") + v + "%</text>";
-    });
-    [-5, 0, 5, 10, 15, 20].forEach(function (t) {
-      g += '<text x="' + x(t) + '" y="' + (H - 12) + '" text-anchor="middle" font-size="11" fill="' + (t === 0 ? "var(--fg)" : "var(--muted)") + '" font-family="var(--font-mono)">' + (t === 0 ? "T0" : (t > 0 ? "T+" : "T") + t) + "</text>";
-    });
-    g += '<line x1="' + x(0) + '" x2="' + x(0) + '" y1="' + TOP + '" y2="' + (H - B) + '" stroke="var(--fg)" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>';
-    var up = S.map(function (s) { return x(s.t) + "," + y(s.v + s.sd); }).join(" ");
-    var dn = S.slice().reverse().map(function (s) { return x(s.t) + "," + y(s.v - s.sd); }).join(" ");
-    g += '<polygon points="' + up + " " + dn + '" fill="var(--accent-soft)" stroke="none"/>';
-    g += '<polyline points="' + S.map(function (s) { return x(s.t) + "," + y(s.v); }).join(" ") + '" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linejoin="round"/>';
-    var e = S[S.length - 1], z = S[5];
-    g += '<circle cx="' + x(z.t) + '" cy="' + y(z.v) + '" r="3.5" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>';
-    g += '<circle cx="' + x(e.t) + '" cy="' + y(e.v) + '" r="4" fill="var(--accent)"/>';
-    g += '<text x="' + (x(e.t) + 8) + '" y="' + (y(e.v) + 4) + '" font-size="12" font-weight="600" fill="' + (e.v >= 0 ? "var(--up)" : "var(--down)") + '" font-family="var(--font-mono)">' + sgn(e.v) + "%</text>";
-    g += '<line id="hov" x1="0" x2="0" y1="' + TOP + '" y2="' + (H - B) + '" stroke="var(--muted)" stroke-width="1" visibility="hidden"/>';
-    g += '<circle id="hovdot" r="4" fill="var(--accent)" visibility="hidden"/>';
-    g += '<rect x="' + L + '" y="' + TOP + '" width="' + (W - L - R) + '" height="' + (H - TOP - B) + '" fill="transparent" id="hit"/>';
-    var svg = $("chart"); svg.innerHTML = g;
-    var tip = $("tip"), hit = $("hit"), hov = $("hov"), dot = $("hovdot");
-    function move(ev) {
-      var r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) / r.width * W;
-      var t = Math.max(-5, Math.min(20, Math.round((px - L) / (W - L - R) * 25 - 5))), s = S[t + 5];
-      hov.setAttribute("x1", x(t)); hov.setAttribute("x2", x(t)); hov.setAttribute("visibility", "visible");
-      dot.setAttribute("cx", x(t)); dot.setAttribute("cy", y(s.v)); dot.setAttribute("visibility", "visible");
-      tip.hidden = false;
-      tip.style.left = (x(t) / W * r.width + 8) + "px"; tip.style.top = (y(s.v) / H * r.height + 12) + "px";
-      tip.textContent = (t === 0 ? "T0" : (t > 0 ? "T+" : "T") + t) + "  " + sgn(s.v, 2) + "%  (σ " + s.sd.toFixed(1) + ")";
-    }
-    hit.addEventListener("pointermove", move);
-    hit.addEventListener("pointerleave", function () { tip.hidden = true; hov.setAttribute("visibility", "hidden"); dot.setAttribute("visibility", "hidden"); });
-  }
-  function renderCalcInputs() {
-    var C = CALC[state.type], saved = state.calc[state.type] || {};
-    $("calc-h").textContent = C.title;
-    $("calc-note").textContent = C.note;
-    $("calc-in").innerHTML = C.fields.map(function (f) {
-      var id = "c-" + state.type + "-" + f[0], v = saved[f[0]] != null ? saved[f[0]] : f[2];
-      return '<div class="field"><label for="' + id + '">' + f[1] + '</label><input id="' + id + '" data-k="' + f[0] + '" inputmode="decimal" value="' + (Math.abs(v) >= 1000 ? fmt(v) : v) + '"></div>';
-    }).join("");
-    renderCalcOut();
-  }
-  function renderCalcOut() {
-    var C = CALC[state.type], v = {}, ok = true;
-    C.fields.forEach(function (f) {
-      var el = $("c-" + state.type + "-" + f[0]);
-      var n = parseFloat(String(el ? el.value : f[2]).replace(/[^0-9.\-]/g, ""));
-      if (!isFinite(n)) ok = false;
-      v[f[0]] = n;
-    });
-    state.calc[state.type] = v;
-    if (!ok) { $("calc-out").innerHTML = '<p class="empty">모든 칸에 숫자를 입력하면 결과가 나옵니다.</p>'; return; }
-    var rows = C.out(v);
-    $("calc-out").innerHTML = '<dl class="kv" style="grid-template-columns:minmax(0,1fr)">' + rows.map(function (r) {
-      var val = isFinite(parseFloat(String(r[1].v).replace(/[^0-9.\-]/g, ""))) ? r[1].v : "—";
-      return "<div><dt>" + r[0] + '</dt><dd class="' + (r[1].c || "") + '">' + val + "</dd></div>";
-    }).join("") + "</dl>";
-  }
-  function renderPlaybook() {
-    var T = TYPES[state.type], S = series(T);
-    $("pb-name").textContent = T.name;
-    $("pb-type").value = state.type;
-    $("pb-dart").innerHTML = "기준: " + esc(T.side) + " · DART 키워드 " + T.dart.map(function (d) { return "<code>" + esc(d) + "</code>"; }).join(" ");
-    var car20 = S[S.length - 1].v;
-    var cls = function (v) { return v >= 0 ? "up" : "down"; };
-    $("pb-stats").innerHTML =
-      '<div><div class="k">표본</div><div class="v">' + T.n + "건</div></div>" +
-      '<div><div class="k">방향 적중률</div><div class="v">' + T.win + "%</div></div>" +
-      '<div><div class="k">T0 평균</div><div class="v ' + cls(T.t1) + '">' + sgn(T.t1) + "%</div></div>" +
-      '<div><div class="k">T+20 CAR</div><div class="v ' + cls(car20) + '">' + sgn(car20) + "%</div></div>" +
-      '<div><div class="k">권장 보유</div><div class="v" style="font-size:15px;font-family:var(--font-body)">' + T.hold + "</div></div>";
-    $("pb-steps").innerHTML = T.steps.map(function (s) { return '<li class="' + (s[2] ? "key" : "") + '"><b>' + esc(s[0]) + "</b>" + (s[1] ? "<span>" + esc(s[1]) + "</span>" : "") + "</li>"; }).join("");
-    function ul(a) { return "<ul>" + a.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ul>"; }
-    $("pb-rules").innerHTML =
-      '<div class="rule entry"><h3>진입 조건</h3>' + ul(T.entry) + "</div>" +
-      '<div class="rule exit"><h3>청산 규칙</h3>' + ul(T.exit) + "</div>" +
-      '<div class="rule risk"><h3>리스크 체크</h3>' + ul(T.risk) + "</div>";
-    renderChart(T);
-    renderCalcInputs();
-  }
-
-  // ---- 포지션 사이징 ----
-  function tickSize(p) {
-    if (p < 2000) return 1; if (p < 5000) return 5; if (p < 20000) return 10; if (p < 50000) return 50;
-    if (p < 200000) return 100; if (p < 500000) return 500; return 1000;
-  }
-  function roundTick(p, dir) { var s = tickSize(p); var f = dir > 0 ? Math.ceil : dir < 0 ? Math.floor : Math.round; return f(p / s) * s; }
-  function num(id) { return parseFloat(String($(id).value).replace(/[^0-9.\-]/g, "")) || 0; }
-  function renderTicket() {
-    var side = $("t-side").value, buy = side === "buy";
-    var cap = num("t-cap"), risk = num("t-risk") / 100, maxw = num("t-maxw") / 100, prev = num("t-prev");
-    var fee = num("t-fee") / 100, tax = num("t-tax") / 100;
-    var entry = roundTick(num("t-entry"), 0), stop = roundTick(num("t-stop"), 0), target = roundTick(num("t-target"), 0);
-    var out = $("tk-out");
-    if (!(cap > 0 && entry > 0 && stop > 0)) { out.innerHTML = '<p class="empty">운용 한도, 진입가, 손절가를 입력하면 주문 수량을 계산합니다.</p>'; return; }
-    var wrong = buy ? stop >= entry : stop <= entry;
-    if (wrong) { out.innerHTML = '<p class="warn">' + (buy ? "매수 손절가는 진입가보다 낮아야 합니다." : "매도 손절가는 진입가보다 높아야 합니다.") + "</p>"; return; }
-    var sellPx = buy ? stop : entry;
-    var perShare = Math.abs(entry - stop) + (entry + stop) * fee + sellPx * tax;
-    var byRisk = Math.floor(cap * risk / perShare);
-    var byWeight = Math.floor(cap * maxw / entry);
-    var qty = Math.max(0, Math.min(byRisk, byWeight)), capped = byWeight < byRisk;
-    var notional = qty * entry, loss = qty * perShare;
-    var gainPer = target > 0 ? (Math.abs(target - entry) - (entry + target) * fee - (buy ? target : entry) * tax) : 0;
-    var rr = gainPer > 0 ? gainPer / perShare : 0;
-    var upL = prev > 0 ? roundTick(prev * 1.3, -1) : 0, dnL = prev > 0 ? roundTick(prev * 0.7, 1) : 0;
-    var viU = prev > 0 ? prev * 1.1 : 0, viD = prev > 0 ? prev * 0.9 : 0;
-    var html = '<div class="order"><span class="side ' + side + '">' + (buy ? "매수" : "매도") + '</span><span class="qty">' + fmt(qty) + " <small>주</small></span>" +
-      '<span class="num">@ ' + fmt(entry) + "원</span><span class=\"mono\" style=\"color:var(--muted)\">호가단위 " + fmt(tickSize(entry)) + "원</span></div>";
-    html += '<dl class="kv">' +
-      kv("포지션 금액", fmt(notional) + "원") + kv("한도 대비 비중", (notional / cap * 100).toFixed(1) + "%") +
-      kv("손절 시 손실(비용 포함)", '<span class="down">-' + fmt(loss) + "원</span>") + kv("1주당 리스크", fmt(perShare, 1) + "원") +
-      kv("손절폭", ((stop - entry) / entry * 100).toFixed(2) + "%") + kv("손익비 (R)", rr ? rr.toFixed(2) + "R" : "—") +
-      kv("목표 도달 시 손익", gainPer > 0 ? '<span class="up">+' + fmt(qty * gainPer) + "원</span>" : "—") + kv("왕복 비용", fmt(qty * ((entry + (buy ? target || stop : stop)) * fee + (buy ? (target || stop) : entry) * tax)) + "원") +
-      "</dl>";
-    if (capped) html += '<p class="warn">종목 최대 비중 ' + (maxw * 100) + "%에 걸려 리스크 기준 수량 " + fmt(byRisk) + "주보다 줄였습니다.</p>";
-    if (prev > 0) {
-      var lo = dnL, hi = upL, pos = function (p) { return Math.max(0, Math.min(100, (p - lo) / (hi - lo) * 100)); };
-      var warn = [];
-      if (stop <= dnL || stop >= upL || entry >= upL || entry <= dnL) warn.push("진입가 또는 손절가가 가격제한폭 밖입니다.");
-      if ((buy && entry >= viU) || (!buy && entry <= viD)) warn.push("진입가가 정적 VI 발동 구간입니다. 단일가 2분 체결을 감안하세요.");
-      html += '<div class="limits">당일 가격 범위 · 하한가 <span class="num">' + fmt(dnL) + "</span> ~ 상한가 <span class=\"num\">" + fmt(upL) + "</span>" +
-        '<div class="bar"><div class="zone" style="left:' + pos(viD) + "%;width:" + (pos(viU) - pos(viD)) + '%;background:var(--accent-soft)"></div>' +
-        mk(pos(prev), "var(--muted)", "전일 " + fmt(prev)) + mk(pos(stop), "var(--down)", "손절") + mk(pos(entry), "var(--fg)", "진입") +
-        (target > 0 ? mk(pos(target), "var(--up)", "목표") : "") + "</div>" +
-        '<div style="height:18px"></div>음영 = 정적 VI 미발동 구간 (전일 종가 ±10% 근사)</div>';
-      if (warn.length) html += '<p class="warn">' + warn.join(" ") + "</p>";
-    }
-    out.innerHTML = html;
-    function kv(k, v) { return "<div><dt>" + k + "</dt><dd>" + v + "</dd></div>"; }
-    function mk(p, c, l) { return '<div class="mk" style="left:' + p + "%;background:" + c + '"><span style="color:' + c + '">' + l + "</span></div>"; }
-  }
-  function commaInput(el) {
-    el.addEventListener("blur", function () {
-      if (["t-risk", "t-maxw", "t-fee", "t-tax"].indexOf(el.id) >= 0) return;
-      var v = parseFloat(String(el.value).replace(/[^0-9.]/g, "")); if (!isNaN(v)) el.value = fmt(v);
-    });
-  }
-
-
-
-  // ---- 대시보드 데이터 (db 컬렉션 "view": meta + c-0..c-n) ----
-  var DATA = { status: "loading", groups: [], prices: {}, updated: null, eventsUpdated: null };
-  var TITLES = { rights: "유상증자 이벤트 패리티", bonus: "무상증자 · 권리락", tender: "공개매수", split: "물적분할 · 매수청구",
-    merge: "인수합병 · 매수청구", exchange: "주식교환·이전 · 매수청구", transfer: "영업양수도 · 매수청구", bw: "BW 발행 (공모)" };
-
+  function todayKey() { return new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10); }
+  function dt(s) { return new Date(s + "T00:00:00Z"); }
+  function addDays(s, n) { var d = dt(s); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+  function bizBack(s, n) { var d = dt(s); while (n > 0) { d.setUTCDate(d.getUTCDate() - 1); var w = d.getUTCDay(); if (w !== 0 && w !== 6) n--; } return d.toISOString().slice(0, 10); }
+  function dday(s) { return Math.round((dt(s) - dt(todayKey())) / 864e5); }
+  function md(s) { return s ? s.slice(5).replace("-", ".") : "—"; }
+  function ddLabel(s) { var n = dday(s); return n === 0 ? "오늘" : n > 0 ? "D-" + n : "D+" + (-n); }
   function N(v) { if (v == null || v === "") return null; var n = parseFloat(String(v).replace(/[^0-9.\-]/g, "")); return isFinite(n) ? n : null; }
-  function md(d) { return d ? d.slice(5).replace("-", ".") : "—"; }
-  function ymdDot(d) { return d ? d.replace(/-/g, ".") : "—"; }
-  function dim(t) { return '<span class="dim">' + (t || "—") + "</span>"; }
-  function wonCell(v) { var n = N(v); return n == null ? dim() : fmt(n); }
-  function eok(v) { var n = N(v); return n == null ? "—" : fmt(Math.round(n / 1e8)) + "억원"; }
-  function signed(v, d) { if (v == null || !isFinite(v)) return dim(); return '<span class="' + (v >= 0 ? "pos" : "neg") + '">' + (v > 0 ? "+" : "") + v.toFixed(d == null ? 2 : d) + "</span>"; }
+  function trimNum(s) { return s.indexOf(".") >= 0 ? s.replace(/0+$/, "").replace(/\.$/, "") : s; }
+
+  var NAMES = { rights: "유상증자", bonus: "무상증자", tender: "공개매수", split: "물적분할", merge: "인수합병", exchange: "주식교환·이전", transfer: "영업양수도", bw: "BW 발행(공모)" };
+  var ORDER = ["rights", "merge", "exchange", "split", "transfer", "bonus", "tender", "bw"];
+  var state = { view: "active", tab: "all", q: "", third: false, onlyAp: false, sel: null, histOpen: false };
+  var DATA = { status: "loading", groups: [], prices: {}, updated: null, eventsUpdated: null };
+
+  // ---- 일정 계산 ----
+  function find(g, re) { for (var i = 0; i < g.sched.length; i++) if (re.test(g.sched[i][0])) return { d: g.sched[i][1], est: /추정/.test(g.sched[i][0]) }; return null; }
+  function gm(g) { return find(g, /주총|주주총회/); }
+  function apEnd(g) {   // 매수청구 마감: 공시에 있으면 그대로, 없으면 주총 + 20일 (상법)
+    var x = find(g, /매수청구 종료/); if (x) return x;
+    var m = gm(g); return g.ap === "Y" && m ? { d: addDays(m.d, 20), est: true } : null;
+  }
+  function exRight(g) { var b = find(g, /배정기준일/); return b ? { d: bizBack(b.d, 1), est: true } : null; }
+  function priceFix(g) { var s = find(g, /청약 시작/); return s && !(g.mx && g.mx.price_final) ? { d: bizBack(s.d, 3), est: true } : null; }
+  function subRange(g) { var s = find(g, /청약 시작/), e = find(g, /청약 종료/); return s ? { d: s.d, e: e && e.d } : null; }
+
+  // 분류별 일정 열 [제목, 함수(g) -> {d, est, e?}]
+  var MS = {
+    rights: [["권리락", exRight], ["배정기준일", function (g) { return find(g, /배정기준일/); }], ["확정가 산정", function (g) { return priceFix(g) || (g.mx && g.mx.price_doc && g.mx.price_final ? { d: g.mx.price_doc.d } : null); }],
+      ["청약", subRange], ["납입", function (g) { return find(g, /납입/); }], ["신주 상장", function (g) { return find(g, /상장/); }]],
+    bonus: [["이사회", function (g) { return find(g, /이사회/); }], ["권리락", exRight], ["배정기준일", function (g) { return find(g, /배정기준일/); }], ["신주 상장", function (g) { return find(g, /상장/); }]],
+    merge: [["주총 기준일", function (g) { return find(g, /주주확정 기준일/); }], ["반대의사 마감", function (g) { return find(g, /반대의사 통지 종료/); }], ["주총", gm],
+      ["매수청구 마감", apEnd], ["합병·분할기일", function (g) { return find(g, /합병기일|분할기일/); }], ["신주 상장", function (g) { return find(g, /상장/); }]],
+    exchange: [["주총 기준일", function (g) { return find(g, /주주확정 기준일/); }], ["반대의사 마감", function (g) { return find(g, /반대의사 통지 종료/); }], ["주총", gm],
+      ["매수청구 마감", apEnd], ["교환일", function (g) { return find(g, /교환일/); }], ["신주 상장", function (g) { return find(g, /상장/); }]],
+    split: [["이사회", function (g) { return find(g, /이사회/); }], ["주총", gm], ["매수청구 마감", apEnd], ["채권자 이의 마감", function (g) { return find(g, /채권자 이의/); }],
+      ["분할기일", function (g) { return find(g, /분할기일/); }], ["분할등기", function (g) { return find(g, /등기/); }]],
+    transfer: [["이사회", function (g) { return find(g, /이사회/); }], ["주총", gm], ["매수청구 마감", apEnd], ["양수·양도 기준일", function (g) { return find(g, /양수 기준일|양도 기준일/); }]],
+    tender: [["최초 공시", function (g) { return { d: g.d0 }; }], ["최근 공시", function (g) { return { d: g.d }; }], ["종료", function (g) { return { d: g.end, est: /없음/.test(g.end_basis) }; }]],
+    bw: [["최초 공시", function (g) { return { d: g.d0 }; }], ["최근 공시", function (g) { return { d: g.d }; }], ["종료", function (g) { return { d: g.end, est: /없음/.test(g.end_basis) }; }]]
+  };
+  function msOf(g) { return (MS[g.k] || MS.bw).map(function (c) { var r = null; try { r = c[1](g); } catch (e) {} return { label: c[0], v: r && r.d ? r : null }; }); }
+  // 전체 일정 = 공시 일정 + 계산한 추정일
+  function timeline(g) {
+    var t = g.sched.map(function (s) { return { label: s[0], d: s[1], est: /추정/.test(s[0]) }; });
+    msOf(g).forEach(function (m) {
+      if (!m.v || !m.v.est) return;
+      if (!t.some(function (x) { return x.d === m.v.d && x.label.indexOf(m.label) >= 0; })) t.push({ label: m.label, d: m.v.d, est: true });
+    });
+    return t.sort(function (a, b) { return a.d < b.d ? -1 : a.d > b.d ? 1 : 0; });
+  }
+  function nextOf(g) { var t = todayKey(), best = null; timeline(g).forEach(function (x) { if (x.d >= t && (!best || x.d < best.d)) best = x; }); return best; }
+
+  // ---- 지표 ----
   function px(g) { return (g.s && DATA.prices[g.s]) || null; }
+  function issue(g) { var mx = g.mx || {}; return N(mx.last_price) || N(mx.plan_price); }
+  function parity(g) { var p = px(g), i = issue(g); return p && i ? (p.price / i - 1) * 100 : null; }
+  function apGap(g) { var p = px(g), a = N((g.mx || {}).appraisal_price); return p && a ? (a / p.price - 1) * 100 : null; }
+  function signed(v, cls) { if (v == null || !isFinite(v)) return '<span class="faint">—</span>'; return '<span class="' + (cls || "") + " " + (v >= 0 ? "pos" : "neg") + '">' + (v > 0 ? "+" : "") + v.toFixed(2) + "%</span>"; }
+  function won(v) { var n = N(v); return n == null ? '<span class="faint">—</span>' : fmt(n); }
   function priceCell(g) {
-    var p = px(g); if (!p) return dim();
+    var p = px(g); if (!p) return '<span class="faint">—</span>';
     return fmt(p.price) + ' <small class="' + (p.chg > 0 ? "up" : p.chg < 0 ? "down" : "dim") + '">' + (p.pct > 0 ? "+" : "") + Number(p.pct).toFixed(2) + "%</small>";
   }
-  function trimNum(s) { return s.indexOf(".") >= 0 ? s.replace(/0+$/, "").replace(/\.$/, "") : s; }
-  function ratioShort(t) {
-    if (!t) return dim();
-    var m = String(t).match(/=\s*([\d.,]+)\s*:\s*([\d.,]+)/);
-    return m ? trimNum(m[1]) + " : " + trimNum(m[2]) : esc(String(t).slice(0, 20));
-  }
-  function nextSched(g) { var t = todayKey(); for (var i = 0; i < g.sched.length; i++) if (g.sched[i][1] >= t) return g.sched[i]; return null; }
-  function nextCell(g) { var s = nextSched(g); return s ? esc(s[0]) + ' <span class="num dim">' + md(s[1]) + "</span>" : dim(); }
-  function schedOf(g, re) { for (var i = 0; i < g.sched.length; i++) if (re.test(g.sched[i][0])) return g.sched[i][1]; return null; }
-  function methodShort(g) { var m = (g.mx && g.mx.method) || ""; return /제3자/.test(m) ? "제3자배정" : /주주배정/.test(m) ? "주주배정" : /일반공모/.test(m) ? "일반공모" : "—"; }
-  function subShort(t) { if (!t) return dim(); var d = String(t).match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/g) || []; return d.map(function (x) { var m = x.match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/); return ("0" + m[2]).slice(-2) + "." + ("0" + m[3]).slice(-2); }).join("~") || esc(t); }
-  function issuePrice(g) { var mx = g.mx || {}; return N(mx.last_price) || N(mx.plan_price); }
-  function rightsParity(g) { var p = px(g), i = issuePrice(g); return p && i ? (p.price / i - 1) * 100 : null; }
-  function apGap(g) { var p = px(g), a = N((g.mx || {}).appraisal_price); return p && a ? (a / p.price - 1) * 100 : null; }
-  function corpCell(g) { return '<span class="corp"><b>' + esc(g.n) + "</b><small>" + esc(g.m) + " " + esc(g.s || "") + "</small></span>"; }
-  function tagsCell(g) {
-    var h = (g.f || []).map(function (f) { return '<span class="pill' + (/확인 필요|해제/.test(f) ? " warn" : "") + '">' + esc(f) + "</span>"; }).join("");
-    if (g.ap === "Y") h += '<span class="pill ap">매수청구권</span>';
-    if (g.amends) h += '<span class="pill amend">정정 ' + g.amends + "</span>";
-    return h || dim();
-  }
+  function ratioShort(t) { if (!t) return "—"; var m = String(t).match(/=\s*([\d.,]+)\s*:\s*([\d.,]+)/); return m ? trimNum(m[1]) + " : " + trimNum(m[2]) : String(t).slice(0, 18); }
   function counterpart(g) { var mx = g.mx || {}; return mx.mgptncmp_cmpnm || mx.extr_tgcmp_cmpnm || mx.dvfcmp_cmpnm || mx.dlptn_cmpnm || ""; }
+  function methodShort(g) { var m = (g.mx && g.mx.method) || ""; return /제3자/.test(m) ? "제3자배정" : /주주배정/.test(m) ? "주주배정" : /일반공모/.test(m) ? "일반공모" : ""; }
+  function headline(g) {   // 일정표·달력에 쓰는 대표 지표
+    if (g.k === "rights") { var v = parity(g); return v == null ? null : { v: v, label: "패리티" }; }
+    var a = apGap(g); return a == null ? null : { v: a, label: "청구가 괴리" };
+  }
 
-  // 유형별 표 열: [제목, 값 함수, 오른쪽 정렬 여부]
-  var COLS = {
-    rights: [["공시일", function (g) { return ymdDot(g.d); }], ["기업", corpCell], ["방식", methodShort], ["청약", function (g) { return subShort(g.mx && g.mx.subscription); }],
-      ["예정발행가", function (g) { var mx = g.mx || {}; return wonCell(mx.price_final ? mx.plan_price : (mx.last_price || mx.plan_price)); }, 1],
-      ["확정발행가", function (g) { var mx = g.mx || {}; return mx.price_final ? wonCell(mx.last_price) : dim(); }, 1],
-      ["현재가", priceCell, 1], ["증서이론가", function (g) { var p = px(g), i = issuePrice(g); return p && i ? fmt(p.price - i) : dim(); }, 1],
-      ["패리티", function (g) { return signed(rightsParity(g)); }, 1], ["신주 상장", function (g) { return md(schedOf(g, /상장/) || g.end); }], ["표시", tagsCell]],
-    bonus: [["공시일", function (g) { return ymdDot(g.d); }], ["기업", corpCell], ["1주당 배정", function (g) { var r = N(g.mx && g.mx.nstk_ascnt_ps_ostk); return r == null ? dim() : trimNum(String(r)) + "주"; }, 1],
-      ["배정기준일", function (g) { return md(schedOf(g, /배정기준일/)); }], ["현재가", priceCell, 1],
-      ["이론 권리락가", function (g) { var p = px(g), r = N(g.mx && g.mx.nstk_ascnt_ps_ostk), b = schedOf(g, /배정기준일/); return p && r && b && b >= todayKey() ? fmt(Math.round(p.price / (1 + r))) : dim(); }, 1],
-      ["신주 상장", function (g) { return md(schedOf(g, /상장/) || g.end); }], ["표시", tagsCell]],
-    tender: [["공시일", function (g) { return ymdDot(g.d); }], ["기업", corpCell], ["최근 문서", function (g) { return esc(g.nm); }], ["현재가", priceCell, 1],
-      ["종료(추정)", function (g) { return md(g.end); }], ["표시", tagsCell]],
-    split: [["공시일", function (g) { return ymdDot(g.d); }], ["기업", corpCell], ["분할 방식", function (g) { return esc((g.mx && g.mx.split_form) || (g.f || []).join(", ") || "—"); }],
-      ["신설회사", function (g) { return esc(counterpart(g) || "—"); }], ["매수청구가", function (g) { return wonCell(g.mx && g.mx.appraisal_price); }, 1], ["현재가", priceCell, 1],
-      ["청구가 괴리", function (g) { return signed(apGap(g)); }, 1], ["다음 일정", nextCell], ["분할기일", function (g) { return md(schedOf(g, /분할기일/) || g.end); }], ["표시", tagsCell]],
-    merge: [["공시일", function (g) { return ymdDot(g.d); }], ["기업", corpCell], ["구분", function (g) { return esc((g.f || []).filter(function (f) { return !/확인 필요/.test(f); }).join(" · ") || "합병"); }],
-      ["상대회사", function (g) { return esc(counterpart(g) || "—"); }], ["비율", function (g) { return ratioShort(g.mx && g.mx.mg_rt); }],
-      ["매수청구가", function (g) { return wonCell(g.mx && g.mx.appraisal_price); }, 1], ["현재가", priceCell, 1], ["청구가 괴리", function (g) { return signed(apGap(g)); }, 1],
-      ["다음 일정", nextCell], ["종료", function (g) { return md(g.end); }], ["표시", tagsCell]],
-    exchange: [["공시일", function (g) { return ymdDot(g.d); }], ["기업", corpCell], ["대상회사", function (g) { return esc(counterpart(g) || "—"); }],
-      ["교환비율", function (g) { return ratioShort(g.mx && g.mx.extr_rt); }], ["매수청구가", function (g) { return wonCell(g.mx && g.mx.appraisal_price); }, 1], ["현재가", priceCell, 1],
-      ["청구가 괴리", function (g) { return signed(apGap(g)); }, 1], ["다음 일정", nextCell], ["종료", function (g) { return md(g.end); }], ["표시", tagsCell]],
-    transfer: [["공시일", function (g) { return ymdDot(g.d); }], ["기업", corpCell], ["구분", function (g) { return /양수/.test(g.nm) ? "영업양수" : "영업양도"; }],
-      ["가액", function (g) { var mx = g.mx || {}; return eok(mx.inh_prc || mx.trf_prc); }, 1], ["상대방", function (g) { return esc(counterpart(g) || "—"); }],
-      ["매수청구가", function (g) { return wonCell(g.mx && g.mx.appraisal_price); }, 1], ["현재가", priceCell, 1], ["청구가 괴리", function (g) { return signed(apGap(g)); }, 1],
-      ["다음 일정", nextCell], ["종료", function (g) { return md(g.end); }], ["표시", tagsCell]],
-    bw: [["공시일", function (g) { return ymdDot(g.d); }], ["기업", corpCell], ["최근 문서", function (g) { return esc(g.nm); }], ["현재가", priceCell, 1],
-      ["종료(추정)", function (g) { return md(g.end); }], ["표시", tagsCell]]
+  // 분류별 지표 열 [제목, 함수, 오른쪽 정렬]
+  var METRICS = {
+    rights: [["패리티", function (g) { return signed(parity(g), "big"); }, 1], ["현재가", priceCell, 1],
+      ["발행가", function (g) { var mx = g.mx || {}; var i = issue(g); return i == null ? '<span class="faint">—</span>' : fmt(i) + ' <small class="' + (mx.price_final ? "pos" : "dim") + '">' + (mx.price_final ? "확정" : "예정") + "</small>"; }, 1],
+      ["증서이론가", function (g) { var p = px(g), i = issue(g); return p && i ? fmt(p.price - i) : '<span class="faint">—</span>'; }, 1]],
+    bonus: [["현재가", priceCell, 1], ["1주당 배정", function (g) { var r = N(g.mx && g.mx.nstk_ascnt_ps_ostk); return r == null ? "—" : trimNum(String(r)) + "주"; }, 1],
+      ["이론 권리락가", function (g) { var p = px(g), r = N(g.mx && g.mx.nstk_ascnt_ps_ostk); return p && r ? fmt(Math.round(p.price / (1 + r))) : '<span class="faint">—</span>'; }, 1]],
+    merge: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1], ["매수청구가", function (g) { return won(g.mx && g.mx.appraisal_price); }, 1], ["현재가", priceCell, 1],
+      ["비율 · 상대회사", function (g) { var mx = g.mx || {}; return esc(((mx.mg_rt ? ratioShort(mx.mg_rt) + " · " : "") + (counterpart(g) || (g.f || []).join(", ") || "—")).slice(0, 60)); }]],
+    exchange: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1], ["매수청구가", function (g) { return won(g.mx && g.mx.appraisal_price); }, 1], ["현재가", priceCell, 1],
+      ["교환비율 · 대상", function (g) { var mx = g.mx || {}; return esc((ratioShort(mx.extr_rt) + " · " + (counterpart(g) || "—")).slice(0, 60)); }]],
+    split: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1], ["매수청구가", function (g) { return won(g.mx && g.mx.appraisal_price); }, 1], ["현재가", priceCell, 1],
+      ["신설회사", function (g) { return esc(counterpart(g) || "—"); }]],
+    transfer: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1], ["매수청구가", function (g) { return won(g.mx && g.mx.appraisal_price); }, 1], ["현재가", priceCell, 1],
+      ["가액 · 상대방", function (g) { var mx = g.mx || {}, v = N(mx.inh_prc || mx.trf_prc); return esc(((v ? fmt(Math.round(v / 1e8)) + "억 · " : "") + (counterpart(g) || "—")).slice(0, 60)); }]],
+    tender: [["현재가", priceCell, 1], ["최근 문서", function (g) { return esc(g.nm); }]],
+    bw: [["현재가", priceCell, 1], ["최근 문서", function (g) { return esc(g.nm); }]]
   };
 
-  function filtered(ignoreType) {
-    var view = state.view === "past" ? "past" : "active";
+  // ---- 필터 ----
+  function base(view) {
+    view = view || state.view;
     return DATA.groups.filter(function (g) {
       if (g.status !== view) return false;
-      if (!ignoreType && state.filter !== "all" && g.k !== state.filter) return false;
-      if (state.from && g.d < state.from) return false;
-      if (state.to && g.d > state.to) return false;
+      if (g.k === "rights" && !state.third && methodShort(g) === "제3자배정") return false;
       if (state.onlyAp && g.ap !== "Y") return false;
-      if (state.method !== "all" && g.k === "rights") {
-        var m = methodShort(g);
-        if (state.method === "third" ? m !== "제3자배정" : !(m === "주주배정" || m === "일반공모")) return false;
-      }
-      if (state.q) {
-        var q = state.q.toLowerCase();
-        if ((g.n + " " + g.s + " " + g.nm).toLowerCase().indexOf(q) < 0) return false;
-      }
+      if (state.q) { var q = state.q.toLowerCase(); if ((g.n + " " + (g.s || "")).toLowerCase().indexOf(q) < 0) return false; }
       return true;
     });
   }
-  function renderChipsBoard() {
-    var base = filtered(true), cnt = {};
-    base.forEach(function (g) { cnt[g.k] = (cnt[g.k] || 0) + 1; });
-    var h = '<button type="button" class="tchip" data-f="all" aria-pressed="' + (state.filter === "all") + '">전체<small>' + base.length + "</small></button>";
-    ORDER.forEach(function (k) { h += '<button type="button" class="tchip" data-f="' + k + '" aria-pressed="' + (state.filter === k) + '">' + TYPES[k].name + "<small>" + (cnt[k] || 0) + "</small></button>"; });
-    h += '<button type="button" class="tchip reset" data-f="reset">초기화</button>';
-    $("tchips").innerHTML = h;
+  function visible() { var b = base(); return state.tab === "all" ? b : b.filter(function (g) { return g.k === state.tab; }); }
+
+  // ---- 그리기 ----
+  function renderTabs() {
+    var b = base(), cnt = {};
+    b.forEach(function (g) { cnt[g.k] = (cnt[g.k] || 0) + 1; });
+    var h = '<button type="button" class="tab" data-k="all" aria-pressed="' + (state.tab === "all") + '">전체 <small>' + b.length + "</small></button>";
+    ORDER.forEach(function (k) {
+      if (!cnt[k] && state.tab !== k) return;
+      h += '<button type="button" class="tab" data-k="' + k + '" style="--cc:var(--c-' + k + ')" aria-pressed="' + (state.tab === k) + '">' + NAMES[k] + " <small>" + (cnt[k] || 0) + "</small></button>";
+    });
+    $("tabs").innerHTML = h;
   }
-  function renderKpis() {
-    var view = state.view === "past" ? "past" : "active", all = DATA.groups.filter(function (g) { return g.status === view; });
-    var t = todayKey(), wk = new Date(Date.now() + 9 * 3600e3 + 7 * 864e5).toISOString().slice(0, 10), soon = 0;
-    all.forEach(function (g) { g.sched.forEach(function (s) { if (s[1] >= t && s[1] <= wk) soon++; }); });
-    var k = [[view === "active" ? "진행 중" : "종료", all.length], ["매수청구권", all.filter(function (g) { return g.ap === "Y"; }).length]];
-    if (view === "active") k.push(["7일 내 일정", soon]);
-    k.push(["유상증자", all.filter(function (g) { return g.k === "rights"; }).length]);
-    $("kpis").innerHTML = DATA.status === "ok" ? k.map(function (x) { return '<div class="kpi"><span>' + x[0] + "</span><b>" + fmt(x[1]) + "</b></div>"; }).join("") : "";
-  }
-  function renderBoard() {
-    renderKpis(); renderChipsBoard();
-    var el = $("board");
-    if (DATA.status !== "ok") {
-      var msg = { loading: "DART 데이터를 불러오는 중입니다.", nodb: "이 화면에서는 공시 데이터를 읽을 수 없습니다. claude.ai에 로그인한 상태로 열어 주세요.",
-        error: "공시 데이터를 읽지 못했습니다. 잠시 후 새로고침해 주세요.", empty: "아직 저장된 데이터가 없습니다. 다음 동기화 때 채워집니다." }[DATA.status];
-      el.innerHTML = '<div class="card board-empty">' + msg + "</div>"; return;
+  function renderAgenda() {
+    var card = $("agenda-card");
+    card.hidden = state.view !== "active";
+    if (card.hidden) return;
+    if (DATA.status !== "ok") { $("agenda").innerHTML = '<div class="day"><div class="none">' + (DATA.status === "loading" ? "불러오는 중" : "데이터 없음") + "</div></div>"; return; }
+    var t = todayKey(), end = addDays(t, 13), days = {};
+    visible().forEach(function (g) {
+      timeline(g).forEach(function (x) {
+        if (x.d < t || x.d > end || /이사회|계약/.test(x.label)) return;
+        (days[x.d] = days[x.d] || []).push({ g: g, x: x });
+      });
+    });
+    var h = "";
+    for (var i = 0; i < 14; i++) {
+      var d = addDays(t, i), w = dt(d).getUTCDay(), items = days[d] || [];
+      if ((w === 0 || w === 6) && !items.length) continue;   // 일정 없는 주말은 건너뛴다
+      items.sort(function (a, b) { return ORDER.indexOf(a.g.k) - ORDER.indexOf(b.g.k); });
+      h += '<div class="day' + (i === 0 ? " today" : "") + '"><div class="day-h"><b>' + md(d) + " " + WD[w] + "</b><span>" + (i === 0 ? "오늘" : "D-" + i) + "</span></div>" +
+        (items.length ? "<ul>" + items.map(function (it) {
+          var hl = headline(it.g);
+          return '<li><button type="button" class="ag' + (it.x.est ? " est" : "") + '" data-id="' + esc(it.g.id) + '" style="--cc:var(--c-' + it.g.k + ')"><i></i><b>' + esc(it.g.n) + "</b>" +
+            (hl ? '<em class="' + (hl.v >= 0 ? "pos" : "neg") + '" title="' + hl.label + '">' + (hl.v > 0 ? "+" : "") + hl.v.toFixed(1) + "%</em>" : "<em></em>") +
+            "<small>" + esc(NAMES[it.g.k]) + " · " + esc(it.x.label) + "</small></button></li>";
+        }).join("") + "</ul>" : '<div class="none">일정 없음</div>') + "</div>";
     }
-    var list = filtered(false), by = {};
+    $("agenda").innerHTML = h;
+  }
+  function dateCell(v, t, isNext) {
+    if (!v) return '<div class="dc none"><b>—</b></div>';
+    var over = v.d < t && !(v.e && v.e >= t);
+    var cls = over ? "done" : isNext ? "next" : dday(v.d) <= 3 ? "soon" : "";
+    var main = md(v.d) + (v.e ? "~" + v.e.slice(8) : "");
+    var sub = over ? "완료" : (v.e && v.d < t ? "진행 중" : ddLabel(v.d));
+    return '<div class="dc ' + cls + (v.est ? " est" : "") + '"' + (v.est ? ' title="영업일 기준 추정일"' : "") + "><b>" + main + "</b><small>" + sub + "</small></div>";
+  }
+  function track(g, ms, t) {
+    var ds = ms.filter(function (m) { return m.v; }).map(function (m) { return m.v.d; });
+    ds.push(g.d0);
+    var lo = ds.reduce(function (a, b) { return a < b ? a : b; }), hi = ds.reduce(function (a, b) { return a > b ? a : b; });
+    var span = Math.max(1, (dt(hi) - dt(lo)) / 864e5), pos = function (d) { return Math.max(0, Math.min(100, (dt(d) - dt(lo)) / 864e5 / span * 100)); };
+    var h = '<div class="track" title="' + md(lo) + " → " + md(hi) + '"><span class="fill" style="width:' + pos(t) + '%"></span>';
+    ms.forEach(function (m) { if (m.v) h += '<i class="' + (m.v.d < t ? "done" : "") + '" style="left:' + pos(m.v.d) + '%" title="' + esc(m.label + " " + md(m.v.d)) + '"></i>'; });
+    return h + '<span class="now" style="left:' + pos(t) + '%"></span></div>';
+  }
+  function corpCell(g) {
+    var tags = "";
+    if (g.k === "rights" && methodShort(g)) tags += '<span class="tg">' + methodShort(g) + "</span>";
+    if (g.ap === "Y") tags += '<span class="tg ap">매수청구</span>';
+    if (g.k === "merge") { var f = (g.f || []).filter(function (x) { return !/확인 필요|^합병$/.test(x); }).join(" · "); if (f) tags += '<span class="tg">' + esc(f) + "</span>"; }
+    if (g.amends) tags += '<span class="tg">정정 ' + g.amends + "</span>";
+    return '<div class="corp"><b>' + esc(g.n) + "</b>" + tags + "<small>" + esc(g.m) + " " + esc(g.s || "") + " · 최초 공시 " + md(g.d0) + "</small></div>";
+  }
+  function renderGrids() {
+    var el = $("grids");
+    if (DATA.status !== "ok") {
+      el.innerHTML = '<div class="card empty">' + ({ loading: "DART 데이터를 불러오는 중입니다.", nodb: "이 화면에서는 데이터를 읽을 수 없습니다. claude.ai에 로그인한 상태로 열어 주세요.",
+        error: "데이터를 읽지 못했습니다. 잠시 후 새로고침해 주세요.", empty: "아직 저장된 데이터가 없습니다." }[DATA.status]) + "</div>"; return;
+    }
+    var list = visible(), t = todayKey(), by = {};
     list.forEach(function (g) { (by[g.k] = by[g.k] || []).push(g); });
     var h = "";
     ORDER.forEach(function (k) {
-      var rows = by[k]; if (!rows || !rows.length) return;
-      if (state.view === "past") rows.sort(function (a, b) { return a.end < b.end ? 1 : -1; });
-      var cols = COLS[k];
-      h += '<section class="card"><div class="tcard-head"><h2>' + TITLES[k] + "</h2><span>" + rows.length + "건 · 행을 누르면 상세</span></div>" +
-        '<div class="twrap"><table class="ev-table"><thead><tr>' + cols.map(function (c) { return "<th" + (c[2] ? ' class="r"' : "") + ">" + c[0] + "</th>"; }).join("") + "</tr></thead><tbody>" +
-        rows.map(function (g) {
-          return '<tr tabindex="0" data-id="' + esc(g.id) + '" aria-selected="' + (state.sel === g.id) + '">' + cols.map(function (c) {
-            return "<td" + (c[2] ? ' class="r"' : c[0] === "표시" || c[0] === "최근 문서" ? ' class="cwrap"' : "") + ">" + c[1](g) + "</td>";
-          }).join("") + "</tr>";
+      var rows = by[k]; if (!rows) return;
+      rows = rows.map(function (g) { return { g: g, ms: msOf(g), nx: nextOf(g) }; });
+      var key = function (r) { return r.nx ? r.nx.d : "9999"; };
+      if (state.view === "active") rows.sort(function (a, b) { return key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0; });
+      else rows.sort(function (a, b) { return a.g.end < b.g.end ? 1 : -1; });
+      var mcols = METRICS[k], dcols = MS[k];
+      h += '<section class="card grid-card" style="--cc:var(--c-' + k + ')"><div class="sec-head"><h2>' + NAMES[k] + ' <span class="dim num" style="font-weight:500">' + rows.length + "</span></h2><p>" +
+        (k === "rights" ? "패리티 = (현재가 ÷ 발행가 − 1) × 100 · 확정가가 있으면 확정가 기준" : /merge|exchange|split|transfer/.test(k) ? "청구가 괴리 = (매수청구가 ÷ 현재가 − 1) × 100" : "공시에 일정 항목이 없어 공시일과 추정 종료일만 표시") + "</p></div>" +
+        '<div class="twrap"><table class="ms"><thead><tr><th>기업</th>' + mcols.map(function (c) { return '<th class="metric' + (c[2] ? " r" : "") + '">' + c[0] + "</th>"; }).join("") +
+        dcols.map(function (c) { return '<th class="d">' + c[0] + "</th>"; }).join("") + '<th class="d">진행</th></tr></thead><tbody>' +
+        rows.map(function (r) {
+          var g = r.g;
+          return '<tr tabindex="0" data-id="' + esc(g.id) + '" aria-selected="' + (state.sel === g.id) + '"><td>' + corpCell(g) + "</td>" +
+            mcols.map(function (c) { return "<td" + (c[2] ? ' class="r"' : "") + ">" + c[1](g) + "</td>"; }).join("") +
+            r.ms.map(function (m) { return '<td class="d">' + dateCell(m.v, t, r.nx && m.v && (m.v.d === r.nx.d || (m.v.e && m.v.d <= r.nx.d && m.v.e >= r.nx.d))) + "</td>"; }).join("") +
+            '<td class="d">' + track(g, r.ms, t) + "</td></tr>";
         }).join("") + "</tbody></table></div></section>";
     });
-    el.innerHTML = h || '<div class="card board-empty">조건에 맞는 이벤트가 없습니다. 필터를 바꾸거나 초기화해 보세요.' +
-      (state.view === "active" ? " 끝난 이벤트는 왼쪽 메뉴의 지난 이벤트에서 볼 수 있습니다." : "") + "</div>";
+    el.innerHTML = h || '<div class="card empty">조건에 맞는 이벤트가 없습니다.' + (state.view === "active" ? " 끝난 이벤트는 위쪽의 지난 이벤트에서 볼 수 있습니다." : "") + "</div>";
+  }
+  function renderCounts() {
+    if (DATA.status !== "ok") return;
+    var f = function (v) { var b = base(v); return state.tab === "all" ? b.length : b.filter(function (g) { return g.k === state.tab; }).length; };
+    $("n-active").textContent = f("active"); $("n-past").textContent = f("past");
   }
   function renderSync() {
-    var d = $("sync-dot");
-    if (DATA.status !== "ok") { d.textContent = DATA.status === "loading" ? "불러오는 중" : "데이터 없음"; d.className = "dot"; return; }
-    $("sync-dart").textContent = DATA.eventsUpdated ? DATA.eventsUpdated.slice(5, 16).replace("T", " ").replace("-", "/") : "—";
-    $("sync-view").textContent = DATA.updated ? DATA.updated.slice(5, 16).replace("T", " ").replace("-", "/") : "—";
+    var s = $("sync");
+    if (DATA.status !== "ok") { s.className = "sync"; s.textContent = DATA.status === "loading" ? "불러오는 중" : "데이터 없음"; return; }
     var age = DATA.updated ? (Date.now() - new Date(DATA.updated).getTime()) / 60000 : 1e9;
-    d.className = "dot " + (age < 120 ? "ok" : "late");
-    d.textContent = age < 120 ? "동기화 정상" : "동기화 지연 · " + Math.round(age / 60) + "시간 전 데이터";
+    s.className = "sync " + (age < 120 ? "ok" : "late");
+    s.textContent = "DART·시세 " + (DATA.updated ? DATA.updated.slice(5, 16).replace("T", " ").replace("-", "/") : "—") + (age < 120 ? "" : " · " + Math.round(age / 60) + "시간 전");
   }
+  function renderAll() { renderCounts(); renderSync(); renderTabs(); renderAgenda(); renderGrids(); }
 
   // ---- 상세 시트 ----
   var lastFocus = null;
-  function metricRows(g) {
-    var mx = g.mx || {}, p = px(g), r = [];
+  function kv(rows) { return '<dl class="kv2">' + rows.map(function (x) { var long = String(x[1]).replace(/<[^>]+>/g, "").length > 44; return "<div" + (long ? ' class="full"' : "") + "><dt>" + x[0] + "</dt><dd>" + x[1] + "</dd></div>"; }).join("") + "</dl>"; }
+  function renderDrawer(g) {
+    var p = px(g), t = todayKey(), tl = timeline(g), nx = nextOf(g), mx = g.mx || {};
+    $("d-title").textContent = g.n + " · " + NAMES[g.k];
+    $("d-sub").textContent = g.nm + " · " + g.id;
+    var hero = [];
+    if (g.k === "rights") hero.push(["패리티", signed(parity(g)), "발행가 " + (issue(g) ? fmt(issue(g)) + (mx.price_final ? " 확정" : " 예정") : "없음")]);
+    else if (mx.appraisal_price) hero.push(["청구가 괴리", signed(apGap(g)), "매수청구가 " + fmt(N(mx.appraisal_price))]);
+    hero.push(["현재가", p ? fmt(p.price) : "—", p ? '<span class="' + (p.chg > 0 ? "up" : p.chg < 0 ? "down" : "") + '">' + (p.pct > 0 ? "+" : "") + Number(p.pct).toFixed(2) + "%</span> · 전일 " + fmt(p.prev) : (g.status === "past" ? "종료 이벤트" : "시세 없음")]);
+    hero.push(["다음 일정", nx ? md(nx.d) : "—", nx ? esc(nx.label) + " · " + ddLabel(nx.d) : "남은 일정 없음"]);
+    if (g.k === "rights") hero.push(["증서이론가", p && issue(g) ? fmt(p.price - issue(g)) : "—", "현재가 − 발행가"]);
+    var h = '<div class="hero2">' + hero.map(function (x) { return "<div><span>" + x[0] + "</span><b>" + x[1] + "</b><small>" + x[2] + "</small></div>"; }).join("") + "</div>";
+    h += '<div class="box"><h3>전체 일정<small>' + (g.status === "active" ? "진행 중 · 종료 기준 " + esc(g.end_basis) + " " + md(g.end) : "종료 · " + esc(g.end_basis)) + "</small></h3>" +
+      (tl.length ? '<ul class="tl">' + tl.map(function (x) {
+        var cls = x.d < t ? "done" : nx && x.d === nx.d && x.label === nx.label ? "next" : "";
+        return '<li class="' + cls + '"><span class="num">' + x.d.replace(/-/g, ".") + " " + WD[dt(x.d).getUTCDay()] + "</span><span>" + esc(x.label) + (x.est ? " <em>추정</em>" : "") + '</span><span class="dd">' + (x.d < t ? "" : ddLabel(x.d)) + "</span></li>";
+      }).join("") + "</ul>" : '<p class="dim" style="margin:0">공시에 일정 항목이 없습니다. 원문에서 확인하세요.</p>') + "</div>";
+    var facts = [];
     if (g.k === "rights") {
-      var src = mx.price_doc ? ' <a class="dim" href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=' + esc(mx.price_doc.r) + '" target="_blank" rel="noopener">' + esc(mx.price_doc.nm) + " " + md(mx.price_doc.d) + "</a>" : "";
-      r.push(["증자 방식", esc(mx.method || "—")], ["최초 신고서 발행가 (예정)", wonCell(mx.plan_price)],
-        ["현재 발행가", wonCell(mx.last_price) + " " + (mx.price_final ? '<span class="pos">확정</span>' : '<span class="dim">미확정</span>') + src],
-        ["증서 이론가", p && issuePrice(g) ? fmt(p.price - issuePrice(g)) : "—"], ["패리티", signed(rightsParity(g))], ["조달 금액", eok(mx.amount)],
-        ["신주 수", mx.count ? esc(mx.count) + "주" : "—"], ["청약", esc(mx.subscription || "—")], ["납입일", esc(mx.payment || "—")],
-        ["주관사", esc((mx.underwriters || []).join(", ") || "—")]);
-    } else if (g.k === "bonus") {
-      var rr = N(mx.nstk_ascnt_ps_ostk);
-      r.push(["1주당 배정", rr == null ? "—" : trimNum(String(rr)) + "주"], ["이론 권리락가", p && rr ? fmt(Math.round(p.price / (1 + rr))) : "—"]);
-    } else {
-      if (mx.appraisal_price) r.push(["주식매수청구가", wonCell(mx.appraisal_price)], ["청구가 괴리", signed(apGap(g))]);
-      if (mx.mg_rt) r.push(["합병비율", ratioShort(mx.mg_rt)]);
-      if (mx.extr_rt) r.push(["교환비율", ratioShort(mx.extr_rt)]);
-      if (counterpart(g)) r.push(["상대회사", esc(counterpart(g))]);
-      if (mx.inh_prc || mx.trf_prc) r.push(["거래 가액", eok(mx.inh_prc || mx.trf_prc)]);
-      if (mx.split_form) r.push(["분할 방식", esc(mx.split_form)]);
+      facts.push(["증자 방식", esc(mx.method || "—")], ["최초 신고서 발행가", mx.plan_price ? esc(mx.plan_price) : "—"],
+        ["현재 발행가", issue(g) ? fmt(issue(g)) + (mx.price_final ? ' <span class="pos">확정</span>' : ' <span class="dim">미확정</span>') + (mx.price_doc ? ' · <a class="dim" href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=' + esc(mx.price_doc.r) + '" target="_blank" rel="noopener">' + esc(mx.price_doc.nm) + "</a>" : "") : "—"],
+        ["조달 금액", N(mx.amount) ? fmt(Math.round(N(mx.amount) / 1e8)) + "억원" : "—"], ["신주 수", mx.count ? esc(mx.count) + "주" : "—"], ["주관사", esc((mx.underwriters || []).join(", ") || "—")]);
     }
-    return r;
-  }
-  function kvHtml(rows) {
-    return '<dl class="kv2">' + rows.map(function (x) { var long = String(x[1]).replace(/<[^>]+>/g, "").length > 48; return "<div" + (long ? ' class="full"' : "") + "><dt>" + x[0] + "</dt><dd>" + x[1] + "</dd></div>"; }).join("") + "</dl>";
+    (g.detail || []).forEach(function (x) { facts.push([esc(x[0]), esc(x[1])]); });
+    h += '<div class="box"><h3>상세 항목<small>DART 주요사항보고서</small></h3>' + (facts.length ? kv(facts) : '<p class="dim" style="margin:0">구조화된 상세 항목이 없는 공시입니다.</p>') + "</div>";
+    var older = g.items.slice(1);
+    h += '<div class="box"><h3>공시 이력<small>최신 1건' + (older.length ? " · 이전 " + older.length + "건" : "") + '</small></h3><ul class="hist">' +
+      [g.items[0]].concat(state.histOpen ? older : []).map(function (e, i) { return '<li><span class="num dim">' + md(e.d) + '</span><a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=' + esc(e.r) + '" target="_blank" rel="noopener">' + esc(e.nm) + (i === 0 ? " (최신)" : "") + "</a></li>"; }).join("") + "</ul>" +
+      (older.length ? '<button type="button" class="btn-out" id="d-hist" style="margin-top:10px" aria-expanded="' + state.histOpen + '">' + (state.histOpen ? "이전 공시 접기" : "이전 공시 " + older.length + "건 보기") + "</button> " : "") +
+      '<a class="btn-out" style="margin-top:10px" href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=' + esc(g.id) + '" target="_blank" rel="noopener">DART 원문</a></div>';
+    $("d-body").innerHTML = h;
   }
   function openDrawer(id) {
     var g = DATA.groups.filter(function (x) { return x.id === id; })[0]; if (!g) return;
     state.sel = id; state.histOpen = false; lastFocus = document.activeElement;
-    renderDrawer(g);
-    $("scrim").hidden = false; $("drawer").hidden = false;
-    $("d-close").focus();
-    Array.prototype.forEach.call(document.querySelectorAll(".ev-table tbody tr"), function (tr) { tr.setAttribute("aria-selected", tr.dataset.id === id); });
+    renderDrawer(g); $("d-body").scrollTop = 0;
+    $("scrim").hidden = false; $("drawer").hidden = false; $("d-close").focus();
+    Array.prototype.forEach.call(document.querySelectorAll(".ms tbody tr"), function (tr) { tr.setAttribute("aria-selected", tr.dataset.id === id); });
   }
-  function renderDrawer(g) {
-    var T = TYPES[g.k], p = px(g), t = todayKey(), nx = nextSched(g);
-    $("d-title").textContent = "이벤트 상세";
-    $("d-sub").textContent = g.n + " · " + g.id;
-    var h = '<div class="dtitle"><div><h3>' + esc(g.nm) + "</h3><small>" + esc(g.n) + " · " + esc(g.m) + " " + esc(g.s || "") + "</small></div>" +
-      '<a class="btn-out" href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=' + esc(g.id) + '" target="_blank" rel="noopener">DART 바로가기</a></div>';
-    h += kvHtml([["공시번호", '<span class="num">' + esc(g.id) + "</span>"], ["이벤트 유형", T.name + " · " + BIAS_LABEL[T.bias]],
-      ["최초 공시일", ymdDot(g.d0)], ["최근 공시일", ymdDot(g.d)],
-      ["진행 상태", (g.status === "active" ? '<span class="pos">진행 중</span>' : '<span class="dim">종료</span>') + " · " + esc(g.end_basis) + " " + ymdDot(g.end)],
-      ["주식매수청구권", g.ap === "Y" ? '<span class="pos">있음</span>' : g.ap === "?" ? "확인 필요" : "없음"]]);
-    if (g.s) {
-      h += '<div class="box"><h4>주가와 패리티<small>' + (p ? "네이버 금융 · " + esc((p.at || "").replace("T", " ")) : "시세 없음") + "</small></h4>";
-      if (p) h += '<div class="quote"><b>' + fmt(p.price) + '</b><span class="' + (p.chg > 0 ? "up" : p.chg < 0 ? "down" : "dim") + '">' + (p.chg > 0 ? "▲ " : p.chg < 0 ? "▼ " : "") + fmt(Math.abs(p.chg)) + " (" + (p.pct > 0 ? "+" : "") + Number(p.pct).toFixed(2) + '%)</span><span class="dim">전일 ' + fmt(p.prev) + (p.mcap ? " · 시총 " + esc(p.mcap) : "") + "</span></div>";
-      else h += '<p class="dim" style="margin:0 0 10px">종료된 이벤트는 시세를 가져오지 않습니다.</p>';
-      var mr = metricRows(g).filter(function (x) { var t = String(x[1]).replace(/<[^>]+>/g, "").trim(); return t && t !== "—"; });
-      if (mr.length) h += kvHtml(mr);
-      h += "</div>";
-    }
-    if (g.sched.length) {
-      h += '<div class="box"><h4>일정<small>' + (nx ? "다음: " + esc(nx[0]) + " " + md(nx[1]) : "남은 일정 없음") + '</small></h4><ul class="tl">' + g.sched.map(function (s) {
-        var cls = s[1] < t ? "done" : nx && s[0] === nx[0] && s[1] === nx[1] ? "next" : "";
-        return '<li class="' + cls + '"><span class="num">' + ymdDot(s[1]) + "</span><span>" + esc(s[0]) + "</span></li>";
-      }).join("") + "</ul></div>";
-    }
-    if (g.detail.length) h += '<div class="box"><h4>상세 항목<small>DART 주요사항보고서</small></h4>' + kvHtml(g.detail.map(function (x) { return [esc(x[0]), esc(x[1])]; })) + "</div>";
-    else h += '<div class="box"><h4>상세 항목</h4><p class="dim" style="margin:0">이 공시는 DART 상세 API에 구조화된 항목이 없습니다. 원문에서 확인하세요.</p></div>';
-    var older = g.items.slice(1);
-    h += '<div class="box"><h4>공시 이력<small>최신 1건' + (older.length ? " + 이전 " + older.length + "건" : "") + "</small></h4>" +
-      '<ul class="hist2"><li><span class="num">' + md(g.items[0].d) + '</span><a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=' + esc(g.items[0].r) + '" target="_blank" rel="noopener">' + esc(g.items[0].nm) + " (최신)</a></li>" +
-      (state.histOpen ? older.map(function (e) { return '<li><span class="num">' + md(e.d) + '</span><a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=' + esc(e.r) + '" target="_blank" rel="noopener">' + esc(e.nm) + "</a></li>"; }).join("") : "") + "</ul>" +
-      (older.length ? '<button type="button" class="btn-out" id="d-hist" style="margin-top:10px" aria-expanded="' + state.histOpen + '">' + (state.histOpen ? "이전 공시 접기" : "이전 공시 " + older.length + "건 보기") + "</button>" : "") + "</div>";
-    function li(a) { return "<ul>" + a.slice(0, 3).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>"; }
-    h += '<div class="box"><h4>플레이북 요약<small>예시 전략</small></h4><div class="pbmini"><div><b>진입</b>' + li(T.entry) + "</div><div><b>청산</b>" + li(T.exit) + "</div><div><b>리스크</b>" + li(T.risk) + "</div></div>" +
-      '<button type="button" class="btn-out" id="d-pb" style="margin-top:12px">' + T.name + " 플레이북·계산기 열기</button></div>";
-    $("d-body").innerHTML = h;
-    $("d-body").scrollTop = 0;
-  }
-  function closeDrawer() {
-    if ($("drawer").hidden) return;
-    $("drawer").hidden = true; $("scrim").hidden = true;
-    if (lastFocus && lastFocus.focus) lastFocus.focus();
-  }
+  function closeDrawer() { if ($("drawer").hidden) return; $("drawer").hidden = true; $("scrim").hidden = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
 
-  // ---- 화면 전환 ----
-  var HERO = {
-    active: ["DART EVENT MONITOR", "진행 중인 이벤트", "신주상장·합병기일·분할기일 같은 마지막 일정이 아직 지나지 않은 공시입니다. 행을 누르면 상세 항목과 주가, 패리티가 열립니다."],
-    past: ["EVENT ARCHIVE", "지난 이벤트", "마지막 일정이 지났거나 결과·철회 공시가 나온 이벤트입니다. 최근 90일 안에 접수된 공시만 보관합니다."],
-    playbook: ["PLAYBOOK", "유형별 플레이북", "이벤트 유형별 진입·청산 규칙과 일정 흐름, 차익 계산기입니다."],
-    sizing: ["POSITION SIZING", "포지션 사이징", "리스크 한도와 호가단위, 가격제한폭을 반영해 주문 수량을 계산합니다."]
-  };
-  function setView(v) {
-    state.view = v;
-    Array.prototype.forEach.call(document.querySelectorAll("#nav button"), function (b) { if (b.dataset.view === v) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
-    $("view-board").hidden = !(v === "active" || v === "past");
-    $("view-playbook").hidden = v !== "playbook";
-    $("view-sizing").hidden = v !== "sizing";
-    $("hero-eyebrow").textContent = HERO[v][0]; $("hero-title").textContent = HERO[v][1]; $("hero-desc").textContent = HERO[v][2];
-    if (v === "active" || v === "past") renderBoard(); else $("kpis").innerHTML = "";
-    try { localStorage.setItem("eventbook.view", v); } catch (e) {}
-    window.scrollTo(0, 0);
-  }
-
+  // ---- 데이터 (db 컬렉션 "view": meta + c-0..c-n) ----
   function applyData(docs) {
     var meta = null, chunks = {};
     docs.forEach(function (d) { var v = d.data() || {}; if (d.id === "meta") meta = v; else if (/^c-\d+$/.test(d.id)) chunks[d.id] = v.groups || []; });
-    if (!meta) { DATA.status = "empty"; renderBoard(); renderSync(); return; }
+    if (!meta) { DATA.status = "empty"; renderAll(); return; }
     var groups = [];
-    for (var i = 0; i < (meta.chunks || 0); i++) { if (!chunks["c-" + i]) return; groups = groups.concat(chunks["c-" + i]); }  // 모든 조각이 올 때까지 기다린다
+    for (var i = 0; i < (meta.chunks || 0); i++) { if (!chunks["c-" + i]) return; groups = groups.concat(chunks["c-" + i]); }   // 모든 조각이 올 때까지 기다린다
     DATA.groups = groups; DATA.prices = meta.prices || {}; DATA.updated = meta.updated_at; DATA.eventsUpdated = meta.events_updated_at;
     DATA.status = groups.length ? "ok" : "empty";
-    renderBoard(); renderSync();
+    renderAll();
     if (!$("drawer").hidden && state.sel) { var g = DATA.groups.filter(function (x) { return x.id === state.sel; })[0]; if (g) renderDrawer(g); }
   }
   function loadData() {
-    if (!(window.claude && window.claude.use)) { DATA.status = "nodb"; renderBoard(); renderSync(); return; }
+    var fail = function (s) { DATA.status = s; renderAll(); };
+    if (!(window.claude && window.claude.use)) { fail("nodb"); return; }
     Promise.resolve(window.claude.use("db")).then(function (db) {
-      if (!db) { DATA.status = "nodb"; renderBoard(); renderSync(); return; }
-      db.collection("view").onSnapshot(function (snap) { applyData(snap.docs); }, function () { DATA.status = "error"; renderBoard(); renderSync(); });
-    }, function () { DATA.status = "nodb"; renderBoard(); renderSync(); });
+      if (!db) { fail("nodb"); return; }
+      db.collection("view").onSnapshot(function (snap) { applyData(snap.docs); }, function () { fail("error"); });
+    }, function () { fail("nodb"); });
   }
 
   // ---- 바인딩 ----
-  $("nav").addEventListener("click", function (e) { var b = e.target.closest("button[data-view]"); if (b) setView(b.dataset.view); });
-  $("tchips").addEventListener("click", function (e) {
-    var b = e.target.closest(".tchip"); if (!b) return;
-    if (b.dataset.f === "reset") {
-      state.filter = "all"; state.q = ""; state.from = ""; state.to = ""; state.method = "pub"; state.onlyAp = false;
-      $("f-q").value = ""; $("f-from").value = ""; $("f-to").value = ""; $("m-pub").checked = true; $("f-ap").checked = false;
-    } else { state.filter = b.dataset.f; if (b.dataset.f !== "all") state.type = b.dataset.f; }
-    renderBoard();
+  document.querySelector(".seg").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-view]"); if (!b) return;
+    state.view = b.dataset.view;
+    Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function (x) { x.setAttribute("aria-pressed", x === b); });
+    renderAll();
   });
-  $("f-q").addEventListener("input", function () { state.q = this.value.trim(); renderBoard(); });
-  $("f-from").addEventListener("change", function () { state.from = this.value; renderBoard(); });
-  $("f-to").addEventListener("change", function () { state.to = this.value; renderBoard(); });
-  $("subf").addEventListener("change", function (e) {
-    if (e.target.name === "method") state.method = e.target.value;
-    if (e.target.id === "f-ap") state.onlyAp = e.target.checked;
-    renderBoard();
-  });
-  $("board").addEventListener("click", function (e) { var tr = e.target.closest("tr[data-id]"); if (tr) openDrawer(tr.dataset.id); });
-  $("board").addEventListener("keydown", function (e) { if (e.key !== "Enter" && e.key !== " ") return; var tr = e.target.closest("tr[data-id]"); if (tr) { e.preventDefault(); openDrawer(tr.dataset.id); } });
+  $("tabs").addEventListener("click", function (e) { var b = e.target.closest(".tab"); if (!b) return; state.tab = b.dataset.k; try { localStorage.setItem("eventbook.tab", state.tab); } catch (x) {} renderAll(); });
+  $("q").addEventListener("input", function () { state.q = this.value.trim(); renderAll(); });
+  $("f-3rd").addEventListener("change", function () { state.third = this.checked; renderAll(); });
+  $("f-ap").addEventListener("change", function () { state.onlyAp = this.checked; renderAll(); });
+  $("grids").addEventListener("click", function (e) { var tr = e.target.closest("tr[data-id]"); if (tr) openDrawer(tr.dataset.id); });
+  $("grids").addEventListener("keydown", function (e) { if (e.key !== "Enter" && e.key !== " ") return; var tr = e.target.closest("tr[data-id]"); if (tr) { e.preventDefault(); openDrawer(tr.dataset.id); } });
+  $("agenda").addEventListener("click", function (e) { var b = e.target.closest(".ag[data-id]"); if (b) openDrawer(b.dataset.id); });
   $("scrim").addEventListener("click", closeDrawer);
   $("d-close").addEventListener("click", closeDrawer);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeDrawer(); });
   $("d-body").addEventListener("click", function (e) {
-    if (e.target.id === "d-hist") { state.histOpen = !state.histOpen; var g = DATA.groups.filter(function (x) { return x.id === state.sel; })[0]; if (g) { var st = $("d-body").scrollTop; renderDrawer(g); $("d-body").scrollTop = st; } }
-    if (e.target.id === "d-pb") { var g2 = DATA.groups.filter(function (x) { return x.id === state.sel; })[0]; closeDrawer(); if (g2) state.type = g2.k; renderPlaybook(); setView("playbook"); }
+    if (e.target.id !== "d-hist") return;
+    state.histOpen = !state.histOpen;
+    var g = DATA.groups.filter(function (x) { return x.id === state.sel; })[0];
+    if (g) { var st = $("d-body").scrollTop; renderDrawer(g); $("d-body").scrollTop = st; }
   });
-  $("pb-type").addEventListener("change", function () { state.type = this.value; renderPlaybook(); });
-  $("calc-in").addEventListener("input", renderCalcOut);
-  $("calc-in").addEventListener("submit", function (e) { e.preventDefault(); });
-  Array.prototype.forEach.call(document.querySelectorAll("#tk input, #tk select"), function (el) { el.addEventListener("input", renderTicket); commaInput(el); });
 
-  // ---- 초기화 ----
-  $("pb-type").innerHTML = ORDER.map(function (k) { return '<option value="' + k + '">' + TYPES[k].name + "</option>"; }).join("");
-  renderPlaybook(); renderTicket();
-  var v0 = "active"; try { v0 = localStorage.getItem("eventbook.view") || "active"; } catch (e) {}
-  setView(HERO[v0] ? v0 : "active");
-  renderSync();
+  try { var t0 = localStorage.getItem("eventbook.tab"); if (t0 && (t0 === "all" || NAMES[t0])) state.tab = t0; } catch (x) {}
+  renderAll();
   loadData();
 })();
 </script>
