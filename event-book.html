@@ -382,7 +382,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
       ["신설회사", function (g) { return esc(counterpart(g) || "—"); }]],
     transfer: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1], ["매수청구가", function (g) { return won(g.mx && g.mx.appraisal_price); }, 1], ["현재가", priceCell, 1],
       ["가액 · 상대방", function (g) { var mx = g.mx || {}, v = N(mx.inh_prc || mx.trf_prc); return esc(((v ? fmt(Math.round(v / 1e8)) + "억 · " : "") + (counterpart(g) || "—")).slice(0, 60)); }]],
-    tender: [["공개매수가 괴리", function (g) { return signed(tenderGap(g), "big"); }, 1], ["공개매수가", function (g) { return won(g.mx && g.mx.tender_price); }, 1], ["현재가", priceCell, 1],
+    tender: [["공개매수가 괴리", function (g) { return signed(tenderGap(g), "big"); }, 1], ["공개매수가", function (g) { return won(g.mx && g.mx.tender_price) + (g.mx && g.mx.tender_alt ? ' <small style="color:var(--warn)" title="원문에 다른 금액도 있음: ' + esc(g.mx.tender_alt.join(", ")) + '">확인</small>' : ""); }, 1], ["현재가", priceCell, 1],
       ["최근 문서", function (g) { return esc(g.nm); }]],
     bw: [["현재가", priceCell, 1], ["최근 문서", function (g) { return esc(g.nm); }]]
   };
@@ -532,7 +532,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     $("d-sub").textContent = g.nm + " · " + g.id;
     var hero = [];
     if (g.k === "rights") hero.push(["패리티", signed(parity(g)), "발행가 " + (issue(g) ? fmt(issue(g)) + (mx.price_final ? " 확정" : " 예정") : "없음")]);
-    else if (g.k === "tender") hero.push(["공개매수가 괴리", signed(tenderGap(g)), "공개매수가 " + (mx.tender_price ? esc(mx.tender_price) : "확인 필요")]);
+    else if (g.k === "tender") hero.push(["공개매수가 괴리", signed(tenderGap(g)), "공개매수가 " + (mx.tender_price ? esc(mx.tender_price) : "확인 필요") + (mx.tender_alt ? ' <span style="color:var(--warn)">· 원문에 ' + esc(mx.tender_alt.join(", ")) + "원도 있음</span>" : "")]);
     else if (mx.appraisal_price) hero.push(["청구가 괴리", signed(apGap(g)), "매수청구가 " + fmt(N(mx.appraisal_price))]);
     hero.push(["현재가", p ? fmt(p.price) : "—", p ? '<span class="' + (p.chg > 0 ? "up" : p.chg < 0 ? "down" : "") + '">' + (p.pct > 0 ? "+" : "") + Number(p.pct).toFixed(2) + "%</span> · 전일 " + fmt(p.prev) : (g.status === "past" ? "종료 이벤트" : "시세 없음")]);
     hero.push(["다음 일정", nx ? md(nx.d) : "—", nx ? esc(nx.label) + " · " + ddLabel(nx.d) : "남은 일정 없음"]);
