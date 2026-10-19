@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-19T14:14+09:00",
+ "updated_at": "2026-10-19T14:19+09:00",
  "events": [
   {
    "rcept_no": "20261019000120",
@@ -14,7 +14,8 @@
    "filer": "MSDI",
    "amended": true,
    "flags": [],
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000120"
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000120",
+   "appraisal": "N"
   }
  ]
 }
