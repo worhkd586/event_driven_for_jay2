@@ -1,6 +1,22 @@
 {
- "updated_at": "2026-10-19T17:52+09:00",
+ "updated_at": "2026-10-20T07:59+09:00",
  "events": [
+  {
+   "rcept_no": "20261020000003",
+   "rcept_dt": "20261020",
+   "first_seen": "2026-10-20T07:59+09:00",
+   "type": "tender",
+   "corp_name": "에스원",
+   "corp_code": "00158501",
+   "stock_code": "012750",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]공개매수신고서",
+   "filer": "에스원",
+   "amended": true,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261020000003"
+  },
   {
    "rcept_no": "20261019000333",
    "rcept_dt": "20261019",
