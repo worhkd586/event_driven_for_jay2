@@ -200,8 +200,10 @@ def latest_offer_doc(key, corp_code, first):
     docs = [x for x in d.get("list", []) if "증권신고서(지분증권)" in x.get("report_nm", "")]
     if not docs:
         return None
-    x = max(docs, key=lambda x: x["rcept_no"])
-    return {"rcept_no": x["rcept_no"], "report_nm": x["report_nm"], "date": ymd(x["rcept_dt"])}
+    docs.sort(key=lambda x: x["rcept_no"], reverse=True)
+    x = docs[0]
+    return {"rcept_no": x["rcept_no"], "report_nm": x["report_nm"], "date": ymd(x["rcept_dt"]),
+            "older": [o["rcept_no"] for o in docs[1:4]]}   # 매매기간이 최신 정정본에 없을 때 찾아볼 이전 신고서
 
 
 DATE_RE = r"(20\d{2})\s*[년.\-/]\s*(\d{1,2})\s*[월.\-/]\s*(\d{1,2})"
@@ -425,8 +427,11 @@ def summarize(items, det, estk, today, tender=None, apdoc=None):
     if doc.get("rt_cands"):   # 신고서 원문의 신주인수권증서 매매기간 후보 중 이 이벤트 일정에 맞는 것
         rec = next((b for a, b, k in sched if a == "배정기준일"), None)
         sub = next((b for a, b, k in sched if a == "청약 시작"), None)
+        floor = (datetime.strptime(first, "%Y%m%d") - timedelta(days=10)).strftime("%Y-%m-%d")
         def fits(c):
             s0, e0 = c
+            if not e0 or s0 < floor:   # 끝 날짜까지 있는 구간만, 그리고 최초 공시 이전 날짜는 버린다
+                return False
             if rec and s0 < rec:
                 return False
             if sub and (e0 or s0) >= sub:
@@ -434,7 +439,7 @@ def summarize(items, det, estk, today, tender=None, apdoc=None):
             if e0 and not (0 <= (datetime.strptime(e0, "%Y-%m-%d") - datetime.strptime(s0, "%Y-%m-%d")).days <= 21):
                 return False
             return bool(rec or sub)   # 비교할 일정이 하나도 없으면 믿지 않는다
-        pick = next((c for c in doc["rt_cands"] if c[1] and fits(c)), None) or next((c for c in doc["rt_cands"] if fits(c)), None)
+        pick = next((c for c in doc["rt_cands"] if fits(c)), None)
         if pick:
             sched.append(["신주인수권증서 매매 시작", pick[0], "doc"])
             if pick[1]:
@@ -533,12 +538,18 @@ def main():
                 c["estk_at"] = now.isoformat(timespec="minutes")
                 estk_n += 1
         # 신고서 원문에서 현재 발행가(1차·2차·확정)를 읽는다. 최신 신고서가 바뀔 때만 원문을 내려받는다.
-        need_rt = "rt_cands" not in (c.get("doc") or {})   # 매매기간 후보 수집 이전에 읽은 문서는 한 번 다시 읽는다
+        need_rt = not (c.get("doc") or {}).get("rt_v2")   # 매매기간 파서가 바뀐 뒤 아직 안 읽은 문서는 한 번 다시 읽는다
         if top["type"] == "rights" and re.search(r"주주배정|일반공모", method) and (stale or need_rt) and not done:
             doc = latest_offer_doc(key, top["corp_code"], first)
-            if doc and ((c.get("doc") or {}).get("rcept_no") != doc["rcept_no"] or "rt_cands" not in (c.get("doc") or {})):
-                got = offer_price_from_doc(key, doc["rcept_no"])
-                c["doc"] = dict(doc, **(got or {"price": None, "final": False, "rt_cands": []}))
+            if doc and ((c.get("doc") or {}).get("rcept_no") != doc["rcept_no"] or need_rt):
+                got = offer_price_from_doc(key, doc["rcept_no"]) or {"price": None, "final": False, "rt_cands": []}
+                # [발행조건확정] 정정본에는 매매기간이 빠져 있는 경우가 많아, 구간이 없으면 이전 신고서에서 찾는다
+                for older in doc.get("older", []):
+                    if any(c2[1] for c2 in got.get("rt_cands", [])):
+                        break
+                    o = offer_price_from_doc(key, older) or {}
+                    got["rt_cands"] = got.get("rt_cands", []) + [c2 for c2 in o.get("rt_cands", []) if c2 not in got.get("rt_cands", [])]
+                c["doc"] = dict(doc, **got, rt_v2=True)
         # 공개매수신고서: 원문에서 가격·기간·결제일 (최신 신고서가 바뀔 때만 다시 읽는다)
         if top["type"] == "tender" and "공개매수신고서" in top["report_nm"]:
             if (c.get("tender") or {}).get("rcept_no") != top["rcept_no"] and c.get("tender_tries", 0) < 3:
