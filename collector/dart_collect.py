@@ -163,8 +163,11 @@ def main():
     except FileNotFoundError:
         store = {"events": []}
     seen = {e["rcept_no"]: e for e in store["events"]}
+    migrated = False
     for e in seen.values():   # 이전 형식 데이터 보정
-        e.setdefault("appraisal", APPRAISAL.get(e["type"], "?"))
+        if "appraisal" not in e:
+            e["appraisal"] = APPRAISAL.get(e["type"], "?")
+            migrated = True
 
     new = []
     for ty in sorted({r[0] for r in RULES}):
@@ -201,7 +204,7 @@ def main():
     cutoff = (now - timedelta(days=KEEP_DAYS)).strftime("%Y%m%d")
     events = sorted((e for e in seen.values() if e["rcept_dt"] >= cutoff),
                     key=lambda e: e["rcept_no"], reverse=True)
-    if not new and os.path.exists(OUT):
+    if not new and not migrated and os.path.exists(OUT):
         print("새 공시 없음")
         return
 
