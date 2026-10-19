@@ -1,6 +1,9 @@
 """OpenDART에서 7개 이벤트 공시를 수집해 data/dart_events.json에 쌓는다.
 
-대상: 유상증자, 무상증자, 공개매수, 물적분할, 인수합병, 주식교환, BW 발행(공모)
+대상: 유상증자, 무상증자, 공개매수, 물적분할, 인수합병(합병·분할합병·인적분할·경영권 양수도),
+      주식교환·이전, 영업양수도, BW 발행(공모)
+주식매수청구권이 생기는 공시(합병, 분할합병, 주식교환·이전, 영업양수도, 상장사 물적분할)는
+모두 수집하고 appraisal 필드로 표시한다.
 환경변수: DART_API_KEY (필수), TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID (선택, 새 공시 알림)
 표준 라이브러리만 사용한다.
 """
@@ -26,15 +29,24 @@ MARKETS = {"Y": "KOSPI", "K": "KOSDAQ"}
 RULES = [
     ("B", r"유상증자결정|유무상증자결정", "rights"),
     ("B", r"무상증자결정", "bonus"),
-    ("B", r"회사분할결정", "split"),            # 물적/인적은 상세 API로 판별
+    ("B", r"회사분할결정", "split"),            # 물적 → split, 인적 → merge (상세 API로 판별)
+    ("B", r"회사분할합병결정", "merge"),
     ("B", r"회사합병결정", "merge"),
     ("B", r"주식교환.?이전결정", "exchange"),
+    ("B", r"영업양수결정|영업양도결정", "transfer"),
     ("B", r"신주인수권부사채권발행결정", "bw"),  # 공모/사모는 상세 API로 판별
     ("D", r"공개매수신고서|공개매수결과보고서", "tender"),
     ("I", r"최대주주변경을수반하는주식양수도계약", "merge"),
 ]
-# 상세 API: 판별에 필요한 유형만 조회
-DETAIL = {"split": "cmpDvDecsn", "bw": "bdwtIsDecsn"}
+# 상세 API: 판별에 필요한 보고서만 조회 (보고서명 패턴 → API)
+DETAIL = [
+    (r"회사분할결정", "cmpDvDecsn"),
+    (r"신주인수권부사채권발행결정", "bdwtIsDecsn"),
+    (r"회사합병결정", "cmpMgDecsn"),
+]
+# 주식매수청구권 기본값: 있음 "Y", 없음 "N", 건별 확인 "?"
+APPRAISAL = {"rights": "N", "bonus": "N", "tender": "N", "bw": "N",
+             "split": "Y", "exchange": "Y", "transfer": "Y", "merge": "Y"}
 
 
 def call(path, params, key, retries=3):
@@ -81,23 +93,48 @@ def detail_text(key, api, corp_code, rcept_dt, rcept_no):
     return " ".join(str(v) for r in rows for v in r.values() if isinstance(v, str))
 
 
+def mentions(text, word):
+    """text에 word가 나오되 '아님/해당없음' 같은 부정 표현이 바로 뒤따르지 않으면 True."""
+    for m in re.finditer(word, text or ""):
+        if not re.match(r"[^.\n]{0,20}?(아님|아니|않|해당\s*사항\s*없|해당\s*없|미해당)", text[m.end():]):
+            return True
+    return False
+
+
 def classify(key, item, k):
-    """물적분할·공모 BW만 남기고, 판별 결과를 flags로 돌려준다. None이면 제외."""
-    api = DETAIL.get(k)
-    if not api:
-        return []
-    text = detail_text(key, api, item["corp_code"], item["rcept_dt"], item["rcept_no"])
-    if text is None:
-        return ["상세 확인 필요"]   # 판별 실패 시 놓치지 않도록 남겨 둔다
+    """(이벤트 키, flags, 매수청구권)을 돌려준다. None이면 제외."""
+    nm = item.get("report_nm", "")
+    api = next((a for pat, a in DETAIL if re.search(pat, nm)), None)
+    text = detail_text(key, api, item["corp_code"], item["rcept_dt"], item["rcept_no"]) if api else ""
+    if re.search(r"최대주주변경", nm):
+        return k, ["경영권 양수도"], "N"
     if k == "split":
+        if text is None:
+            return k, ["분할방법 확인 필요"], "?"
         if "물적" in text:
-            return ["물적분할"]
-        return None if "인적" in text else ["분할방법 확인 필요"]
+            return "split", ["물적분할"], "Y"
+        if "인적" in text:
+            return "merge", ["인적분할"], "N"   # 인적분할은 매수청구권 없음 (분할합병은 별도 공시)
+        return k, ["분할방법 확인 필요"], "?"
     if k == "bw":
+        if text is None:
+            return k, ["발행방법 확인 필요"], "N"
         if "사모" in text and "공모" not in text:
             return None
-        return ["공모"] if "공모" in text else ["발행방법 확인 필요"]
-    return []
+        return k, ["공모" if "공모" in text else "발행방법 확인 필요"], "N"
+    if k == "merge":
+        if re.search(r"분할합병", nm):
+            return k, ["분할합병"], "Y"
+        if text is None:
+            return k, ["합병"], "?"
+        if mentions(text, "소규모"):   # 소규모합병: 존속회사 주주는 매수청구권 없음
+            return k, ["합병", "소규모합병"], "N"
+        return k, ["합병", "간이합병"] if mentions(text, "간이") else ["합병"], "Y"
+    if k == "exchange":
+        return k, (["소규모 교환·이전"] if mentions(text, "소규모") else []), "Y"
+    if k == "transfer":
+        return k, ["영업양수" if "양수" in nm else "영업양도"], "Y"
+    return k, [], APPRAISAL.get(k, "N")
 
 
 def telegram(lines):
@@ -126,6 +163,8 @@ def main():
     except FileNotFoundError:
         store = {"events": []}
     seen = {e["rcept_no"]: e for e in store["events"]}
+    for e in seen.values():   # 이전 형식 데이터 보정
+        e.setdefault("appraisal", APPRAISAL.get(e["type"], "?"))
 
     new = []
     for ty in sorted({r[0] for r in RULES}):
@@ -136,9 +175,10 @@ def main():
             k = next((rk for rt, pat, rk in RULES if rt == ty and re.search(pat, nm)), None)
             if not k:
                 continue
-            flags = classify(key, it, k)
-            if flags is None:
+            res = classify(key, it, k)
+            if res is None:
                 continue
+            k, flags, appraisal = res
             ev = {
                 "rcept_no": it["rcept_no"],
                 "rcept_dt": it["rcept_dt"],
@@ -152,6 +192,7 @@ def main():
                 "filer": it.get("flr_nm", ""),
                 "amended": bool(re.search(r"\[기재정정\]|\[첨부정정\]|\[발행조건확정\]", nm)),
                 "flags": flags,
+                "appraisal": appraisal,
                 "url": f"https://dart.fss.or.kr/dsaf001/main.do?rcpNo={it['rcept_no']}",
             }
             seen[ev["rcept_no"]] = ev
@@ -169,7 +210,8 @@ def main():
         json.dump({"updated_at": now.isoformat(timespec="minutes"), "events": events},
                   f, ensure_ascii=False, indent=1)
     print(f"새 공시 {len(new)}건, 보관 {len(events)}건")
-    telegram([f"[{e['market']}] {e['corp_name']} · {e['report_nm']}\n{e['url']}" for e in new])
+    telegram([f"[{e['market']}] {e['corp_name']} · {e['report_nm']}"
+              + (" · 매수청구권" if e["appraisal"] == "Y" else "") + f"\n{e['url']}" for e in new])
 
 
 if __name__ == "__main__":
