@@ -1,6 +1,40 @@
 {
- "updated_at": "2026-10-19T15:38+09:00",
+ "updated_at": "2026-10-19T16:54+09:00",
  "events": [
+  {
+   "rcept_no": "20261019000292",
+   "rcept_dt": "20261019",
+   "first_seen": "2026-10-19T16:54+09:00",
+   "type": "merge",
+   "corp_name": "DH오토넥스",
+   "corp_code": "00126089",
+   "stock_code": "000300",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "DH오토넥스",
+   "amended": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000292"
+  },
+  {
+   "rcept_no": "20261019000262",
+   "rcept_dt": "20261019",
+   "first_seen": "2026-10-19T16:54+09:00",
+   "type": "rights",
+   "corp_name": "모아라이프플러스",
+   "corp_code": "00587925",
+   "stock_code": "142760",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "모아라이프플러스",
+   "amended": true,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000262"
+  },
   {
    "rcept_no": "20261019000213",
    "rcept_dt": "20261019",
