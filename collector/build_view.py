@@ -276,10 +276,32 @@ def rights_trading_period(plain):
     """'신주인수권증서' 근처(뒤 100자 안, 매매·거래·상장이라는 말과 함께)에 나오는 날짜 구간 후보를 모두 모은다.
     어느 후보가 맞는지는 이벤트 일정(배정기준일·청약일)과 비교해 summarize에서 고른다."""
     cands = []
+    def add(c):
+        if c not in cands:
+            cands.append(c)
+    def iso(y, mo, d):
+        y, mo, d = int(y), int(mo), int(d)
+        if y < 100:
+            y += 2000
+        return f"{y:04d}-{mo:02d}-{d:02d}" if 1 <= mo <= 12 and 1 <= d <= 31 else None
     for m in re.finditer(r"신주인수권\s*증서", plain):
         seg = plain[m.end(): m.end() + 100]
+        # (가) 일정표: '2026년 11월 10일 ~2026년 11월 16일 신주인수권증서 상장 거래기간' — 날짜가 앞에 온다
+        before = plain[max(0, m.start() - 60): m.start()]
+        bm = re.search(DATE_RE + r"\s*일?\s*~\s*(?:(20\d{2})\s*[년.\-/]\s*)?(\d{1,2})\s*[월.\-/]\s*(\d{1,2})\s*일?\s*$", before)
+        if bm and re.search(r"매매|거래|상장", seg[:40]):
+            s0 = iso(*bm.group(1, 2, 3))
+            e0 = iso(bm.group(4) or bm.group(1), bm.group(5), bm.group(6))
+            if s0 and e0:
+                add([s0, e0])
         if not re.search(r"매매|거래|상장", seg[:70]):
             continue
+        # (나) 두 자리 연도: '상장일 5거래일 이상 동안 거래(26.09.28~26.10.02)'
+        tm = re.search(r"(\d{2})\.(\d{1,2})\.(\d{1,2})\s*[~∼\-–]\s*(\d{2})\.(\d{1,2})\.(\d{1,2})", seg)
+        if tm:
+            s0, e0 = iso(*tm.group(1, 2, 3)), iso(*tm.group(4, 5, 6))
+            if s0 and e0:
+                add([s0, e0])
         d1 = re.search(DATE_RE, seg)
         if not d1:
             continue
@@ -295,9 +317,8 @@ def rights_trading_period(plain):
                 y2 += 1
             if 1 <= mo2 <= 12 and 1 <= dd2 <= 31:
                 end = f"{y2:04d}-{mo2:02d}-{dd2:02d}"
-        if [start, end] not in cands:
-            cands.append([start, end])
-    return cands[:12]
+        add([start, end])
+    return cands[:16]
 
 
 def tender_from_doc(key, rcept_no):
@@ -538,7 +559,8 @@ def main():
                 c["estk_at"] = now.isoformat(timespec="minutes")
                 estk_n += 1
         # 신고서 원문에서 현재 발행가(1차·2차·확정)를 읽는다. 최신 신고서가 바뀔 때만 원문을 내려받는다.
-        need_rt = not (c.get("doc") or {}).get("rt_v2")   # 매매기간 파서가 바뀐 뒤 아직 안 읽은 문서는 한 번 다시 읽는다
+        # 매매기간 파서가 바뀐 뒤 아직 안 읽은 문서는 한 번 다시 읽는다 (최근 75일 안의 결정만)
+        need_rt = not (c.get("doc") or {}).get("rt_v3") and top["rcept_dt"] >= (now - timedelta(days=75)).strftime("%Y%m%d")
         if top["type"] == "rights" and re.search(r"주주배정|일반공모", method) and (stale or need_rt) and not done:
             doc = latest_offer_doc(key, top["corp_code"], first)
             if doc and ((c.get("doc") or {}).get("rcept_no") != doc["rcept_no"] or need_rt):
@@ -549,7 +571,7 @@ def main():
                         break
                     o = offer_price_from_doc(key, older) or {}
                     got["rt_cands"] = got.get("rt_cands", []) + [c2 for c2 in o.get("rt_cands", []) if c2 not in got.get("rt_cands", [])]
-                c["doc"] = dict(doc, **got, rt_v2=True)
+                c["doc"] = dict(doc, **got, rt_v3=True)
         # 공개매수신고서: 원문에서 가격·기간·결제일 (최신 신고서가 바뀔 때만 다시 읽는다)
         if top["type"] == "tender" and "공개매수신고서" in top["report_nm"]:
             if (c.get("tender") or {}).get("rcept_no") != top["rcept_no"] and c.get("tender_tries", 0) < 3:
