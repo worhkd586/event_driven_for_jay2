@@ -279,6 +279,30 @@ def tender_from_doc(key, rcept_no):
             "settle": settle[0] if settle else None}
 
 
+def appraisal_from_doc(key, rcept_no):
+    """주요사항보고서 원문의 '주식매수청구권에 관한 사항'에서 매수예정가격·청구기간·반대의사 통지기간을 읽는다.
+    (회사분할 결정 API에는 매수청구 항목이 없어 물적분할은 원문에서만 알 수 있다)"""
+    plain = doc_text(key, rcept_no)
+    if not plain:
+        return None
+    seen = {}
+    for m in re.finditer(r"(?:주식\s*)?매수\s*(?:예정\s*)?가격|주식\s*매수\s*청구\s*가격", plain):
+        seg = plain[m.end(): m.end() + 120]
+        p = re.search(r"(\d{1,3}(?:,\d{3})+|\d{4,})\s*원", seg)
+        if p:
+            v = int(p.group(1).replace(",", ""))
+            if v >= 100:
+                seen[v] = seen.get(v, 0) + 1
+    period = dates_after(plain, r"(?:주식\s*)?매수\s*청구\s*(?:권\s*)?(?:의\s*)?(?:행사\s*)?기간", 140)
+    notice = dates_after(plain, r"반대\s*의사\s*(?:의\s*)?(?:서면\s*)?통지\s*(?:접수\s*)?기간", 140)
+    price = max(seen, key=lambda v: seen[v]) if seen else None
+    if price is None and not period:
+        return None
+    return {"rcept_no": rcept_no, "price": price, "candidates": sorted(seen, key=lambda v: -seen[v])[:4],
+            "ap_start": period[0] if period else None, "ap_end": period[1] if len(period) > 1 else None,
+            "notice_start": notice[0] if notice else None, "notice_end": notice[1] if len(notice) > 1 else None}
+
+
 def num(v):
     try:
         return float(str(v).replace(",", ""))
@@ -314,7 +338,7 @@ def fetch_prices(codes):
     return out
 
 
-def summarize(items, det, estk, today, tender=None):
+def summarize(items, det, estk, today, tender=None, apdoc=None):
     top = items[0]
     rcepts = {e["rcept_no"] for e in items}
     first = min(e["rcept_dt"] for e in items)
@@ -347,6 +371,11 @@ def summarize(items, det, estk, today, tender=None):
         pay = to_date(estk.get("payment"))
         if pay:  # 신주 상장일은 공시 항목에 없어 납입일 + 14일로 추정
             sched.append(["신주 상장(추정)", (datetime.strptime(pay, "%Y-%m-%d") + timedelta(days=14)).strftime("%Y-%m-%d"), "est"])
+    if apdoc:   # 원문에서 읽은 매수청구·반대의사 기간 (공시 항목에 같은 일정이 없을 때만)
+        have = {lab for lab, _, _ in sched}
+        for lab, k in (("매수청구 시작", "ap_start"), ("매수청구 종료", "ap_end"), ("반대의사 통지 시작", "notice_start"), ("반대의사 통지 종료", "notice_end")):
+            if apdoc.get(k) and lab not in have:
+                sched.append([lab, apdoc[k], "apd"])
     if tender:
         for lab, k in (("공개매수 시작", "start"), ("공개매수 종료", "end"), ("결제일", "settle")):
             if tender.get(k):
@@ -373,6 +402,12 @@ def summarize(items, det, estk, today, tender=None):
     if estk:
         mx.update({k: estk.get(k) for k in ("plan_price", "last_price", "amount", "count", "subscription", "payment", "underwriters", "versions")})
         mx["method"] = estk.get("method") or mx.get("method")
+    if apdoc and apdoc.get("price") and "appraisal_price" not in mx:
+        mx["appraisal_price"] = f'{apdoc["price"]:,}'
+        mx["appraisal_src"] = "원문"
+        others = [v for v in apdoc.get("candidates", []) if v != apdoc["price"]]
+        if others:
+            mx["appraisal_alt"] = [f"{v:,}" for v in others]
     if tender and tender.get("price"):
         mx["tender_price"] = f'{tender["price"]:,}'
         others = [v for v in tender.get("candidates", []) if v != tender["price"]]
@@ -463,7 +498,29 @@ def main():
                     c["tender"], c["tender_tries"] = t, 0
                 else:
                     c["tender_tries"] = c.get("tender_tries", 0) + 1
-        g = summarize(items, c, c.get("estk"), today, c.get("tender"))
+        # 매수청구권 이벤트인데 API에 매수청구가가 없으면 (물적분할 등) 원문에서 읽는다
+        api_price = ((c.get("row") or {}).get("aprskh_plnprc") or "-").strip()
+        ap_event = top.get("appraisal") in ("Y", "?") and top["type"] in ("split", "merge", "exchange", "transfer")
+        if ap_event and api_price in ("", "-") and (c.get("apdoc") or {}).get("rcept_no") != top["rcept_no"] and c.get("apdoc_tries", 0) < 3:
+            a = None
+            for e in items[:3]:   # 정정 공시에 빠진 항목은 이전 공시에서 채운다
+                r = appraisal_from_doc(key, e["rcept_no"])
+                if not r:
+                    continue
+                if a is None:
+                    a = r
+                else:
+                    for f in ("price", "ap_start", "ap_end", "notice_start", "notice_end"):
+                        if a.get(f) is None and r.get(f) is not None:
+                            a[f] = r[f]
+                if a.get("price") and a.get("ap_end"):
+                    break
+            if a:
+                a["rcept_no"] = top["rcept_no"]
+                c["apdoc"], c["apdoc_tries"] = a, 0
+            else:
+                c["apdoc_tries"] = c.get("apdoc_tries", 0) + 1
+        g = summarize(items, c, c.get("estk"), today, c.get("tender"), c.get("apdoc"))
         if c.get("doc") and c["doc"].get("price"):
             g["mx"]["last_price"] = f'{c["doc"]["price"]:,}'
             g["mx"]["price_final"] = c["doc"]["final"]
