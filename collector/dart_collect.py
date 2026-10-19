@@ -22,7 +22,9 @@ KST = timezone(timedelta(hours=9))
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "data", "dart_events.json")
 KEEP_DAYS = 120          # 이 기간보다 오래된 공시는 파일에서 뺀다
-LOOKBACK_DAYS = 1        # 매 실행마다 오늘 + 직전 N일을 다시 훑는다 (늦게 올라온 공시 대비)
+# 매 실행마다 오늘 + 직전 N일을 다시 훑는다 (늦게 올라온 공시 대비). 과거 채우기는 LOOKBACK_DAYS=90처럼 넘긴다.
+# OpenDART는 회사 지정 없이 최대 3개월까지만 조회되므로 90일로 제한한다.
+LOOKBACK_DAYS = min(int(os.environ.get("LOOKBACK_DAYS") or 1), 90)
 MARKETS = {"Y": "KOSPI", "K": "KOSDAQ"}
 
 # 공시 유형(pblntf_ty)별로 보고서명 패턴 → 이벤트 키
@@ -74,7 +76,10 @@ def list_filings(key, ty, bgn, end):
         if st != "000":
             raise RuntimeError(f"list {ty}: {st} {d.get('message')}")
         out += d.get("list", [])
-        if page >= int(d.get("total_page", 1)):
+        total = int(d.get("total_page", 1))
+        if page % 50 == 0:
+            print(f"  {ty} {page}/{total} 페이지", flush=True)
+        if page >= total:
             break
         page += 1
     return out
@@ -170,8 +175,11 @@ def main():
             migrated = True
 
     new = []
+    print(f"조회 기간 {bgn}~{end}", flush=True)
     for ty in sorted({r[0] for r in RULES}):
-        for it in list_filings(key, ty, bgn, end):
+        rows = list_filings(key, ty, bgn, end)
+        print(f"{ty}: 공시 {len(rows)}건 조회", flush=True)
+        for it in rows:
             if it.get("corp_cls") not in MARKETS or it["rcept_no"] in seen:
                 continue
             nm = it.get("report_nm", "")
@@ -213,6 +221,8 @@ def main():
         json.dump({"updated_at": now.isoformat(timespec="minutes"), "events": events},
                   f, ensure_ascii=False, indent=1)
     print(f"새 공시 {len(new)}건, 보관 {len(events)}건")
+    if LOOKBACK_DAYS > 3:   # 과거 채우기 실행은 알림을 보내지 않는다
+        return
     telegram([f"[{e['market']}] {e['corp_name']} · {e['report_nm']}"
               + (" · 매수청구권" if e["appraisal"] == "Y" else "") + f"\n{e['url']}" for e in new])
 
