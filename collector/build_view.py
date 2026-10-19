@@ -204,9 +204,8 @@ def latest_offer_doc(key, corp_code, first):
     return {"rcept_no": x["rcept_no"], "report_nm": x["report_nm"], "date": ymd(x["rcept_dt"])}
 
 
-def offer_price_from_doc(key, rcept_no):
-    """신고서 원문의 모집조건 표(보통주 수량·액면가·모집가액·모집총액)에서 1주당 모집가액을 읽는다.
-    수량 × 가액 = 총액이 맞는 행만 인정하고, 정정 후 값이 뒤에 오므로 마지막 행을 쓴다."""
+def doc_text(key, rcept_no):
+    """공시 원문(zip 안의 XML)을 태그 없는 한 줄 텍스트로."""
     try:
         time.sleep(0.12)
         with urllib.request.urlopen(f"{API}/document.xml?crtfc_key={key}&rcept_no={rcept_no}", timeout=40) as r:
@@ -223,7 +222,15 @@ def offer_price_from_doc(key, rcept_no):
                 break
             except UnicodeDecodeError:
                 continue
-    plain = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", text))
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", text))
+
+
+def offer_price_from_doc(key, rcept_no):
+    """신고서 원문의 모집조건 표(보통주 수량·액면가·모집가액·모집총액)에서 1주당 모집가액을 읽는다.
+    수량 × 가액 = 총액이 맞는 행만 인정하고, 정정 후 값이 뒤에 오므로 마지막 행을 쓴다."""
+    plain = doc_text(key, rcept_no)
+    if not plain:
+        return None
     hit = None
     for m in re.finditer(r"보통주\s*([\d,]{3,})\s+([\d,]{1,7})\s+([\d,]{1,9})\s+([\d,]{5,})", plain):
         cnt, price, total = (num(m.group(i)) for i in (1, 3, 4))
@@ -233,6 +240,43 @@ def offer_price_from_doc(key, rcept_no):
         return None
     final = bool(re.search(r"(최종|확정)\s*발행가액을?\s*기준으로\s*산정", plain))
     return {"price": hit, "final": final}
+
+
+DATE_RE = r"(20\d{2})\s*[년.\-/]\s*(\d{1,2})\s*[월.\-/]\s*(\d{1,2})"
+
+
+def dates_after(plain, label_re, window):
+    """label 바로 뒤 window 글자 안의 날짜들 (첫 등장 기준)."""
+    m = re.search(label_re, plain)
+    if not m:
+        return []
+    seg = plain[m.end(): m.end() + window]
+    return [f"{int(y):04d}-{int(mo):02d}-{int(d):02d}" for y, mo, d in re.findall(DATE_RE, seg)
+            if 1 <= int(mo) <= 12 and 1 <= int(d) <= 31]
+
+
+def tender_from_doc(key, rcept_no):
+    """공개매수신고서 원문에서 공개매수가격·기간·결제일을 읽는다.
+    가격은 '공개매수가격' 바로 뒤에 나오는 'N원' 중 가장 자주 나온 값을 쓴다 (표·본문 중복 기재를 이용)."""
+    plain = doc_text(key, rcept_no)
+    if not plain:
+        return None
+    seen = {}
+    for m in re.finditer(r"공개매수\s*가격", plain):
+        seg = plain[m.end(): m.end() + 80]
+        p = re.search(r"(\d{1,3}(?:,\d{3})+|\d{4,})\s*원", seg)
+        if p:
+            v = int(p.group(1).replace(",", ""))
+            if v >= 100:
+                seen[v] = seen.get(v, 0) + 1
+    period = dates_after(plain, r"공개매수\s*기간", 120)
+    settle = dates_after(plain, r"결제\s*일", 60)
+    price = max(seen, key=lambda v: seen[v]) if seen else None
+    if price is None and not period:
+        return None
+    return {"rcept_no": rcept_no, "price": price, "candidates": sorted(seen, key=lambda v: -seen[v])[:4],
+            "start": period[0] if period else None, "end": period[1] if len(period) > 1 else None,
+            "settle": settle[0] if settle else None}
 
 
 def num(v):
@@ -270,7 +314,7 @@ def fetch_prices(codes):
     return out
 
 
-def summarize(items, det, estk, today):
+def summarize(items, det, estk, today, tender=None):
     top = items[0]
     rcepts = {e["rcept_no"] for e in items}
     first = min(e["rcept_dt"] for e in items)
@@ -303,6 +347,10 @@ def summarize(items, det, estk, today):
         pay = to_date(estk.get("payment"))
         if pay:  # 신주 상장일은 공시 항목에 없어 납입일 + 14일로 추정
             sched.append(["신주 상장(추정)", (datetime.strptime(pay, "%Y-%m-%d") + timedelta(days=14)).strftime("%Y-%m-%d"), "est"])
+    if tender:
+        for lab, k in (("공개매수 시작", "start"), ("공개매수 종료", "end"), ("결제일", "settle")):
+            if tender.get(k):
+                sched.append([lab, tender[k], "tdr"])
     sched.sort(key=lambda x: x[1])
     g["sched"] = [[a, b] for a, b, _ in sched]
 
@@ -325,6 +373,8 @@ def summarize(items, det, estk, today):
     if estk:
         mx.update({k: estk.get(k) for k in ("plan_price", "last_price", "amount", "count", "subscription", "payment", "underwriters", "versions")})
         mx["method"] = estk.get("method") or mx.get("method")
+    if tender and tender.get("price"):
+        mx["tender_price"] = f'{tender["price"]:,}'
     if row.get("aprskh_plnprc") not in (None, "", "-"):
         mx["appraisal_price"] = row["aprskh_plnprc"]
     for k in ("mg_rt", "extr_rt", "nstk_ascnt_ps_ostk", "inh_prc", "trf_prc", "mgptncmp_cmpnm", "extr_tgcmp_cmpnm",
@@ -387,7 +437,15 @@ def main():
             if doc and (c.get("doc") or {}).get("rcept_no") != doc["rcept_no"]:
                 got = offer_price_from_doc(key, doc["rcept_no"])
                 c["doc"] = dict(doc, **(got or {"price": None, "final": False}))
-        g = summarize(items, c, c.get("estk"), today)
+        # 공개매수신고서: 원문에서 가격·기간·결제일 (최신 신고서가 바뀔 때만 다시 읽는다)
+        if top["type"] == "tender" and "공개매수신고서" in top["report_nm"]:
+            if (c.get("tender") or {}).get("rcept_no") != top["rcept_no"] and c.get("tender_tries", 0) < 3:
+                t = tender_from_doc(key, top["rcept_no"])
+                if t:
+                    c["tender"], c["tender_tries"] = t, 0
+                else:
+                    c["tender_tries"] = c.get("tender_tries", 0) + 1
+        g = summarize(items, c, c.get("estk"), today, c.get("tender"))
         if c.get("doc") and c["doc"].get("price"):
             g["mx"]["last_price"] = f'{c["doc"]["price"]:,}'
             g["mx"]["price_final"] = c["doc"]["final"]
