@@ -877,7 +877,8 @@ table.ev-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wi
   // 유형별 표 열: [제목, 값 함수, 오른쪽 정렬 여부]
   var COLS = {
     rights: [["공시일", function (g) { return ymdDot(g.d); }], ["기업", corpCell], ["방식", methodShort], ["청약", function (g) { return subShort(g.mx && g.mx.subscription); }],
-      ["예정발행가", function (g) { return wonCell(g.mx && g.mx.plan_price); }, 1], ["최근발행가", function (g) { return wonCell(g.mx && g.mx.last_price); }, 1],
+      ["예정발행가", function (g) { var mx = g.mx || {}; return wonCell(mx.price_final ? mx.plan_price : (mx.last_price || mx.plan_price)); }, 1],
+      ["확정발행가", function (g) { var mx = g.mx || {}; return mx.price_final ? wonCell(mx.last_price) : dim(); }, 1],
       ["현재가", priceCell, 1], ["증서이론가", function (g) { var p = px(g), i = issuePrice(g); return p && i ? fmt(p.price - i) : dim(); }, 1],
       ["패리티", function (g) { return signed(rightsParity(g)); }, 1], ["신주 상장", function (g) { return md(schedOf(g, /상장/) || g.end); }], ["표시", tagsCell]],
     bonus: [["공시일", function (g) { return ymdDot(g.d); }], ["기업", corpCell], ["1주당 배정", function (g) { var r = N(g.mx && g.mx.nstk_ascnt_ps_ostk); return r == null ? dim() : trimNum(String(r)) + "주"; }, 1],
@@ -981,7 +982,9 @@ table.ev-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wi
   function metricRows(g) {
     var mx = g.mx || {}, p = px(g), r = [];
     if (g.k === "rights") {
-      r.push(["증자 방식", esc(mx.method || "—")], ["예정 발행가", wonCell(mx.plan_price)], ["최근 발행가", wonCell(mx.last_price) + (mx.versions > 1 ? ' <small class="dim">신고서 ' + mx.versions + "개 버전</small>" : "")],
+      var src = mx.price_doc ? ' <a class="dim" href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=' + esc(mx.price_doc.r) + '" target="_blank" rel="noopener">' + esc(mx.price_doc.nm) + " " + md(mx.price_doc.d) + "</a>" : "";
+      r.push(["증자 방식", esc(mx.method || "—")], ["최초 신고서 발행가 (예정)", wonCell(mx.plan_price)],
+        ["현재 발행가", wonCell(mx.last_price) + " " + (mx.price_final ? '<span class="pos">확정</span>' : '<span class="dim">미확정</span>') + src],
         ["증서 이론가", p && issuePrice(g) ? fmt(p.price - issuePrice(g)) : "—"], ["패리티", signed(rightsParity(g))], ["조달 금액", eok(mx.amount)],
         ["신주 수", mx.count ? esc(mx.count) + "주" : "—"], ["청약", esc(mx.subscription || "—")], ["납입일", esc(mx.payment || "—")],
         ["주관사", esc((mx.underwriters || []).join(", ") || "—")]);

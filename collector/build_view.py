@@ -10,6 +10,7 @@
 환경변수: DART_API_KEY (필수)
 """
 
+import io
 import json
 import os
 import re
@@ -17,6 +18,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
+import zipfile
 from datetime import datetime, timedelta, timezone
 
 API = "https://opendart.fss.or.kr/api"
@@ -165,7 +167,8 @@ def fetch_detail(key, api, corp_code, first, latest, rcepts):
 
 def fetch_estk(key, corp_code, first):
     """증권신고서(지분증권): 최초 신고서의 발행가(예정)와 최신 신고서의 발행가·일정·주관사."""
-    bgn = (datetime.strptime(first, "%Y%m%d") - timedelta(days=60)).strftime("%Y%m%d")
+    # 증권신고서 API는 최초 신고서 접수일로 걸러서, 결정 공시보다 한참 앞에서부터 찾아야 한다
+    bgn = (datetime.strptime(first, "%Y%m%d") - timedelta(days=150)).strftime("%Y%m%d")
     end = datetime.now(KST).strftime("%Y%m%d")
     d = call("estkRs", {"corp_code": corp_code, "bgn_de": bgn, "end_de": end}, key)
     if d.get("status") != "000":
@@ -187,6 +190,49 @@ def fetch_estk(key, corp_code, first):
         "subscription": last_g.get("sbd"), "payment": last_g.get("pymd"), "record": last_g.get("asstd"),
         "allot_notice": last_g.get("asand"), "underwriters": uw,
     }
+
+
+def latest_offer_doc(key, corp_code, first):
+    """가장 최근 증권신고서(지분증권) 접수번호 (발행조건확정·기재정정 포함)."""
+    bgn = (datetime.strptime(first, "%Y%m%d") - timedelta(days=150)).strftime("%Y%m%d")
+    end = datetime.now(KST).strftime("%Y%m%d")
+    d = call("list", {"corp_code": corp_code, "bgn_de": bgn, "end_de": end, "pblntf_ty": "C", "page_count": 100}, key)
+    docs = [x for x in d.get("list", []) if "증권신고서(지분증권)" in x.get("report_nm", "")]
+    if not docs:
+        return None
+    x = max(docs, key=lambda x: x["rcept_no"])
+    return {"rcept_no": x["rcept_no"], "report_nm": x["report_nm"], "date": ymd(x["rcept_dt"])}
+
+
+def offer_price_from_doc(key, rcept_no):
+    """신고서 원문의 모집조건 표(보통주 수량·액면가·모집가액·모집총액)에서 1주당 모집가액을 읽는다.
+    수량 × 가액 = 총액이 맞는 행만 인정하고, 정정 후 값이 뒤에 오므로 마지막 행을 쓴다."""
+    try:
+        time.sleep(0.12)
+        with urllib.request.urlopen(f"{API}/document.xml?crtfc_key={key}&rcept_no={rcept_no}", timeout=40) as r:
+            z = zipfile.ZipFile(io.BytesIO(r.read()))
+    except Exception as e:
+        print(f"document {rcept_no}: {e}", file=sys.stderr)
+        return None
+    text = ""
+    for n in z.namelist():
+        raw = z.read(n)
+        for enc in ("utf-8", "euc-kr", "cp949"):
+            try:
+                text += raw.decode(enc)
+                break
+            except UnicodeDecodeError:
+                continue
+    plain = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", text))
+    hit = None
+    for m in re.finditer(r"보통주\s*([\d,]{3,})\s+([\d,]{1,7})\s+([\d,]{1,9})\s+([\d,]{5,})", plain):
+        cnt, price, total = (num(m.group(i)) for i in (1, 3, 4))
+        if cnt and price and total and abs(cnt * price - total) <= max(1000, total * 0.001):
+            hit = int(price)
+    if hit is None:
+        return None
+    final = bool(re.search(r"(최종|확정)\s*발행가액을?\s*기준으로\s*산정", plain))
+    return {"price": hit, "final": final}
 
 
 def num(v):
@@ -327,15 +373,25 @@ def main():
             fetched += 1
         # 주주배정·일반공모 유상증자는 증권신고서로 발행가·일정을 보강 (진행 중이면 1시간마다 갱신)
         method = ((c.get("row") or {}).get("ic_mthn") or "")
+        stale = not c.get("estk_at") or c.get("estk") is None or \
+            datetime.fromisoformat(c["estk_at"]) < now - timedelta(minutes=ESTK_TTL_MIN)
+        done = c.get("estk_end") and c["estk_end"] < today
         if top["type"] == "rights" and re.search(r"주주배정|일반공모", method):
-            stale = not c.get("estk_at") or \
-                datetime.fromisoformat(c["estk_at"]) < now - timedelta(minutes=ESTK_TTL_MIN)
-            done = c.get("estk_end") and c["estk_end"] < today
             if stale and not done:
                 c["estk"] = fetch_estk(key, top["corp_code"], first)
                 c["estk_at"] = now.isoformat(timespec="minutes")
                 estk_n += 1
+        # 신고서 원문에서 현재 발행가(1차·2차·확정)를 읽는다. 최신 신고서가 바뀔 때만 원문을 내려받는다.
+        if top["type"] == "rights" and re.search(r"주주배정|일반공모", method) and stale and not done:
+            doc = latest_offer_doc(key, top["corp_code"], first)
+            if doc and (c.get("doc") or {}).get("rcept_no") != doc["rcept_no"]:
+                got = offer_price_from_doc(key, doc["rcept_no"])
+                c["doc"] = dict(doc, **(got or {"price": None, "final": False}))
         g = summarize(items, c, c.get("estk"), today)
+        if c.get("doc") and c["doc"].get("price"):
+            g["mx"]["last_price"] = f'{c["doc"]["price"]:,}'
+            g["mx"]["price_final"] = c["doc"]["final"]
+            g["mx"]["price_doc"] = {"r": c["doc"]["rcept_no"], "nm": c["doc"]["report_nm"], "d": c["doc"]["date"]}
         if c.get("estk"):
             c["estk_end"] = g["end"]
         cache[gid] = c
