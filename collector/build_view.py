@@ -242,10 +242,14 @@ def offer_price_from_doc(key, rcept_no):
         if cnt and price and total and abs(cnt * price - total) <= max(1000, total * 0.001):
             hit = int(price)
     final = bool(re.search(r"(최종|확정)\s*발행가액을?\s*기준으로\s*산정", plain)) if hit else False
+    stage = "확정" if final else None
+    if hit and not final:   # 정정사유 머리말: '1차 발행가액 확정에 따른 정정' / '[2차발행가액]'
+        head = plain[:4000]
+        stage = "2차" if re.search(r"2\s*차\s*발행\s*가액", head) else "1차" if re.search(r"1\s*차\s*발행\s*가액", head) else "예정"
     cands = rights_trading_period(plain)
     if hit is None and not cands:
         return None
-    out = {"price": hit, "final": final, "rt_cands": cands, "rt_start": None}
+    out = {"price": hit, "final": final, "stage": stage, "rt_cands": cands, "rt_start": None}
     if not cands:   # 표현 확인용: '신주인수권증서' 주변 날짜가 있는 구간 몇 개
         snips = [plain[max(0, m.start() - 20): m.end() + 90] for m in re.finditer(r"신주인수권\s*증서", plain)]
         out["rt_snip"] = [x for x in snips if re.search(DATE_RE, x)][:4] or snips[:2]
@@ -270,6 +274,17 @@ def period_after(plain, label_re, window=90):
             y2 += 1
         return start, f"{y2:04d}-{mo2:02d}-{d2:02d}"
     return None, None
+
+
+def dates_after(plain, label_re, window):
+    """label 바로 뒤 window 글자 안의 날짜들 (날짜가 붙은 첫 등장 기준)."""
+    for m in re.finditer(label_re, plain):
+        seg = plain[m.end(): m.end() + window]
+        got = [f"{int(y):04d}-{int(mo):02d}-{int(d):02d}" for y, mo, d in re.findall(DATE_RE, seg)
+               if 1 <= int(mo) <= 12 and 1 <= int(d) <= 31]
+        if got:
+            return got
+    return []
 
 
 def rights_trading_period(plain):
@@ -321,12 +336,25 @@ def rights_trading_period(plain):
     return cands[:16]
 
 
+TENDER_V = 2    # 파서가 바뀌면 올려서 기존 캐시를 다시 읽게 한다
+APDOC_V = 2
+OFFER_V = 4
+
+
 def tender_from_doc(key, rcept_no):
     """공개매수신고서 원문에서 공개매수가격·기간·결제일을 읽는다.
-    가격은 '공개매수가격' 바로 뒤에 나오는 'N원' 중 가장 자주 나온 값을 쓴다 (표·본문 중복 기재를 이용)."""
+    가격은 '2. 공개매수의 조건' 표(매수가격 매수예정수량 지급방법 → '보통주 (주당) N원 최대 M주')에서 읽고,
+    없으면 산정근거 첫 문장('공개매수가격인 주당 금 N원'), 그래도 없으면 '공개매수가격' 뒤 금액의 빈도로 정한다.
+    산정근거의 '종가(금 N원)'·'평균주가(금 N원)' 같은 비교 금액은 쓰지 않는다. 정정본은 본문이 뒤에 오므로 마지막 표를 쓴다."""
     plain = doc_text(key, rcept_no)
     if not plain:
         return None
+    exact = None
+    for m in re.finditer(r"매수가격\s*매수예정\s*수량\s*지급\s*방법(.{0,160}?)(\d{1,3}(?:,\d{3})+|\d{3,})\s*원\s*(?:\(?\s*)?최대", plain):
+        exact = int(m.group(2).replace(",", ""))
+    if exact is None:
+        for m in re.finditer(r"(?:공개매수가격(?:인|은|을)?\s*(?:1주당|주당)\s*(?:금\s*)?|주당\s*공개매수가격(?:은|인)?\s*(?:금\s*)?)(\d{1,3}(?:,\d{3})+|\d{3,})\s*원", plain):
+            exact = int(m.group(1).replace(",", ""))
     seen = {}
     for m in re.finditer(r"공개매수\s*가격", plain):
         seg = plain[m.end(): m.end() + 80]
@@ -337,20 +365,33 @@ def tender_from_doc(key, rcept_no):
                 seen[v] = seen.get(v, 0) + 1
     period = dates_after(plain, r"공개매수\s*기간", 120)
     settle = dates_after(plain, r"결제\s*일", 60)
-    price = max(seen, key=lambda v: seen[v]) if seen else None
+    price = exact or (max(seen, key=lambda v: seen[v]) if seen else None)
     if price is None and not period:
         return None
-    return {"rcept_no": rcept_no, "price": price, "candidates": sorted(seen, key=lambda v: -seen[v])[:4],
+    # 조건표에서 읽었으면 확실하다: 다른 후보를 남기지 않는다
+    return {"rcept_no": rcept_no, "price": price, "exact": exact is not None, "v": TENDER_V,
+            "candidates": [] if exact else sorted(seen, key=lambda v: -seen[v])[:4],
             "start": period[0] if period else None, "end": period[1] if len(period) > 1 else None,
             "settle": settle[0] if settle else None}
 
 
-def appraisal_from_doc(key, rcept_no):
+def appraisal_from_doc(key, rcept_no, corp_name=""):
     """주요사항보고서 원문의 '주식매수청구권에 관한 사항'에서 매수예정가격·청구기간·반대의사 통지기간을 읽는다.
     (회사분할 결정 API에는 매수청구 항목이 없어 물적분할은 원문에서만 알 수 있다)"""
     plain = doc_text(key, rcept_no)
     if not plain:
         return None
+    exact = None
+    # (가) 합병 당사회사가 둘이면 '(주)회사명의 보통주식 ... 제시가격 N원'처럼 회사별로 적힌다
+    short = re.sub(r"^\(주\)|\(주\)$|주식회사|㈜|\s", "", corp_name or "")
+    if short:
+        for m in re.finditer(r"(?:\(주\)|㈜|주식회사)?\s*" + re.escape(short) + r"\s*(?:\(주\)|㈜)?\s*의\s*보통주식?(.{0,160}?)제시\s*가격\s*(\d{1,3}(?:,\d{3})+|\d{3,})\s*원", plain):
+            exact = int(m.group(2).replace(",", ""))
+    # (나) 주요사항보고서 표 칸: '매수예정가격 9,900' (원 생략) — 숫자가 바로 붙어 나온다
+    if exact is None:
+        for m in re.finditer(r"매수\s*예정\s*가격\s*(?:\(\s*원\s*\))?\s*:?\s*(\d{1,3}(?:,\d{3})+|\d{3,})(?!\s*[%주])", plain):
+            exact = int(m.group(1).replace(",", ""))
+            break
     seen = {}
     for m in re.finditer(r"(?:주식\s*)?매수\s*(?:예정\s*)?가격|주식\s*매수\s*청구\s*가격", plain):
         seg = plain[m.end(): m.end() + 120]
@@ -361,12 +402,37 @@ def appraisal_from_doc(key, rcept_no):
                 seen[v] = seen.get(v, 0) + 1
     period = dates_after(plain, r"(?:주식\s*)?매수\s*청구\s*(?:권\s*)?(?:의\s*)?(?:행사\s*)?기간", 140)
     notice = dates_after(plain, r"반대\s*의사\s*(?:의\s*)?(?:서면\s*)?통지\s*(?:접수\s*)?기간", 140)
-    price = max(seen, key=lambda v: seen[v]) if seen else None
+    price = exact or (max(seen, key=lambda v: seen[v]) if seen else None)
     if price is None and not period:
         return None
-    return {"rcept_no": rcept_no, "price": price, "candidates": sorted(seen, key=lambda v: -seen[v])[:4],
+    return {"rcept_no": rcept_no, "price": price, "exact": exact is not None, "v": APDOC_V,
+            "terminated": terminated(plain),
+            "candidates": [] if exact else sorted(seen, key=lambda v: -seen[v])[:4],
             "ap_start": period[0] if period else None, "ap_end": period[1] if len(period) > 1 else None,
             "notice_start": notice[0] if notice else None, "notice_end": notice[1] if len(notice) > 1 else None}
+
+
+def terminated(plain):
+    """정정신고 머리(정정사유 표)에 계약 해지·결정 철회가 적혀 있으면 사실상 끝난 이벤트다."""
+    head = plain[:3000].split("귀중")[0]
+    return bool(re.search(r"(?<!소비대차)계약\s*(?:의\s*)?(?:해지|해제)|결정\s*(?:의\s*)?철회|철회\s*결정|진행\s*중단", head))
+
+
+def amend_check(key, rcept_no):
+    """매수청구가가 API에 있는 이벤트도 정정 사유가 해지·철회인지 원문 머리만 본다."""
+    plain = doc_text(key, rcept_no)
+    return None if plain is None else {"rcept_no": rcept_no, "terminated": terminated(plain)}
+
+
+def rights_from_main(key, rcept_no):
+    """유상증자 주요사항보고서 원문: 증자방식과 '6. 신주 발행가액 보통주식 (원) N' (제3자배정은 이사회에서 확정)."""
+    plain = doc_text(key, rcept_no)
+    if not plain:
+        return None
+    m = re.search(r"증자\s*방식\s*([가-힣0-9]+(?:\s*실권주\s*일반공모)?)", plain)
+    p = re.search(r"신주\s*발행가액\s*보통주식\s*\(\s*원\s*\)\s*(\d{1,3}(?:,\d{3})+|\d{2,})", plain)
+    return {"rcept_no": rcept_no, "method": m.group(1) if m else None,
+            "price": int(p.group(1).replace(",", "")) if p else None}
 
 
 def num(v):
@@ -398,10 +464,36 @@ def fetch_prices(codes):
             out[x.get("itemCode")] = {
                 "price": px, "prev": px - chg, "chg": chg,
                 "pct": round(chg / (px - chg) * 100, 2) if px - chg else 0,
-                "mcap": x.get("marketValue") or x.get("marketValueHangeul"),
                 "status": x.get("marketStatus"), "at": (x.get("localTradedAt") or "")[:16],
             }
+    # 시가총액(억 원): 실시간 시세에는 없어 종목별 통합 정보에서 읽는다
+    for code in out:
+        out[code]["mcap"] = market_cap(code)
     return out
+
+
+def eok(text):
+    """'11조 2,505억' / '846억' → 억 원 단위 숫자."""
+    if not text:
+        return None
+    t = str(text).replace(",", "").replace(" ", "")
+    jo = re.search(r"([\d.]+)조", t)
+    ek = re.search(r"([\d.]+)억", t)
+    if not jo and not ek:
+        return None
+    return round(float(jo.group(1)) * 10000 if jo else 0) + round(float(ek.group(1)) if ek else 0)
+
+
+def market_cap(code):
+    try:
+        time.sleep(0.05)
+        req = urllib.request.Request(f"https://m.stock.naver.com/api/stock/{code}/integration", headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            infos = json.load(r).get("totalInfos", [])
+    except Exception as e:
+        print(f"mcap {code}: {e}", file=sys.stderr)
+        return None
+    return next((eok(x.get("value")) for x in infos if x.get("code") == "marketValue"), None)
 
 
 def summarize(items, det, estk, today, tender=None, apdoc=None):
@@ -560,7 +652,7 @@ def main():
                 estk_n += 1
         # 신고서 원문에서 현재 발행가(1차·2차·확정)를 읽는다. 최신 신고서가 바뀔 때만 원문을 내려받는다.
         # 매매기간 파서가 바뀐 뒤 아직 안 읽은 문서는 한 번 다시 읽는다 (최근 75일 안의 결정만)
-        need_rt = not (c.get("doc") or {}).get("rt_v3") and top["rcept_dt"] >= (now - timedelta(days=75)).strftime("%Y%m%d")
+        need_rt = (c.get("doc") or {}).get("v") != OFFER_V and top["rcept_dt"] >= (now - timedelta(days=75)).strftime("%Y%m%d")
         if top["type"] == "rights" and re.search(r"주주배정|일반공모", method) and (stale or need_rt) and not done:
             doc = latest_offer_doc(key, top["corp_code"], first)
             if doc and ((c.get("doc") or {}).get("rcept_no") != doc["rcept_no"] or need_rt):
@@ -571,10 +663,11 @@ def main():
                         break
                     o = offer_price_from_doc(key, older) or {}
                     got["rt_cands"] = got.get("rt_cands", []) + [c2 for c2 in o.get("rt_cands", []) if c2 not in got.get("rt_cands", [])]
-                c["doc"] = dict(doc, **got, rt_v3=True)
+                c["doc"] = dict(doc, **got, v=OFFER_V)
         # 공개매수신고서: 원문에서 가격·기간·결제일 (최신 신고서가 바뀔 때만 다시 읽는다)
         if top["type"] == "tender" and "공개매수신고서" in top["report_nm"]:
-            if (c.get("tender") or {}).get("rcept_no") != top["rcept_no"] and c.get("tender_tries", 0) < 3:
+            t0 = c.get("tender") or {}
+            if (t0.get("rcept_no") != top["rcept_no"] or t0.get("v") != TENDER_V) and c.get("tender_tries", 0) < 3:
                 # 최신 신고서부터 읽고, 정정 신고서에 없는 항목(기간 등)은 이전 신고서에서 채운다 (최대 3건)
                 t = None
                 docs = [e for e in items if "공개매수신고서" in e["report_nm"]][:3]
@@ -588,7 +681,9 @@ def main():
                         for f in ("price", "start", "end", "settle"):
                             if t.get(f) is None and r.get(f) is not None:
                                 t[f] = r[f]
-                    if all(t.get(f) for f in ("price", "start", "end", "settle")):
+                        if not t.get("exact") and r.get("exact"):   # 정정본에 조건표가 없으면 이전 신고서 조건표 값을 쓴다
+                            t.update(price=r["price"], exact=True, candidates=[])
+                    if t.get("exact") and all(t.get(f) for f in ("price", "start", "end", "settle")):
                         break
                 if t:
                     t["rcept_no"] = top["rcept_no"]
@@ -598,10 +693,13 @@ def main():
         # 매수청구권 이벤트인데 API에 매수청구가가 없으면 (물적분할 등) 원문에서 읽는다
         api_price = ((c.get("row") or {}).get("aprskh_plnprc") or "-").strip()
         ap_event = top.get("appraisal") in ("Y", "?") and top["type"] in ("split", "merge", "exchange", "transfer")
-        if ap_event and api_price in ("", "-") and (c.get("apdoc") or {}).get("rcept_no") != top["rcept_no"] and c.get("apdoc_tries", 0) < 3:
+        a0 = c.get("apdoc") or {}
+        if a0.get("v") != APDOC_V and c.get("apdoc_tries", 0) >= 3:
+            c["apdoc_tries"] = 0
+        if ap_event and api_price in ("", "-") and (a0.get("rcept_no") != top["rcept_no"] or a0.get("v") != APDOC_V) and c.get("apdoc_tries", 0) < 3:
             a = None
             for e in items[:3]:   # 정정 공시에 빠진 항목은 이전 공시에서 채운다
-                r = appraisal_from_doc(key, e["rcept_no"])
+                r = appraisal_from_doc(key, e["rcept_no"], top["corp_name"])
                 if not r:
                     continue
                 if a is None:
@@ -610,17 +708,39 @@ def main():
                     for f in ("price", "ap_start", "ap_end", "notice_start", "notice_end"):
                         if a.get(f) is None and r.get(f) is not None:
                             a[f] = r[f]
-                if a.get("price") and a.get("ap_end"):
+                    if not a.get("exact") and r.get("exact"):
+                        a.update(price=r["price"], exact=True, candidates=[])
+                if a.get("exact") and a.get("ap_end"):
                     break
             if a:
                 a["rcept_no"] = top["rcept_no"]
                 c["apdoc"], c["apdoc_tries"] = a, 0
             else:
                 c["apdoc_tries"] = c.get("apdoc_tries", 0) + 1
+        # 매수청구가가 API에 있는 정정공시도 정정 사유가 계약 해지·철회인지 한 번 본다
+        recent = top["rcept_dt"] >= (now - timedelta(days=120)).strftime("%Y%m%d")
+        if ap_event and recent and "정정" in top["report_nm"] and not (c.get("apdoc") or {}).get("rcept_no") == top["rcept_no"] \
+                and (c.get("amend") or {}).get("rcept_no") != top["rcept_no"]:
+            c["amend"] = amend_check(key, top["rcept_no"]) or c.get("amend")
+        # 증권신고서가 없는 유상증자(제3자배정·소액공모)나 상세 API가 빈 건은 주요사항보고서 본문에서 방식·발행가를 읽는다
+        if top["type"] == "rights" and recent and not (c.get("doc") or {}).get("price") \
+                and (c.get("mdoc") or {}).get("rcept_no") != top["rcept_no"]:
+            c["mdoc"] = rights_from_main(key, top["rcept_no"]) or c.get("mdoc")
         g = summarize(items, c, c.get("estk"), today, c.get("tender"), c.get("apdoc"))
+        md = c.get("mdoc") or {}
+        if g["k"] == "rights" and md.get("rcept_no") == top["rcept_no"]:
+            if md.get("method") and not g["mx"].get("method"):
+                g["mx"]["method"] = md["method"]
+            if md.get("price") and not g["mx"].get("last_price") and not g["mx"].get("plan_price"):
+                g["mx"]["board_price"] = f'{md["price"]:,}'
+        term = (c.get("apdoc") or {}).get("terminated") and (c.get("apdoc") or {}).get("rcept_no") == top["rcept_no"] \
+            or (c.get("amend") or {}).get("terminated") and (c.get("amend") or {}).get("rcept_no") == top["rcept_no"]
+        if term and g["status"] == "active":
+            g["end"], g["end_basis"], g["status"] = g["d"], "정정공시: 계약 해지·결정 철회", "past"
         if c.get("doc") and c["doc"].get("price"):
             g["mx"]["last_price"] = f'{c["doc"]["price"]:,}'
             g["mx"]["price_final"] = c["doc"]["final"]
+            g["mx"]["price_stage"] = c["doc"].get("stage") or ("확정" if c["doc"]["final"] else "예정")
             g["mx"]["price_doc"] = {"r": c["doc"]["rcept_no"], "nm": c["doc"]["report_nm"], "d": c["doc"]["date"]}
         if c.get("estk"):
             c["estk_end"] = g["end"]
