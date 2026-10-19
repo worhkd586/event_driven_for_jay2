@@ -1,0 +1,20 @@
+{
+ "updated_at": "2026-10-19T14:14+09:00",
+ "events": [
+  {
+   "rcept_no": "20261019000120",
+   "rcept_dt": "20261019",
+   "first_seen": "2026-10-19T14:14+09:00",
+   "type": "rights",
+   "corp_name": "MSDI",
+   "corp_code": "00615723",
+   "stock_code": "123010",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "MSDI",
+   "amended": true,
+   "flags": [],
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000120"
+  }
+ ]
+}
