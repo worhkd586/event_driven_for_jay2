@@ -1,6 +1,22 @@
 {
- "updated_at": "2026-10-19T17:02+09:00",
+ "updated_at": "2026-10-19T17:14+09:00",
  "events": [
+  {
+   "rcept_no": "20261019000322",
+   "rcept_dt": "20261019",
+   "first_seen": "2026-10-19T17:14+09:00",
+   "type": "rights",
+   "corp_name": "파이온엑스",
+   "corp_code": "00781202",
+   "stock_code": "900100",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "파이온엑스",
+   "amended": true,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000322"
+  },
   {
    "rcept_no": "20261019000292",
    "rcept_dt": "20261019",
