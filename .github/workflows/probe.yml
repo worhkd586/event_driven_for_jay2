@@ -1,0 +1,29 @@
+name: 일회성 API 조사
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 조사
+        env:
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+        run: python probe/dart_probe.py
+      - name: 결과 커밋
+        run: |
+          git add probe/out.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -m "API 조사 결과" || exit 0
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && exit 0; sleep 5; done
+          exit 1
