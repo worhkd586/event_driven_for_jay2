@@ -26,6 +26,7 @@ KEEP_DAYS = 120          # 이 기간보다 오래된 공시는 파일에서 뺀
 # OpenDART는 회사 지정 없이 최대 3개월까지만 조회되므로 90일로 제한한다.
 LOOKBACK_DAYS = min(int(os.environ.get("LOOKBACK_DAYS") or 1), 90)
 MARKETS = {"Y": "KOSPI", "K": "KOSDAQ"}
+RECHECK = 150            # 실행당 미판별 공시 재확인 최대 건수
 
 # 공시 유형(pblntf_ty)별로 보고서명 패턴 → 이벤트 키
 RULES = [
@@ -88,13 +89,18 @@ def list_filings(key, ty, bgn, end):
 def detail_text(key, api, corp_code, rcept_dt, rcept_no):
     """상세 API에서 해당 접수번호 행의 문자열 값을 모두 이어 붙여 돌려준다 (필드명 변화에 덜 민감)."""
     try:
-        d = call(api, {"corp_code": corp_code, "bgn_de": rcept_dt, "end_de": rcept_dt}, key)
+        # 정정공시는 원 결정일이 더 이전이므로 접수일 기준 90일 전까지 넓혀 찾는다
+        bgn = (datetime.strptime(rcept_dt, "%Y%m%d") - timedelta(days=90)).strftime("%Y%m%d")
+        d = call(api, {"corp_code": corp_code, "bgn_de": bgn, "end_de": rcept_dt}, key)
     except Exception as e:
         print(f"detail {api} {rcept_no}: {e}", file=sys.stderr)
         return None
     if d.get("status") != "000":
         return None
-    rows = [r for r in d.get("list", []) if r.get("rcept_no") == rcept_no] or d.get("list", [])
+    allrows = d.get("list", [])
+    # 같은 접수번호가 있으면 그 행, 없으면 가장 최근 결정 한 건
+    rows = [r for r in allrows if r.get("rcept_no") == rcept_no] or \
+        sorted(allrows, key=lambda r: r.get("rcept_no", ""))[-1:]
     return " ".join(str(v) for r in rows for v in r.values() if isinstance(v, str))
 
 
@@ -112,7 +118,7 @@ def classify(key, item, k):
     api = next((a for pat, a in DETAIL if re.search(pat, nm)), None)
     text = detail_text(key, api, item["corp_code"], item["rcept_dt"], item["rcept_no"]) if api else ""
     if re.search(r"최대주주변경", nm):
-        return k, ["경영권 양수도"], "N"
+        return k, ["경영권 양수도"] + (["계약 해제·취소"] if re.search(r"해제|취소", nm) else []), "N"
     if k == "split":
         if text is None:
             return k, ["분할방법 확인 필요"], "?"
@@ -173,6 +179,29 @@ def main():
         if "appraisal" not in e:
             e["appraisal"] = APPRAISAL.get(e["type"], "?")
             migrated = True
+
+    # 판별이 안 된 기존 공시를 다시 확인한다 (한 번에 최대 RECHECK건)
+    rechecked = 0
+    for e in list(seen.values()):
+        if rechecked >= RECHECK:
+            break
+        stale_cancel = "최대주주변경" in e["report_nm"] and re.search(r"해제|취소", e["report_nm"]) \
+            and "계약 해제·취소" not in e["flags"]
+        if e["appraisal"] != "?" and not any("확인 필요" in f for f in e["flags"]) and not stale_cancel:
+            continue
+        rechecked += 1
+        nm = e["report_nm"]
+        base = "split" if "회사분할결정" in nm else "bw" if "신주인수권부" in nm else e["type"]
+        res = classify(key, e, base)
+        if res is None:
+            del seen[e["rcept_no"]]
+            migrated = True
+            continue
+        if list(res) != [e["type"], e["flags"], e["appraisal"]]:
+            e.update(type=res[0], flags=res[1], appraisal=res[2])
+            migrated = True
+    if rechecked:
+        print(f"미판별 재확인 {rechecked}건", flush=True)
 
     new = []
     print(f"조회 기간 {bgn}~{end}", flush=True)
