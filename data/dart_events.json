@@ -1,6 +1,43 @@
 {
- "updated_at": "2026-10-19T14:55+09:00",
+ "updated_at": "2026-10-19T15:38+09:00",
  "events": [
+  {
+   "rcept_no": "20261019000213",
+   "rcept_dt": "20261019",
+   "first_seen": "2026-10-19T15:38+09:00",
+   "type": "bw",
+   "corp_name": "한울소재과학",
+   "corp_code": "00560122",
+   "stock_code": "091440",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(신주인수권부사채권발행결정)",
+   "filer": "한울소재과학",
+   "amended": true,
+   "flags": [
+    "발행방법 확인 필요"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000213"
+  },
+  {
+   "rcept_no": "20261019000206",
+   "rcept_dt": "20261019",
+   "first_seen": "2026-10-19T15:38+09:00",
+   "type": "merge",
+   "corp_name": "대원",
+   "corp_code": "00111838",
+   "stock_code": "007680",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
+   "filer": "대원",
+   "amended": true,
+   "flags": [
+    "합병",
+    "소규모합병"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000206"
+  },
   {
    "rcept_no": "20261019000120",
    "rcept_dt": "20261019",
