@@ -243,7 +243,11 @@ def offer_price_from_doc(key, rcept_no):
     rt_start, rt_end = rights_trading_period(plain)
     if hit is None and not rt_start:
         return None
-    return {"price": hit, "final": final, "rt_start": rt_start, "rt_end": rt_end}
+    out = {"price": hit, "final": final, "rt_start": rt_start, "rt_end": rt_end}
+    if not rt_start:   # 표현 확인용: '신주인수권증서' 주변 날짜가 있는 구간 몇 개
+        snips = [plain[max(0, m.start() - 20): m.end() + 90] for m in re.finditer(r"신주인수권\s*증서", plain)]
+        out["rt_snip"] = [x for x in snips if re.search(DATE_RE, x)][:4] or snips[:2]
+    return out
 
 
 def period_after(plain, label_re, window=90):
@@ -507,7 +511,8 @@ def main():
                 c["estk_at"] = now.isoformat(timespec="minutes")
                 estk_n += 1
         # 신고서 원문에서 현재 발행가(1차·2차·확정)를 읽는다. 최신 신고서가 바뀔 때만 원문을 내려받는다.
-        if top["type"] == "rights" and re.search(r"주주배정|일반공모", method) and stale and not done:
+        need_rt = "rt_start" not in (c.get("doc") or {})   # 매매기간 파싱 이전에 읽은 문서는 한 번 다시 읽는다
+        if top["type"] == "rights" and re.search(r"주주배정|일반공모", method) and (stale or need_rt) and not done:
             doc = latest_offer_doc(key, top["corp_code"], first)
             if doc and ((c.get("doc") or {}).get("rcept_no") != doc["rcept_no"] or "rt_start" not in (c.get("doc") or {})):
                 got = offer_price_from_doc(key, doc["rcept_no"])
