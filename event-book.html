@@ -42,7 +42,7 @@ a { color: inherit; }
 .side { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; height: 100vh; display: flex; flex-direction: column; gap: 6px; overflow-y: auto;
   background: #0c1016; border-right: 1px solid var(--line); padding: 16px 12px; padding-left: max(12px, env(safe-area-inset-left, 0px)); }
 .side .brand { margin: 0 0 14px; padding: 0 6px 14px; border-bottom: 1px solid var(--line); }
-.side .brand span { display: block; margin: 0; }
+.side .brand > div > span { display: block; margin: 0; }
 .nav-label { font-size: 11px; letter-spacing: 0.12em; color: var(--faint); font-weight: 600; padding: 12px 10px 4px; }
 .nav-btn { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; border: 1px solid transparent; background: transparent; padding: 9px 10px; border-radius: 9px; cursor: pointer; font-weight: 600; font-size: 13.5px; }
 .nav-btn::before { content: ""; width: 9px; height: 9px; border-radius: 3px; background: var(--cc, var(--muted)); flex: none; }
@@ -181,7 +181,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
 .track i.done { background: var(--cc, var(--accent)); border-color: var(--cc, var(--accent)); }
 .track .now { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--fg); border-radius: 1px; }
 .empty { padding: 28px 16px; text-align: center; color: var(--muted); }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); padding: 0 2px; }
+.legend { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); padding: 0 2px; }
 .legend b { font-family: var(--font-mono); font-weight: 500; }
 .legend .nx { color: var(--accent); } .legend .es { color: var(--warn); }
 
@@ -312,7 +312,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   function gm(g) { return find(g, /주총|주주총회/); }
   function apEnd(g) {   // 매수청구 마감: 공시에 있으면 그대로, 없으면 주총 + 20일 (상법)
     var x = find(g, /매수청구 종료/); if (x) return x;
-    var m = gm(g); return g.ap === "Y" && m ? { d: addDays(m.d, 20), est: true } : null;
+    var m = gm(g); return hasAp(g) && m ? { d: addDays(m.d, 20), est: true } : null;
   }
   function exRight(g) { var b = find(g, /배정기준일/); return b ? { d: bizBack(b.d, 1), est: true } : null; }
   function priceFix(g) { var s = find(g, /청약 시작/); return s && !(g.mx && g.mx.price_final) ? { d: bizBack(s.d, 3), est: true } : null; }
@@ -388,12 +388,13 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   };
 
   // ---- 필터 ----
+  function hasAp(g) { return g.ap === "Y" || (g.ap === "?" && N((g.mx || {}).appraisal_price) != null); }
   function base(view) {
     view = view || state.view;
     return DATA.groups.filter(function (g) {
       if (g.status !== view) return false;
       if (g.k === "rights" && !state.third && methodShort(g) === "제3자배정") return false;
-      if (g.k === "merge" && g.ap === "N") return false;   // 인수합병은 매수청구권이 있는 건만
+      if (g.k === "merge" && !hasAp(g)) return false;   // 인수합병은 매수청구권이 있는 건만 (판별 미확정은 매수청구가가 있을 때만)
       if (state.q) { var q = state.q.toLowerCase(); if ((g.n + " " + (g.s || "")).toLowerCase().indexOf(q) < 0) return false; }
       return true;
     });
@@ -471,7 +472,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   function corpCell(g) {
     var tags = "";
     if (g.k === "rights" && methodShort(g)) tags += '<span class="tg">' + methodShort(g) + "</span>";
-    if (g.ap === "Y") tags += '<span class="tg ap">매수청구</span>';
+    if (hasAp(g)) tags += '<span class="tg ap">매수청구</span>';
     if (g.k === "merge") { var f = (g.f || []).filter(function (x) { return !/확인 필요|^합병$/.test(x); }).join(" · "); if (f) tags += '<span class="tg">' + esc(f) + "</span>"; }
     if (g.amends) tags += '<span class="tg">정정 ' + g.amends + "</span>";
     return '<div class="corp"><b>' + esc(g.n) + "</b>" + tags + "<small>" + esc(g.m) + " " + esc(g.s || "") + " · 최초 공시 " + md(g.d0) + "</small></div>";
