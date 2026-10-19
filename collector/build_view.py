@@ -204,6 +204,9 @@ def latest_offer_doc(key, corp_code, first):
     return {"rcept_no": x["rcept_no"], "report_nm": x["report_nm"], "date": ymd(x["rcept_dt"])}
 
 
+DATE_RE = r"(20\d{2})\s*[년.\-/]\s*(\d{1,2})\s*[월.\-/]\s*(\d{1,2})"
+
+
 def doc_text(key, rcept_no):
     """공시 원문(zip 안의 XML)을 태그 없는 한 줄 텍스트로."""
     try:
@@ -236,13 +239,40 @@ def offer_price_from_doc(key, rcept_no):
         cnt, price, total = (num(m.group(i)) for i in (1, 3, 4))
         if cnt and price and total and abs(cnt * price - total) <= max(1000, total * 0.001):
             hit = int(price)
-    if hit is None:
+    final = bool(re.search(r"(최종|확정)\s*발행가액을?\s*기준으로\s*산정", plain)) if hit else False
+    rt_start, rt_end = rights_trading_period(plain)
+    if hit is None and not rt_start:
         return None
-    final = bool(re.search(r"(최종|확정)\s*발행가액을?\s*기준으로\s*산정", plain))
-    return {"price": hit, "final": final}
+    return {"price": hit, "final": final, "rt_start": rt_start, "rt_end": rt_end}
 
 
-DATE_RE = r"(20\d{2})\s*[년.\-/]\s*(\d{1,2})\s*[월.\-/]\s*(\d{1,2})"
+def period_after(plain, label_re, window=90):
+    """label 뒤 '날짜 ~ 날짜' (끝 날짜에 연도가 없어도 됨). 날짜가 붙은 첫 등장을 쓴다."""
+    for m in re.finditer(label_re, plain):
+        seg = plain[m.end(): m.end() + window]
+        d1 = re.search(DATE_RE, seg)
+        if not d1:
+            continue
+        y, mo, d = (int(x) for x in d1.groups())
+        start = f"{y:04d}-{mo:02d}-{d:02d}"
+        m2 = re.match(r"\s*일?\s*(?:\([^)]{0,6}\))?\s*(?:부터)?\s*[~∼\-–]\s*(?:(20\d{2})\s*[년.\-/]\s*)?(\d{1,2})\s*[월.\-/]\s*(\d{1,2})", seg[d1.end(): d1.end() + 40])
+        if not m2:
+            return start, None
+        y2 = int(m2.group(1)) if m2.group(1) else y
+        mo2, d2 = int(m2.group(2)), int(m2.group(3))
+        if not m2.group(1) and mo2 < mo:   # 12월 → 1월로 넘어가는 경우
+            y2 += 1
+        return start, f"{y2:04d}-{mo2:02d}-{d2:02d}"
+    return None, None
+
+
+def rights_trading_period(plain):
+    """신주인수권증서 매매(거래) 기간. 없으면 상장일(시작)만이라도 찾는다."""
+    s, e = period_after(plain, r"신주인수권증서\s*(?:의\s*)?(?:상장\s*(?:및|후)?\s*)?(?:매매|거래)\s*(?:기간|예정\s*기간|개시)?")
+    if s:
+        return s, e
+    s, e = period_after(plain, r"신주인수권증서\s*(?:의\s*)?상장\s*(?:예정\s*)?(?:일|기간)", 60)
+    return s, e
 
 
 def dates_after(plain, label_re, window):
@@ -378,6 +408,11 @@ def summarize(items, det, estk, today, tender=None, apdoc=None):
         for lab, k in (("매수청구 시작", "ap_start"), ("매수청구 종료", "ap_end"), ("반대의사 통지 시작", "notice_start"), ("반대의사 통지 종료", "notice_end")):
             if apdoc.get(k) and lab not in have:
                 sched.append([lab, apdoc[k], "apd"])
+    doc = (det or {}).get("doc") or {}
+    if doc.get("rt_start"):   # 신고서 원문에서 읽은 신주인수권증서 매매기간
+        sched.append(["신주인수권증서 매매 시작", doc["rt_start"], "doc"])
+        if doc.get("rt_end"):
+            sched.append(["신주인수권증서 매매 종료", doc["rt_end"], "doc"])
     if tender:
         for lab, k in (("공개매수 시작", "start"), ("공개매수 종료", "end"), ("결제일", "settle")):
             if tender.get(k):
@@ -474,7 +509,7 @@ def main():
         # 신고서 원문에서 현재 발행가(1차·2차·확정)를 읽는다. 최신 신고서가 바뀔 때만 원문을 내려받는다.
         if top["type"] == "rights" and re.search(r"주주배정|일반공모", method) and stale and not done:
             doc = latest_offer_doc(key, top["corp_code"], first)
-            if doc and (c.get("doc") or {}).get("rcept_no") != doc["rcept_no"]:
+            if doc and ((c.get("doc") or {}).get("rcept_no") != doc["rcept_no"] or "rt_start" not in (c.get("doc") or {})):
                 got = offer_price_from_doc(key, doc["rcept_no"])
                 c["doc"] = dict(doc, **(got or {"price": None, "final": False}))
         # 공개매수신고서: 원문에서 가격·기간·결제일 (최신 신고서가 바뀔 때만 다시 읽는다)
