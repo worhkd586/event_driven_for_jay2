@@ -516,7 +516,7 @@ def main():
             doc = latest_offer_doc(key, top["corp_code"], first)
             if doc and ((c.get("doc") or {}).get("rcept_no") != doc["rcept_no"] or "rt_start" not in (c.get("doc") or {})):
                 got = offer_price_from_doc(key, doc["rcept_no"])
-                c["doc"] = dict(doc, **(got or {"price": None, "final": False}))
+                c["doc"] = dict(doc, **(got or {"price": None, "final": False, "rt_start": None, "rt_end": None}))
         # 공개매수신고서: 원문에서 가격·기간·결제일 (최신 신고서가 바뀔 때만 다시 읽는다)
         if top["type"] == "tender" and "공개매수신고서" in top["report_nm"]:
             if (c.get("tender") or {}).get("rcept_no") != top["rcept_no"] and c.get("tender_tries", 0) < 3:
