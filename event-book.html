@@ -389,7 +389,9 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
 
   // ---- 필터 ----
   function apCell(g) {
-    var mx = g.mx || {};
+    var mx = g.mx || {}, gap = apGap(g);
+    // 원문에서 읽은 값이 현재가와 50% 넘게 벌어지면 상대회사 가격을 읽었을 수 있다
+    if (mx.appraisal_src && gap != null && Math.abs(gap) > 50) return won(mx.appraisal_price) + ' <small style="color:var(--warn)" title="원문에서 읽은 값이 현재가와 50% 이상 차이 납니다. 상대회사 매수가격일 수 있으니 원문을 확인하세요.">확인</small>';
     return won(mx.appraisal_price) + (mx.appraisal_alt ? ' <small style="color:var(--warn)" title="원문에 다른 금액도 있음: ' + esc(mx.appraisal_alt.join(", ")) + '">확인</small>' :
       mx.appraisal_src ? ' <small class="dim" title="DART 항목에 없어 공시 원문에서 읽은 값">원문</small>' : "");
   }
