@@ -4,27 +4,17 @@ from datetime import datetime, timedelta
 
 KEY = os.environ["DART_API_KEY"]
 SAMPLES = [  # (api, corp_code, rcept_dt)
-    ("piicDecsn", "00615723", "20261019"),    # 유상증자 MSDI
-    ("fricDecsn", "00605124", "20261007"),    # 무상증자 알파칩스
-    ("cmpMgDecsn", "00111838", "20261016"),   # 합병 대원
-    ("cmpDvDecsn", "00106119", "20261012"),   # 물적분할 금양
-    ("cmpDvDecsn", "00258801", "20260821"),   # 인적분할 카카오
-    ("stkExtrDecsn", "01042429", "20260930"), # 주식교환 넥써쓰
-    ("bsnInhDecsn", "01014055", "20261016"),  # 영업양수 에스트래픽
-    ("bsnTrfDecsn", "01116502", "20260916"),  # 영업양도 아티스트컴퍼니
-    ("bdwtIsDecsn", "00132868", "20261016"),  # BW 우성머티리얼스
-    ("cmpDvmgDecsn", "00106119", "20261012"), # 분할합병 (없을 수 있음)
-    ("estkRs", "00615723", "20261019"),       # 증권신고서(지분증권) MSDI
-    ("mgRs", "00111838", "20261016"),         # 증권신고서(합병)
-    ("extrRs", "01042429", "20260930"),       # 증권신고서(교환·이전)
-    ("dvRs", "00258801", "20260821"),         # 증권신고서(분할)
-    ("bdRs", "00132868", "20261016"),         # 증권신고서(채무증권)
+    ("piicDecsn", "01160363", "20261013"),    # 유상증자 에코프로비엠 (주주배정)
+    ("estkRs", "01160363", "20261013"),       # 증권신고서(지분증권) 에코프로비엠
+    ("estkRs", "01344202", "20261015"),       # 증권신고서(지분증권) 뷰노
+    ("piicDecsn", "01344202", "20261015"),    # 유상증자 뷰노
+    ("bdwtIsDecsn", "00317210", "20261013"),  # BW 성호전자
+    ("bdRs", "00317210", "20261013"),         # 증권신고서(채무증권) 성호전자
+    ("bdwtIsDecsn", "00131504", "20260811"),  # BW 서한
 ]
 PRICE = [
-    "https://m.stock.naver.com/api/stock/123010/basic",
-    "https://m.stock.naver.com/api/stock/123010/integration",
-    "https://fchart.stock.naver.com/sise.nhn?symbol=123010&timeframe=day&count=3&requestType=0",
-    "https://polling.finance.naver.com/api/realtime/domestic/stock/123010",
+    "https://polling.finance.naver.com/api/realtime/domestic/stock/247540,338220,115180",
+    "https://m.stock.naver.com/api/stock/247540/integration",
 ]
 
 def get(url):
@@ -39,7 +29,7 @@ for api, cc, dt in SAMPLES:
     try:
         d = json.loads(get(f"https://opendart.fss.or.kr/api/{api}.json?{q}"))
         if isinstance(d.get("list"), list):
-            d["list"] = d["list"][-2:]
+            d["list"] = d["list"][-3:]
         if isinstance(d.get("group"), list):
             for g in d["group"]:
                 if isinstance(g.get("list"), list):
