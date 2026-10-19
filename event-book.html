@@ -82,6 +82,36 @@ a { color: inherit; }
 .sec-head h2 { margin: 0; font-size: 15px; font-weight: 700; }
 .sec-head p { margin: 0; font-size: 12px; color: var(--muted); }
 
+/* latest feed (최신 이벤트 탭) */
+.nav-btn.new::before { width: 10px; height: 10px; border-radius: 50%; background: var(--pos); box-shadow: 0 0 0 3px rgba(60, 199, 127, 0.18); }
+.feed { display: grid; gap: 12px; }
+.feed-day { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); overflow: hidden; }
+.feed-h { display: flex; align-items: baseline; gap: 10px; padding: 9px 14px; background: var(--sunken); border-bottom: 1px solid var(--line); }
+.feed-h b { font-family: var(--font-mono); font-size: 15px; }
+.feed-h span { font-size: 12px; color: var(--muted); }
+.feed-h em { margin-left: auto; font-style: normal; font-size: 12px; color: var(--muted); }
+.feed-row { display: grid; grid-template-columns: 52px 4px minmax(110px, 0.9fr) 104px minmax(0, 2fr) auto; gap: 12px; align-items: center; width: 100%; text-align: left;
+  border: 0; border-top: 1px solid var(--line); background: transparent; padding: 9px 14px; cursor: pointer; font-size: 13px; }
+.feed-row:first-of-type { border-top: 0; }
+.feed-row:hover { background: var(--sunken); }
+.feed-row .tm { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.feed-row i { align-self: stretch; border-radius: 2px; background: var(--cc, var(--muted)); }
+.feed-row b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.feed-row .cat { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.feed-row .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.feed-row .tags { display: flex; gap: 4px; justify-content: flex-end; white-space: nowrap; }
+.badge { font-size: 10.5px; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
+.badge.new { color: var(--pos); border-color: rgba(60, 199, 127, 0.5); }
+.badge.amd { color: var(--warn); border-color: rgba(232, 176, 74, 0.45); }
+.badge.ap { color: var(--accent); border-color: rgba(61, 181, 230, 0.45); }
+.feed-tools { display: inline-flex; gap: 10px; align-items: center; font-size: 13px; color: var(--muted); }
+.feed-tools label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; white-space: nowrap; }
+@media (max-width: 720px) {
+  .feed-row { grid-template-columns: 4px minmax(0, 1fr) auto; grid-template-areas: "bar corp tags" "bar nm nm"; row-gap: 2px; }
+  .feed-row i { grid-area: bar; } .feed-row b { grid-area: corp; } .feed-row .nm { grid-area: nm; font-size: 12px; color: var(--muted); } .feed-row .tags { grid-area: tags; }
+  .feed-row .tm, .feed-row .cat { display: none; }
+}
+
 /* calendar (이벤트 일정 탭) */
 .calnav { display: inline-flex; align-items: center; gap: 6px; }
 .calnav button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 5px 10px; cursor: pointer; font-weight: 600; font-size: 13px; }
@@ -315,6 +345,13 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
           <button type="button" data-nav="1" aria-label="다음">›</button>
           <button type="button" data-nav="0">오늘</button>
         </div>
+        <div class="range" id="lrange" role="group" aria-label="기간">
+          <button type="button" data-ld="1">오늘</button>
+          <button type="button" data-ld="3">3일</button>
+          <button type="button" data-ld="7" aria-pressed="true">1주</button>
+          <button type="button" data-ld="14">2주</button>
+        </div>
+        <div class="feed-tools" id="ltools"><label for="f-noamd"><input type="checkbox" id="f-noamd"> 정정공시 제외</label></div>
         <div class="tools">
           <input type="search" id="q" placeholder="기업명·종목코드 검색" aria-label="기업 검색">
           <label for="f-3rd"><input type="checkbox" id="f-3rd"> 제3자배정 포함</label>
@@ -357,7 +394,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
 
   var NAMES = { rights: "유상증자", bonus: "무상증자", tender: "공개매수", split: "물적분할", merge: "인수합병", exchange: "주식교환·이전", transfer: "영업양수도", bw: "BW 발행(공모)" };
   var ORDER = ["rights", "merge", "exchange", "split", "transfer", "bonus", "tender", "bw"];
-  var state = { view: "active", tab: "agenda", cal: "week", anchor: null, q: "", third: false, sel: null, histOpen: false };
+  var state = { view: "active", tab: "latest", ldays: 7, noAmd: false, cal: "week", anchor: null, q: "", third: false, sel: null, histOpen: false };
   var DATA = { status: "loading", groups: [], prices: {}, updated: null, eventsUpdated: null };
 
   // ---- 일정 계산 ----
@@ -459,7 +496,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
       return true;
     });
   }
-  function visible() { var b = base(); return state.tab === "agenda" ? b : b.filter(function (g) { return g.k === state.tab; }); }
+  function visible() { var b = base(); return state.tab === "agenda" || state.tab === "latest" ? b : b.filter(function (g) { return g.k === state.tab; }); }
 
   // ---- 그리기 ----
   var DESC = {
@@ -474,7 +511,10 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     b.forEach(function (g) { cnt[g.k] = (cnt[g.k] || 0) + 1; });
     var upcoming = 0, t = todayKey(), end = addDays(t, 13);
     base("active").forEach(function (g) { timeline(g).forEach(function (x) { if (x.d >= t && x.d <= end && !/이사회|계약/.test(x.label)) upcoming++; }); });
-    var h = '<button type="button" class="nav-btn cal" data-tab="agenda"' + (state.tab === "agenda" ? ' aria-current="page"' : "") + "><span>이벤트 일정</span><small>" + (DATA.status === "ok" ? upcoming : "") + "</small></button>";
+    var fresh = 0, y = addDays(todayKey(), -1);
+    base("active").concat(base("past")).forEach(function (g) { g.items.forEach(function (e) { if (e.d >= y) fresh++; }); });
+    var h = '<button type="button" class="nav-btn new" data-tab="latest"' + (state.tab === "latest" ? ' aria-current="page"' : "") + "><span>최신 이벤트</span><small>" + (DATA.status === "ok" ? fresh : "") + "</small></button>";
+    h += '<button type="button" class="nav-btn cal" data-tab="agenda"' + (state.tab === "agenda" ? ' aria-current="page"' : "") + "><span>이벤트 일정</span><small>" + (DATA.status === "ok" ? upcoming : "") + "</small></button>";
     h += '<div class="nav-label">분류 · ' + (state.view === "active" ? "진행 중" : "지난 이벤트") + "</div>";
     ORDER.forEach(function (k) {
       h += '<button type="button" class="nav-btn' + (cnt[k] ? "" : " zero") + '" data-tab="' + k + '" style="--cc:var(--c-' + k + ')"' + (state.tab === k ? ' aria-current="page"' : "") + "><span>" + NAMES[k] + "</span><small>" + (DATA.status === "ok" ? (cnt[k] || 0) : "") + "</small></button>";
@@ -482,11 +522,46 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     $("nav").innerHTML = h;
   }
   function renderHeader() {
+    var lt = state.tab === "latest";
+    if (lt) {
+      $("title").innerHTML = "최신 이벤트 <small>새로 접수된 공시 · 최신순</small>";
+      $("seg").hidden = true; $("range").hidden = true; $("calnav").hidden = true; $("lrange").hidden = false; $("ltools").hidden = false;
+      $("legend").innerHTML = '<span><span class="badge new">신규</span> 원공시</span><span><span class="badge amd">정정</span> 정정·첨부정정 공시</span><span>시각은 수집기가 처음 잡은 시각 (최대 1시간 지연)</span><span>줄을 누르면 상세</span>';
+      return;
+    }
+    $("lrange").hidden = true; $("ltools").hidden = true;
     var ag = state.tab === "agenda";
     $("title").innerHTML = ag ? "이벤트 일정 <small>마일스톤 캘린더 · 지난 일정 포함</small>" : esc(NAMES[state.tab]) + " <small>" + esc(DESC[state.tab]) + "</small>";
     $("seg").hidden = ag; $("range").hidden = !ag; $("calnav").hidden = !ag;
     $("legend").innerHTML = (ag ? "" : '<span><b class="nx">10.24 · D-5</b> 다음 일정</span>') + '<span><b class="es">≈</b> 영업일 기준 추정일 (공휴일 미반영)</span>' +
       (ag ? '<span class="cal-key">' + ORDER.map(function (k) { return '<span style="--cc:var(--c-' + k + ')">' + NAMES[k] + "</span>"; }).join("") + "</span><span>흐린 칸은 지난 일정 · 칸을 누르면 상세</span>" : '<span><b class="faint">10.02</b> 지난 일정</span><span>행 정렬: 다음 일정이 가까운 순 · 행을 누르면 전체 일정과 상세</span>');
+  }
+  // ---- 최신 이벤트 ----
+  function renderLatest() {
+    var el = $("content"), t = todayKey(), from = addDays(t, -(state.ldays - 1)), rows = [];
+    base("active").concat(base("past")).forEach(function (g) {
+      g.items.forEach(function (e, i) {
+        if (e.d < from) return;
+        var amd = e.x != null ? e.x : /^\s*\[/.test(e.nm);
+        if (state.noAmd && amd) return;
+        rows.push({ g: g, e: e, amd: amd });
+      });
+    });
+    rows.sort(function (a, b) { return a.e.r < b.e.r ? 1 : -1; });   // 접수번호 = 접수 순서
+    if (!rows.length) { el.innerHTML = '<div class="card empty">이 기간에 새로 접수된 공시가 없습니다. 기간을 늘려 보세요.</div>'; return; }
+    var by = {}, keys = [];
+    rows.forEach(function (r) { if (!by[r.e.d]) { by[r.e.d] = []; keys.push(r.e.d); } by[r.e.d].push(r); });
+    el.innerHTML = '<div class="feed">' + keys.map(function (d) {
+      var n = dday(d);
+      return '<section class="feed-day"><div class="feed-h"><b>' + md(d) + " " + WD[dt(d).getUTCDay()] + "</b><span>" + (n === 0 ? "오늘" : n === -1 ? "어제" : (-n) + "일 전") + "</span><em>" + by[d].length + "건</em></div>" +
+        by[d].map(function (r) {
+          var g = r.g;
+          return '<button type="button" class="feed-row" data-id="' + esc(g.id) + '" style="--cc:var(--c-' + g.k + ')"><span class="tm">' + (r.e.fs || "—") + "</span><i></i><b>" + esc(g.n) +
+            '</b><span class="cat">' + esc(NAMES[g.k]) + '</span><span class="nm">' + esc(r.e.nm) + '</span><span class="tags">' +
+            (r.amd ? '<span class="badge amd">정정</span>' : '<span class="badge new">신규</span>') + (hasAp(g) ? '<span class="badge ap">매수청구</span>' : "") +
+            (g.status === "past" ? '<span class="badge">종료</span>' : "") + "</span></button>";
+        }).join("") + "</section>";
+    }).join("") + "</div>";
   }
   // ---- 캘린더 ----
   function mondayOf(d) { var x = dt(d), w = (x.getUTCDay() + 6) % 7; return addDays(d, -w); }
@@ -609,7 +684,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   function renderAll() {
     renderCounts(); renderSync(); renderNav(); renderHeader();
     if (DATA.status !== "ok") { renderGrid(); return; }
-    if (state.tab === "agenda") renderAgenda(); else renderGrid();
+    if (state.tab === "latest") renderLatest(); else if (state.tab === "agenda") renderAgenda(); else renderGrid();
   }
 
   // ---- 상세 시트 ----
@@ -684,6 +759,13 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     Array.prototype.forEach.call(document.querySelectorAll("#seg button"), function (x) { x.setAttribute("aria-pressed", x === b); });
     renderAll();
   });
+  $("lrange").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-ld]"); if (!b) return;
+    state.ldays = +b.dataset.ld;
+    Array.prototype.forEach.call(document.querySelectorAll("#lrange button"), function (x) { x.setAttribute("aria-pressed", x === b); });
+    renderAll();
+  });
+  $("f-noamd").addEventListener("change", function () { state.noAmd = this.checked; renderAll(); });
   function setCal(mode) {
     state.cal = mode;
     Array.prototype.forEach.call(document.querySelectorAll("#range button"), function (x) { x.setAttribute("aria-pressed", x.dataset.cal === mode); });
@@ -722,7 +804,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     if (g) { var st = $("d-body").scrollTop; renderDrawer(g); $("d-body").scrollTop = st; }
   });
 
-  try { var t0 = localStorage.getItem("eventbook.tab2"); if (t0 && (t0 === "agenda" || NAMES[t0])) state.tab = t0; } catch (x) {}
+  try { var t0 = localStorage.getItem("eventbook.tab2"); if (t0 && (t0 === "agenda" || t0 === "latest" || NAMES[t0])) state.tab = t0; } catch (x) {}
   try { var c0 = localStorage.getItem("eventbook.cal"); if (c0 === "week" || c0 === "month") setCal(c0); } catch (x) {}
   renderAll();
   loadData();

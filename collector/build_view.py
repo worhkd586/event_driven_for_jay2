@@ -348,7 +348,9 @@ def summarize(items, det, estk, today, tender=None, apdoc=None):
         "s": top["stock_code"], "m": top["market"], "nm": nm, "d": ymd(top["rcept_dt"]), "d0": ymd(first),
         "f": top.get("flags", []), "ap": top.get("appraisal", "?"),
         "amends": sum(1 for e in items if e.get("amended")),
-        "items": [{"r": e["rcept_no"], "d": ymd(e["rcept_dt"]), "nm": e["report_nm"]} for e in items],
+        # fs: 수집기가 처음 본 시각 (HH:MM). 접수일 당일에 잡은 경우만 남긴다 (과거 채우기 분은 실제 시각이 아님)
+        "items": [{"r": e["rcept_no"], "d": ymd(e["rcept_dt"]), "nm": e["report_nm"], "x": bool(e.get("amended")),
+                   "fs": e["first_seen"][11:16] if e.get("first_seen", "")[:10] == ymd(e["rcept_dt"]) else ""} for e in items],
     }
     if g["ap"] == "?":
         g["ap"] = next((e.get("appraisal") for e in items if e.get("appraisal") not in (None, "?")), "?")
