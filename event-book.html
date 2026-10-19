@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: schedule-first desk — top bar, 2-week agenda strip, category tabs, per-category milestone grid (dates as columns), slide-in detail sheet. Single dark look. */
+/* Layout: schedule-first desk — left sidebar (이벤트 일정 + one tab per category), main pane shows the agenda or one category milestone grid, slide-in detail sheet. Single dark look. */
 :root {
   --bg: #0a0d12;
   --surface: #11161f;
@@ -37,8 +37,29 @@ a { color: inherit; }
 .pos { color: var(--pos); } .neg { color: var(--neg); } .dim { color: var(--muted); } .faint { color: var(--faint); }
 .up { color: var(--up); } .down { color: var(--down); }
 
+/* app shell: sidebar + main */
+.app { display: grid; grid-template-columns: 236px minmax(0, 1fr); min-height: 100vh; }
+.side { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; height: 100vh; display: flex; flex-direction: column; gap: 6px; overflow-y: auto;
+  background: #0c1016; border-right: 1px solid var(--line); padding: 16px 12px; padding-left: max(12px, env(safe-area-inset-left, 0px)); }
+.side .brand { margin: 0 0 14px; padding: 0 6px 14px; border-bottom: 1px solid var(--line); }
+.side .brand span { display: block; margin: 0; }
+.nav-label { font-size: 11px; letter-spacing: 0.12em; color: var(--faint); font-weight: 600; padding: 12px 10px 4px; }
+.nav-btn { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; border: 1px solid transparent; background: transparent; padding: 9px 10px; border-radius: 9px; cursor: pointer; font-weight: 600; font-size: 13.5px; }
+.nav-btn::before { content: ""; width: 9px; height: 9px; border-radius: 3px; background: var(--cc, var(--muted)); flex: none; }
+.nav-btn.cal::before { width: 14px; height: 14px; border-radius: 3px; background: none; border: 2px solid var(--accent); box-shadow: inset 0 3px 0 -1px var(--accent); }
+.nav-btn span { flex: 1; min-width: 0; }
+.nav-btn small { font-family: var(--font-mono); color: var(--muted); font-weight: 500; font-size: 12px; }
+.nav-btn:hover { background: var(--sunken); }
+.nav-btn[aria-current="page"] { background: var(--sunken); border-color: var(--cc, var(--accent)); }
+.nav-btn.zero { opacity: 0.45; }
+.side .sync { margin-top: auto; padding: 12px 8px 0; border-top: 1px solid var(--line); white-space: normal; }
+.main { min-width: 0; }
+
 /* top bar */
-.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(10, 13, 18, 0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(10, 13, 18, 0.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.top h1 { margin: 0 auto 0 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+.top h1 small { font-size: 12px; font-weight: 400; color: var(--muted); }
+.top .tools { margin-left: 0; }
 .top-in, .page { max-width: 1440px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .top-in { display: flex; align-items: center; gap: 12px 20px; flex-wrap: wrap; padding-block: 12px; }
 .brand { display: flex; align-items: center; gap: 10px; margin-right: auto; }
@@ -61,7 +82,37 @@ a { color: inherit; }
 .sec-head h2 { margin: 0; font-size: 15px; font-weight: 700; }
 .sec-head p { margin: 0; font-size: 12px; color: var(--muted); }
 
-/* agenda strip */
+/* agenda list (이벤트 일정 탭) */
+.range { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; padding: 2px; background: var(--surface); }
+.range button { border: 0; background: transparent; padding: 5px 11px; border-radius: 7px; cursor: pointer; font-size: 12.5px; color: var(--muted); font-weight: 600; }
+.range button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.agd { display: grid; gap: 12px; }
+.agd-day { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); overflow: hidden; }
+.agd-day.today { border-color: rgba(61, 181, 230, 0.55); }
+.agd-h { display: flex; align-items: baseline; gap: 10px; padding: 9px 14px; background: var(--sunken); border-bottom: 1px solid var(--line); }
+.agd-h b { font-family: var(--font-mono); font-size: 15px; }
+.agd-h span { font-size: 12px; color: var(--muted); }
+.agd-day.today .agd-h span { color: var(--accent); font-weight: 600; }
+.agd-h em { margin-left: auto; font-style: normal; font-size: 12px; color: var(--muted); }
+.agd-row { display: grid; grid-template-columns: 4px minmax(120px, 1.3fr) minmax(90px, 0.8fr) minmax(130px, 1.4fr) minmax(96px, auto) 92px; gap: 12px; align-items: center;
+  width: 100%; text-align: left; border: 0; border-top: 1px solid var(--line); background: transparent; padding: 9px 14px; cursor: pointer; font-size: 13px; }
+.agd-row:first-of-type { border-top: 0; }
+.agd-row:hover { background: var(--sunken); }
+.agd-row i { align-self: stretch; border-radius: 2px; background: var(--cc, var(--muted)); }
+.agd-row b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.agd-row .cat { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.agd-row .ms-l { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.agd-row .ms-l em { font-style: normal; color: var(--warn); margin-left: 3px; }
+.agd-row .mv { text-align: right; font-family: var(--font-mono); white-space: nowrap; }
+.agd-row .mv small { display: block; font-family: var(--font-body); font-size: 10.5px; color: var(--muted); }
+.agd-row .px { text-align: right; font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+@media (max-width: 720px) {
+  .agd-row { grid-template-columns: 4px minmax(0, 1fr) auto; grid-template-areas: "bar corp mv" "bar ms mv"; row-gap: 2px; }
+  .agd-row i { grid-area: bar; } .agd-row b { grid-area: corp; } .agd-row .ms-l { grid-area: ms; } .agd-row .mv { grid-area: mv; }
+  .agd-row .cat, .agd-row .px { display: none; }
+}
+
+/* agenda strip (unused) */
 .agenda { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(210px, 1fr); gap: 10px; overflow-x: auto; padding: 0 16px 16px; scroll-snap-type: x proximity; }
 .day { border: 1px solid var(--line); border-radius: 12px; background: var(--bg); min-width: 0; scroll-snap-align: start; display: flex; flex-direction: column; }
 .day.today { border-color: rgba(61, 181, 230, 0.6); box-shadow: inset 0 0 0 1px rgba(61, 181, 230, 0.25); }
@@ -176,6 +227,14 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
 .hist li { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 8px; }
 .hist a { overflow-wrap: anywhere; }
 
+@media (max-width: 900px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .side { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 25; height: auto; flex-direction: row; align-items: center; overflow-x: auto; overflow-y: hidden;
+    padding: 8px 12px; padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px)); border-right: 0; border-bottom: 1px solid var(--line); gap: 4px; }
+  .side .brand, .nav-label, .side .sync { display: none; }
+  .nav-btn { width: auto; white-space: nowrap; padding: 7px 10px; }
+  .top { position: static; }
+}
 @media (max-width: 720px) {
   .brand span { display: none; }
   .tools { margin-left: 0; width: 100%; }
@@ -183,46 +242,39 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
 }
 </style>
 
-<header class="top">
-  <div class="top-in">
-    <div class="brand"><span class="mark" aria-hidden="true">EB</span><b>이벤트 북</b><span>패리티 · 이벤트 일정</span></div>
-    <div class="seg" role="group" aria-label="보기">
-      <button type="button" data-view="active" aria-pressed="true">진행 중<small id="n-active">–</small></button>
-      <button type="button" data-view="past" aria-pressed="false">지난 이벤트<small id="n-past">–</small></button>
-    </div>
+<div class="app">
+  <aside class="side" aria-label="메뉴">
+    <div class="brand"><span class="mark" aria-hidden="true">EB</span><div><b>이벤트 북</b><span>패리티 · 이벤트 일정</span></div></div>
+    <nav id="nav" aria-label="화면"></nav>
     <span class="sync" id="sync">불러오는 중</span>
-  </div>
-</header>
+  </aside>
 
-<main class="page">
-  <section class="card" id="agenda-card" aria-labelledby="agenda-h">
-    <div class="sec-head">
-      <h2 id="agenda-h">다가오는 일정 · 2주</h2>
-      <p>날짜별로 걸린 마일스톤입니다. 숫자는 유상증자 패리티, 매수청구 이벤트는 청구가 괴리입니다. ≈ 는 영업일로 계산한 추정일입니다.</p>
-    </div>
-    <div class="agenda" id="agenda"></div>
-  </section>
-
-  <section class="card">
-    <div class="bar">
-      <div class="tabs" id="tabs" role="group" aria-label="분류"></div>
-      <div class="tools">
-        <input type="search" id="q" placeholder="기업명·종목코드 검색" aria-label="기업 검색">
-        <label for="f-3rd"><input type="checkbox" id="f-3rd"> 제3자배정 유상증자 포함</label>
-        <label for="f-ap"><input type="checkbox" id="f-ap"> 매수청구권 있는 것만</label>
+  <div class="main">
+    <header class="top">
+      <div class="top-in">
+        <h1 id="title">이벤트 일정</h1>
+        <div class="seg" id="seg" role="group" aria-label="보기">
+          <button type="button" data-view="active" aria-pressed="true">진행 중<small id="n-active">–</small></button>
+          <button type="button" data-view="past" aria-pressed="false">지난 이벤트<small id="n-past">–</small></button>
+        </div>
+        <div class="range" id="range" role="group" aria-label="기간">
+          <button type="button" data-days="7" aria-pressed="false">1주</button>
+          <button type="button" data-days="14" aria-pressed="true">2주</button>
+          <button type="button" data-days="28" aria-pressed="false">4주</button>
+        </div>
+        <div class="tools">
+          <input type="search" id="q" placeholder="기업명·종목코드 검색" aria-label="기업 검색">
+          <label for="f-3rd"><input type="checkbox" id="f-3rd"> 제3자배정 포함</label>
+        </div>
       </div>
-    </div>
-  </section>
+    </header>
 
-  <div class="legend" aria-label="표 읽는 법">
-    <span><b class="nx">10.24 · D-5</b> 다음 일정</span>
-    <span><b class="es">≈</b> 영업일 기준 추정일 (공휴일 미반영)</span>
-    <span><b class="faint">10.02</b> 지난 일정</span>
-    <span>행 정렬: 다음 일정이 가까운 순 · 행을 누르면 전체 일정과 상세</span>
+    <main class="page">
+      <p class="legend" id="legend"></p>
+      <div id="content" aria-live="polite"></div>
+    </main>
   </div>
-
-  <div id="grids" aria-live="polite"></div>
-</main>
+</div>
 
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="d-title" hidden>
@@ -252,7 +304,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
 
   var NAMES = { rights: "유상증자", bonus: "무상증자", tender: "공개매수", split: "물적분할", merge: "인수합병", exchange: "주식교환·이전", transfer: "영업양수도", bw: "BW 발행(공모)" };
   var ORDER = ["rights", "merge", "exchange", "split", "transfer", "bonus", "tender", "bw"];
-  var state = { view: "active", tab: "all", q: "", third: false, onlyAp: false, sel: null, histOpen: false };
+  var state = { view: "active", tab: "agenda", days: 14, q: "", third: false, sel: null, histOpen: false };
   var DATA = { status: "loading", groups: [], prices: {}, updated: null, eventsUpdated: null };
 
   // ---- 일정 계산 ----
@@ -271,14 +323,15 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     rights: [["권리락", exRight], ["배정기준일", function (g) { return find(g, /배정기준일/); }], ["확정가 산정", function (g) { return priceFix(g) || (g.mx && g.mx.price_doc && g.mx.price_final ? { d: g.mx.price_doc.d } : null); }],
       ["청약", subRange], ["납입", function (g) { return find(g, /납입/); }], ["신주 상장", function (g) { return find(g, /상장/); }]],
     bonus: [["이사회", function (g) { return find(g, /이사회/); }], ["권리락", exRight], ["배정기준일", function (g) { return find(g, /배정기준일/); }], ["신주 상장", function (g) { return find(g, /상장/); }]],
-    merge: [["주총 기준일", function (g) { return find(g, /주주확정 기준일/); }], ["반대의사 마감", function (g) { return find(g, /반대의사 통지 종료/); }], ["주총", gm],
+    merge: [["이사회 결의", function (g) { return find(g, /이사회/); }], ["주총 기준일", function (g) { return find(g, /주주확정 기준일/); }], ["반대의사 마감", function (g) { return find(g, /반대의사 통지 종료/); }], ["주총", gm],
       ["매수청구 마감", apEnd], ["합병·분할기일", function (g) { return find(g, /합병기일|분할기일/); }], ["신주 상장", function (g) { return find(g, /상장/); }]],
-    exchange: [["주총 기준일", function (g) { return find(g, /주주확정 기준일/); }], ["반대의사 마감", function (g) { return find(g, /반대의사 통지 종료/); }], ["주총", gm],
+    exchange: [["이사회 결의", function (g) { return find(g, /이사회/); }], ["주총 기준일", function (g) { return find(g, /주주확정 기준일/); }], ["반대의사 마감", function (g) { return find(g, /반대의사 통지 종료/); }], ["주총", gm],
       ["매수청구 마감", apEnd], ["교환일", function (g) { return find(g, /교환일/); }], ["신주 상장", function (g) { return find(g, /상장/); }]],
-    split: [["이사회", function (g) { return find(g, /이사회/); }], ["주총", gm], ["매수청구 마감", apEnd], ["채권자 이의 마감", function (g) { return find(g, /채권자 이의/); }],
+    split: [["이사회 결의", function (g) { return find(g, /이사회/); }], ["주총", gm], ["매수청구 마감", apEnd], ["채권자 이의 마감", function (g) { return find(g, /채권자 이의/); }],
       ["분할기일", function (g) { return find(g, /분할기일/); }], ["분할등기", function (g) { return find(g, /등기/); }]],
-    transfer: [["이사회", function (g) { return find(g, /이사회/); }], ["주총", gm], ["매수청구 마감", apEnd], ["양수·양도 기준일", function (g) { return find(g, /양수 기준일|양도 기준일/); }]],
-    tender: [["최초 공시", function (g) { return { d: g.d0 }; }], ["최근 공시", function (g) { return { d: g.d }; }], ["종료", function (g) { return { d: g.end, est: /없음/.test(g.end_basis) }; }]],
+    transfer: [["이사회 결의", function (g) { return find(g, /이사회/); }], ["주총", gm], ["매수청구 마감", apEnd], ["양수·양도 기준일", function (g) { return find(g, /양수 기준일|양도 기준일/); }]],
+    tender: [["최초 공시", function (g) { return { d: g.d0 }; }], ["공개매수 기간", function (g) { var a = find(g, /공개매수 시작/), b = find(g, /공개매수 종료/); return a ? { d: a.d, e: b && b.d } : null; }],
+      ["결제일", function (g) { return find(g, /결제일/); }], ["종료", function (g) { return { d: g.end, est: /없음/.test(g.end_basis) }; }]],
     bw: [["최초 공시", function (g) { return { d: g.d0 }; }], ["최근 공시", function (g) { return { d: g.d }; }], ["종료", function (g) { return { d: g.end, est: /없음/.test(g.end_basis) }; }]]
   };
   function msOf(g) { return (MS[g.k] || MS.bw).map(function (c) { var r = null; try { r = c[1](g); } catch (e) {} return { label: c[0], v: r && r.d ? r : null }; }); }
@@ -307,8 +360,10 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   function ratioShort(t) { if (!t) return "—"; var m = String(t).match(/=\s*([\d.,]+)\s*:\s*([\d.,]+)/); return m ? trimNum(m[1]) + " : " + trimNum(m[2]) : String(t).slice(0, 18); }
   function counterpart(g) { var mx = g.mx || {}; return mx.mgptncmp_cmpnm || mx.extr_tgcmp_cmpnm || mx.dvfcmp_cmpnm || mx.dlptn_cmpnm || ""; }
   function methodShort(g) { var m = (g.mx && g.mx.method) || ""; return /제3자/.test(m) ? "제3자배정" : /주주배정/.test(m) ? "주주배정" : /일반공모/.test(m) ? "일반공모" : ""; }
+  function tenderGap(g) { var p = px(g), t = N((g.mx || {}).tender_price); return p && t ? (t / p.price - 1) * 100 : null; }
   function headline(g) {   // 일정표·달력에 쓰는 대표 지표
     if (g.k === "rights") { var v = parity(g); return v == null ? null : { v: v, label: "패리티" }; }
+    if (g.k === "tender") { var tg = tenderGap(g); return tg == null ? null : { v: tg, label: "공개매수가 괴리" }; }
     var a = apGap(g); return a == null ? null : { v: a, label: "청구가 괴리" };
   }
 
@@ -327,7 +382,8 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
       ["신설회사", function (g) { return esc(counterpart(g) || "—"); }]],
     transfer: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1], ["매수청구가", function (g) { return won(g.mx && g.mx.appraisal_price); }, 1], ["현재가", priceCell, 1],
       ["가액 · 상대방", function (g) { var mx = g.mx || {}, v = N(mx.inh_prc || mx.trf_prc); return esc(((v ? fmt(Math.round(v / 1e8)) + "억 · " : "") + (counterpart(g) || "—")).slice(0, 60)); }]],
-    tender: [["현재가", priceCell, 1], ["최근 문서", function (g) { return esc(g.nm); }]],
+    tender: [["공개매수가 괴리", function (g) { return signed(tenderGap(g), "big"); }, 1], ["공개매수가", function (g) { return won(g.mx && g.mx.tender_price); }, 1], ["현재가", priceCell, 1],
+      ["최근 문서", function (g) { return esc(g.nm); }]],
     bw: [["현재가", priceCell, 1], ["최근 문서", function (g) { return esc(g.nm); }]]
   };
 
@@ -337,50 +393,63 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     return DATA.groups.filter(function (g) {
       if (g.status !== view) return false;
       if (g.k === "rights" && !state.third && methodShort(g) === "제3자배정") return false;
-      if (state.onlyAp && g.ap !== "Y") return false;
+      if (g.k === "merge" && g.ap === "N") return false;   // 인수합병은 매수청구권이 있는 건만
       if (state.q) { var q = state.q.toLowerCase(); if ((g.n + " " + (g.s || "")).toLowerCase().indexOf(q) < 0) return false; }
       return true;
     });
   }
-  function visible() { var b = base(); return state.tab === "all" ? b : b.filter(function (g) { return g.k === state.tab; }); }
+  function visible() { var b = base(); return state.tab === "agenda" ? b : b.filter(function (g) { return g.k === state.tab; }); }
 
   // ---- 그리기 ----
-  function renderTabs() {
+  var DESC = {
+    rights: "패리티 = (현재가 ÷ 발행가 − 1) × 100 · 확정가가 있으면 확정가 기준",
+    merge: "매수청구권이 있는 합병·분할합병만 · 청구가 괴리 = (매수청구가 ÷ 현재가 − 1) × 100",
+    exchange: "청구가 괴리 = (매수청구가 ÷ 현재가 − 1) × 100", split: "청구가 괴리 = (매수청구가 ÷ 현재가 − 1) × 100",
+    transfer: "청구가 괴리 = (매수청구가 ÷ 현재가 − 1) × 100", bonus: "이론 권리락가 = 현재가 ÷ (1 + 1주당 배정 주식수)",
+    tender: "공개매수가 괴리 = (공개매수가 ÷ 현재가 − 1) × 100 · 가격·기간은 공개매수신고서 원문에서 읽은 값", bw: "공시에 일정 항목이 없어 공시일과 추정 종료일만 표시"
+  };
+  function renderNav() {
     var b = base(), cnt = {};
     b.forEach(function (g) { cnt[g.k] = (cnt[g.k] || 0) + 1; });
-    var h = '<button type="button" class="tab" data-k="all" aria-pressed="' + (state.tab === "all") + '">전체 <small>' + b.length + "</small></button>";
+    var upcoming = 0, t = todayKey(), end = addDays(t, state.days - 1);
+    base("active").forEach(function (g) { timeline(g).forEach(function (x) { if (x.d >= t && x.d <= end && !/이사회|계약/.test(x.label)) upcoming++; }); });
+    var h = '<button type="button" class="nav-btn cal" data-tab="agenda"' + (state.tab === "agenda" ? ' aria-current="page"' : "") + "><span>이벤트 일정</span><small>" + (DATA.status === "ok" ? upcoming : "") + "</small></button>";
+    h += '<div class="nav-label">분류 · ' + (state.view === "active" ? "진행 중" : "지난 이벤트") + "</div>";
     ORDER.forEach(function (k) {
-      if (!cnt[k] && state.tab !== k) return;
-      h += '<button type="button" class="tab" data-k="' + k + '" style="--cc:var(--c-' + k + ')" aria-pressed="' + (state.tab === k) + '">' + NAMES[k] + " <small>" + (cnt[k] || 0) + "</small></button>";
+      h += '<button type="button" class="nav-btn' + (cnt[k] ? "" : " zero") + '" data-tab="' + k + '" style="--cc:var(--c-' + k + ')"' + (state.tab === k ? ' aria-current="page"' : "") + "><span>" + NAMES[k] + "</span><small>" + (DATA.status === "ok" ? (cnt[k] || 0) : "") + "</small></button>";
     });
-    $("tabs").innerHTML = h;
+    $("nav").innerHTML = h;
+  }
+  function renderHeader() {
+    var ag = state.tab === "agenda";
+    $("title").innerHTML = ag ? "이벤트 일정 <small>진행 중 이벤트의 다가오는 마일스톤</small>" : esc(NAMES[state.tab]) + " <small>" + esc(DESC[state.tab]) + "</small>";
+    $("seg").hidden = ag; $("range").hidden = !ag;
+    $("legend").innerHTML = '<span><b class="nx">10.24 · D-5</b> 다음 일정</span><span><b class="es">≈</b> 영업일 기준 추정일 (공휴일 미반영)</span>' +
+      (ag ? "<span>숫자: 유상증자 패리티 · 공개매수가 괴리 · 매수청구가 괴리</span><span>행을 누르면 전체 일정과 상세</span>" : '<span><b class="faint">10.02</b> 지난 일정</span><span>행 정렬: 다음 일정이 가까운 순 · 행을 누르면 전체 일정과 상세</span>');
   }
   function renderAgenda() {
-    var card = $("agenda-card");
-    card.hidden = state.view !== "active";
-    if (card.hidden) return;
-    if (DATA.status !== "ok") { $("agenda").innerHTML = '<div class="day"><div class="none">' + (DATA.status === "loading" ? "불러오는 중" : "데이터 없음") + "</div></div>"; return; }
-    var t = todayKey(), end = addDays(t, 13), days = {};
-    visible().forEach(function (g) {
+    var el = $("content");
+    var t = todayKey(), end = addDays(t, state.days - 1), days = {};
+    base("active").forEach(function (g) {
       timeline(g).forEach(function (x) {
         if (x.d < t || x.d > end || /이사회|계약/.test(x.label)) return;
         (days[x.d] = days[x.d] || []).push({ g: g, x: x });
       });
     });
-    var h = "";
-    for (var i = 0; i < 14; i++) {
-      var d = addDays(t, i), w = dt(d).getUTCDay(), items = days[d] || [];
-      if ((w === 0 || w === 6) && !items.length) continue;   // 일정 없는 주말은 건너뛴다
-      items.sort(function (a, b) { return ORDER.indexOf(a.g.k) - ORDER.indexOf(b.g.k); });
-      h += '<div class="day' + (i === 0 ? " today" : "") + '"><div class="day-h"><b>' + md(d) + " " + WD[w] + "</b><span>" + (i === 0 ? "오늘" : "D-" + i) + "</span></div>" +
-        (items.length ? "<ul>" + items.map(function (it) {
-          var hl = headline(it.g);
-          return '<li><button type="button" class="ag' + (it.x.est ? " est" : "") + '" data-id="' + esc(it.g.id) + '" style="--cc:var(--c-' + it.g.k + ')"><i></i><b>' + esc(it.g.n) + "</b>" +
-            (hl ? '<em class="' + (hl.v >= 0 ? "pos" : "neg") + '" title="' + hl.label + '">' + (hl.v > 0 ? "+" : "") + hl.v.toFixed(1) + "%</em>" : "<em></em>") +
-            "<small>" + esc(NAMES[it.g.k]) + " · " + esc(it.x.label) + "</small></button></li>";
-        }).join("") + "</ul>" : '<div class="none">일정 없음</div>') + "</div>";
-    }
-    $("agenda").innerHTML = h;
+    var keys = Object.keys(days).sort();
+    if (!keys.length) { el.innerHTML = '<div class="card empty">이 기간에 걸린 일정이 없습니다. 기간을 늘려 보세요.</div>'; return; }
+    el.innerHTML = '<div class="agd">' + keys.map(function (d) {
+      var items = days[d].sort(function (a, b) { return ORDER.indexOf(a.g.k) - ORDER.indexOf(b.g.k) || (a.g.n < b.g.n ? -1 : 1); });
+      var n = dday(d);
+      return '<section class="agd-day' + (n === 0 ? " today" : "") + '"><div class="agd-h"><b>' + md(d) + " " + WD[dt(d).getUTCDay()] + "</b><span>" + (n === 0 ? "오늘" : "D-" + n) + "</span><em>" + items.length + "건</em></div>" +
+        items.map(function (it) {
+          var g = it.g, hl = headline(g), p = px(g);
+          return '<button type="button" class="agd-row" data-id="' + esc(g.id) + '" style="--cc:var(--c-' + g.k + ')"><i></i><b>' + esc(g.n) + '</b><span class="cat">' + esc(NAMES[g.k]) + "</span>" +
+            '<span class="ms-l">' + esc(it.x.label) + (it.x.est ? "<em>≈</em>" : "") + "</span>" +
+            '<span class="mv">' + (hl ? signed(hl.v) + "<small>" + hl.label + "</small>" : '<span class="faint">—</span>') + "</span>" +
+            '<span class="px">' + (p ? fmt(p.price) : "—") + "</span></button>";
+        }).join("") + "</section>";
+    }).join("") + "</div>";
   }
   function dateCell(v, t, isNext) {
     if (!v) return '<div class="dc none"><b>—</b></div>';
@@ -407,8 +476,8 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     if (g.amends) tags += '<span class="tg">정정 ' + g.amends + "</span>";
     return '<div class="corp"><b>' + esc(g.n) + "</b>" + tags + "<small>" + esc(g.m) + " " + esc(g.s || "") + " · 최초 공시 " + md(g.d0) + "</small></div>";
   }
-  function renderGrids() {
-    var el = $("grids");
+  function renderGrid() {
+    var el = $("content");
     if (DATA.status !== "ok") {
       el.innerHTML = '<div class="card empty">' + ({ loading: "DART 데이터를 불러오는 중입니다.", nodb: "이 화면에서는 데이터를 읽을 수 없습니다. claude.ai에 로그인한 상태로 열어 주세요.",
         error: "데이터를 읽지 못했습니다. 잠시 후 새로고침해 주세요.", empty: "아직 저장된 데이터가 없습니다." }[DATA.status]) + "</div>"; return;
@@ -423,9 +492,8 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
       if (state.view === "active") rows.sort(function (a, b) { return key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0; });
       else rows.sort(function (a, b) { return a.g.end < b.g.end ? 1 : -1; });
       var mcols = METRICS[k], dcols = MS[k];
-      h += '<section class="card grid-card" style="--cc:var(--c-' + k + ')"><div class="sec-head"><h2>' + NAMES[k] + ' <span class="dim num" style="font-weight:500">' + rows.length + "</span></h2><p>" +
-        (k === "rights" ? "패리티 = (현재가 ÷ 발행가 − 1) × 100 · 확정가가 있으면 확정가 기준" : /merge|exchange|split|transfer/.test(k) ? "청구가 괴리 = (매수청구가 ÷ 현재가 − 1) × 100" : "공시에 일정 항목이 없어 공시일과 추정 종료일만 표시") + "</p></div>" +
-        '<div class="twrap"><table class="ms"><thead><tr><th>기업</th>' + mcols.map(function (c) { return '<th class="metric' + (c[2] ? " r" : "") + '">' + c[0] + "</th>"; }).join("") +
+      h += '<section class="card grid-card" style="--cc:var(--c-' + k + ')">' +
+        '<div class="twrap" style="border-top:0"><table class="ms"><thead><tr><th>기업</th>' + mcols.map(function (c) { return '<th class="metric' + (c[2] ? " r" : "") + '">' + c[0] + "</th>"; }).join("") +
         dcols.map(function (c) { return '<th class="d">' + c[0] + "</th>"; }).join("") + '<th class="d">진행</th></tr></thead><tbody>' +
         rows.map(function (r) {
           var g = r.g;
@@ -439,7 +507,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   }
   function renderCounts() {
     if (DATA.status !== "ok") return;
-    var f = function (v) { var b = base(v); return state.tab === "all" ? b.length : b.filter(function (g) { return g.k === state.tab; }).length; };
+    var f = function (v) { var b = base(v); return state.tab === "agenda" ? b.length : b.filter(function (g) { return g.k === state.tab; }).length; };
     $("n-active").textContent = f("active"); $("n-past").textContent = f("past");
   }
   function renderSync() {
@@ -449,7 +517,11 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     s.className = "sync " + (age < 120 ? "ok" : "late");
     s.textContent = "DART·시세 " + (DATA.updated ? DATA.updated.slice(5, 16).replace("T", " ").replace("-", "/") : "—") + (age < 120 ? "" : " · " + Math.round(age / 60) + "시간 전");
   }
-  function renderAll() { renderCounts(); renderSync(); renderTabs(); renderAgenda(); renderGrids(); }
+  function renderAll() {
+    renderCounts(); renderSync(); renderNav(); renderHeader();
+    if (DATA.status !== "ok") { renderGrid(); return; }
+    if (state.tab === "agenda") renderAgenda(); else renderGrid();
+  }
 
   // ---- 상세 시트 ----
   var lastFocus = null;
@@ -460,6 +532,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     $("d-sub").textContent = g.nm + " · " + g.id;
     var hero = [];
     if (g.k === "rights") hero.push(["패리티", signed(parity(g)), "발행가 " + (issue(g) ? fmt(issue(g)) + (mx.price_final ? " 확정" : " 예정") : "없음")]);
+    else if (g.k === "tender") hero.push(["공개매수가 괴리", signed(tenderGap(g)), "공개매수가 " + (mx.tender_price ? esc(mx.tender_price) : "확인 필요")]);
     else if (mx.appraisal_price) hero.push(["청구가 괴리", signed(apGap(g)), "매수청구가 " + fmt(N(mx.appraisal_price))]);
     hero.push(["현재가", p ? fmt(p.price) : "—", p ? '<span class="' + (p.chg > 0 ? "up" : p.chg < 0 ? "down" : "") + '">' + (p.pct > 0 ? "+" : "") + Number(p.pct).toFixed(2) + "%</span> · 전일 " + fmt(p.prev) : (g.status === "past" ? "종료 이벤트" : "시세 없음")]);
     hero.push(["다음 일정", nx ? md(nx.d) : "—", nx ? esc(nx.label) + " · " + ddLabel(nx.d) : "남은 일정 없음"]);
@@ -516,19 +589,28 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   }
 
   // ---- 바인딩 ----
-  document.querySelector(".seg").addEventListener("click", function (e) {
+  $("seg").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-view]"); if (!b) return;
     state.view = b.dataset.view;
-    Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function (x) { x.setAttribute("aria-pressed", x === b); });
+    Array.prototype.forEach.call(document.querySelectorAll("#seg button"), function (x) { x.setAttribute("aria-pressed", x === b); });
     renderAll();
   });
-  $("tabs").addEventListener("click", function (e) { var b = e.target.closest(".tab"); if (!b) return; state.tab = b.dataset.k; try { localStorage.setItem("eventbook.tab", state.tab); } catch (x) {} renderAll(); });
+  $("range").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-days]"); if (!b) return;
+    state.days = +b.dataset.days;
+    Array.prototype.forEach.call(document.querySelectorAll("#range button"), function (x) { x.setAttribute("aria-pressed", x === b); });
+    renderAll();
+  });
+  $("nav").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-tab]"); if (!b) return;
+    state.tab = b.dataset.tab;
+    try { localStorage.setItem("eventbook.tab2", state.tab); } catch (x) {}
+    renderAll(); window.scrollTo(0, 0);
+  });
   $("q").addEventListener("input", function () { state.q = this.value.trim(); renderAll(); });
   $("f-3rd").addEventListener("change", function () { state.third = this.checked; renderAll(); });
-  $("f-ap").addEventListener("change", function () { state.onlyAp = this.checked; renderAll(); });
-  $("grids").addEventListener("click", function (e) { var tr = e.target.closest("tr[data-id]"); if (tr) openDrawer(tr.dataset.id); });
-  $("grids").addEventListener("keydown", function (e) { if (e.key !== "Enter" && e.key !== " ") return; var tr = e.target.closest("tr[data-id]"); if (tr) { e.preventDefault(); openDrawer(tr.dataset.id); } });
-  $("agenda").addEventListener("click", function (e) { var b = e.target.closest(".ag[data-id]"); if (b) openDrawer(b.dataset.id); });
+  $("content").addEventListener("click", function (e) { var r = e.target.closest("[data-id]"); if (r) openDrawer(r.dataset.id); });
+  $("content").addEventListener("keydown", function (e) { if (e.key !== "Enter" && e.key !== " ") return; var tr = e.target.closest("tr[data-id]"); if (tr) { e.preventDefault(); openDrawer(tr.dataset.id); } });
   $("scrim").addEventListener("click", closeDrawer);
   $("d-close").addEventListener("click", closeDrawer);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeDrawer(); });
@@ -539,7 +621,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     if (g) { var st = $("d-body").scrollTop; renderDrawer(g); $("d-body").scrollTop = st; }
   });
 
-  try { var t0 = localStorage.getItem("eventbook.tab"); if (t0 && (t0 === "all" || NAMES[t0])) state.tab = t0; } catch (x) {}
+  try { var t0 = localStorage.getItem("eventbook.tab2"); if (t0 && (t0 === "agenda" || NAMES[t0])) state.tab = t0; } catch (x) {}
   renderAll();
   loadData();
 })();
