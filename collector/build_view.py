@@ -375,6 +375,9 @@ def summarize(items, det, estk, today, tender=None):
         mx["method"] = estk.get("method") or mx.get("method")
     if tender and tender.get("price"):
         mx["tender_price"] = f'{tender["price"]:,}'
+        others = [v for v in tender.get("candidates", []) if v != tender["price"]]
+        if others:   # 원문에 다른 금액도 '공개매수가격' 옆에 나왔다: 화면에서 확인하도록 남긴다
+            mx["tender_alt"] = [f"{v:,}" for v in others]
     if row.get("aprskh_plnprc") not in (None, "", "-"):
         mx["appraisal_price"] = row["aprskh_plnprc"]
     for k in ("mg_rt", "extr_rt", "nstk_ascnt_ps_ostk", "inh_prc", "trf_prc", "mgptncmp_cmpnm", "extr_tgcmp_cmpnm",
@@ -440,8 +443,23 @@ def main():
         # 공개매수신고서: 원문에서 가격·기간·결제일 (최신 신고서가 바뀔 때만 다시 읽는다)
         if top["type"] == "tender" and "공개매수신고서" in top["report_nm"]:
             if (c.get("tender") or {}).get("rcept_no") != top["rcept_no"] and c.get("tender_tries", 0) < 3:
-                t = tender_from_doc(key, top["rcept_no"])
+                # 최신 신고서부터 읽고, 정정 신고서에 없는 항목(기간 등)은 이전 신고서에서 채운다 (최대 3건)
+                t = None
+                docs = [e for e in items if "공개매수신고서" in e["report_nm"]][:3]
+                for e in docs:
+                    r = tender_from_doc(key, e["rcept_no"])
+                    if not r:
+                        continue
+                    if t is None:
+                        t = r
+                    else:
+                        for f in ("price", "start", "end", "settle"):
+                            if t.get(f) is None and r.get(f) is not None:
+                                t[f] = r[f]
+                    if all(t.get(f) for f in ("price", "start", "end", "settle")):
+                        break
                 if t:
+                    t["rcept_no"] = top["rcept_no"]
                     c["tender"], c["tender_tries"] = t, 0
                 else:
                     c["tender_tries"] = c.get("tender_tries", 0) + 1
