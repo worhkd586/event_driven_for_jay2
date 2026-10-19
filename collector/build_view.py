@@ -240,11 +240,11 @@ def offer_price_from_doc(key, rcept_no):
         if cnt and price and total and abs(cnt * price - total) <= max(1000, total * 0.001):
             hit = int(price)
     final = bool(re.search(r"(최종|확정)\s*발행가액을?\s*기준으로\s*산정", plain)) if hit else False
-    rt_start, rt_end = rights_trading_period(plain)
-    if hit is None and not rt_start:
+    cands = rights_trading_period(plain)
+    if hit is None and not cands:
         return None
-    out = {"price": hit, "final": final, "rt_start": rt_start, "rt_end": rt_end}
-    if not rt_start:   # 표현 확인용: '신주인수권증서' 주변 날짜가 있는 구간 몇 개
+    out = {"price": hit, "final": final, "rt_cands": cands, "rt_start": None}
+    if not cands:   # 표현 확인용: '신주인수권증서' 주변 날짜가 있는 구간 몇 개
         snips = [plain[max(0, m.start() - 20): m.end() + 90] for m in re.finditer(r"신주인수권\s*증서", plain)]
         out["rt_snip"] = [x for x in snips if re.search(DATE_RE, x)][:4] or snips[:2]
     return out
@@ -271,22 +271,31 @@ def period_after(plain, label_re, window=90):
 
 
 def rights_trading_period(plain):
-    """신주인수권증서 매매(거래) 기간. 없으면 상장일(시작)만이라도 찾는다."""
-    s, e = period_after(plain, r"신주인수권증서\s*(?:의\s*)?(?:상장\s*(?:및|후)?\s*)?(?:매매|거래)\s*(?:기간|예정\s*기간|개시)?")
-    if s:
-        return s, e
-    s, e = period_after(plain, r"신주인수권증서\s*(?:의\s*)?상장\s*(?:예정\s*)?(?:일|기간)", 60)
-    return s, e
-
-
-def dates_after(plain, label_re, window):
-    """label 바로 뒤 window 글자 안의 날짜들 (첫 등장 기준)."""
-    m = re.search(label_re, plain)
-    if not m:
-        return []
-    seg = plain[m.end(): m.end() + window]
-    return [f"{int(y):04d}-{int(mo):02d}-{int(d):02d}" for y, mo, d in re.findall(DATE_RE, seg)
-            if 1 <= int(mo) <= 12 and 1 <= int(d) <= 31]
+    """'신주인수권증서' 근처(뒤 100자 안, 매매·거래·상장이라는 말과 함께)에 나오는 날짜 구간 후보를 모두 모은다.
+    어느 후보가 맞는지는 이벤트 일정(배정기준일·청약일)과 비교해 summarize에서 고른다."""
+    cands = []
+    for m in re.finditer(r"신주인수권\s*증서", plain):
+        seg = plain[m.end(): m.end() + 100]
+        if not re.search(r"매매|거래|상장", seg[:70]):
+            continue
+        d1 = re.search(DATE_RE, seg)
+        if not d1:
+            continue
+        y, mo, d = (int(x) for x in d1.groups())
+        if not (1 <= mo <= 12 and 1 <= d <= 31):
+            continue
+        start, end = f"{y:04d}-{mo:02d}-{d:02d}", None
+        m2 = re.match(r"\s*일?\s*(?:\([^)]{0,6}\))?\s*(?:부터)?\s*[~∼\-–]\s*(?:(20\d{2})\s*[년.\-/]\s*)?(\d{1,2})\s*[월.\-/]\s*(\d{1,2})", seg[d1.end(): d1.end() + 40])
+        if m2:
+            y2 = int(m2.group(1)) if m2.group(1) else y
+            mo2, dd2 = int(m2.group(2)), int(m2.group(3))
+            if not m2.group(1) and mo2 < mo:
+                y2 += 1
+            if 1 <= mo2 <= 12 and 1 <= dd2 <= 31:
+                end = f"{y2:04d}-{mo2:02d}-{dd2:02d}"
+        if [start, end] not in cands:
+            cands.append([start, end])
+    return cands[:12]
 
 
 def tender_from_doc(key, rcept_no):
@@ -413,10 +422,23 @@ def summarize(items, det, estk, today, tender=None, apdoc=None):
             if apdoc.get(k) and lab not in have:
                 sched.append([lab, apdoc[k], "apd"])
     doc = (det or {}).get("doc") or {}
-    if doc.get("rt_start"):   # 신고서 원문에서 읽은 신주인수권증서 매매기간
-        sched.append(["신주인수권증서 매매 시작", doc["rt_start"], "doc"])
-        if doc.get("rt_end"):
-            sched.append(["신주인수권증서 매매 종료", doc["rt_end"], "doc"])
+    if doc.get("rt_cands"):   # 신고서 원문의 신주인수권증서 매매기간 후보 중 이 이벤트 일정에 맞는 것
+        rec = next((b for a, b, k in sched if a == "배정기준일"), None)
+        sub = next((b for a, b, k in sched if a == "청약 시작"), None)
+        def fits(c):
+            s0, e0 = c
+            if rec and s0 < rec:
+                return False
+            if sub and (e0 or s0) >= sub:
+                return False
+            if e0 and not (0 <= (datetime.strptime(e0, "%Y-%m-%d") - datetime.strptime(s0, "%Y-%m-%d")).days <= 21):
+                return False
+            return bool(rec or sub)   # 비교할 일정이 하나도 없으면 믿지 않는다
+        pick = next((c for c in doc["rt_cands"] if c[1] and fits(c)), None) or next((c for c in doc["rt_cands"] if fits(c)), None)
+        if pick:
+            sched.append(["신주인수권증서 매매 시작", pick[0], "doc"])
+            if pick[1]:
+                sched.append(["신주인수권증서 매매 종료", pick[1], "doc"])
     if tender:
         for lab, k in (("공개매수 시작", "start"), ("공개매수 종료", "end"), ("결제일", "settle")):
             if tender.get(k):
@@ -511,12 +533,12 @@ def main():
                 c["estk_at"] = now.isoformat(timespec="minutes")
                 estk_n += 1
         # 신고서 원문에서 현재 발행가(1차·2차·확정)를 읽는다. 최신 신고서가 바뀔 때만 원문을 내려받는다.
-        need_rt = "rt_start" not in (c.get("doc") or {})   # 매매기간 파싱 이전에 읽은 문서는 한 번 다시 읽는다
+        need_rt = "rt_cands" not in (c.get("doc") or {})   # 매매기간 후보 수집 이전에 읽은 문서는 한 번 다시 읽는다
         if top["type"] == "rights" and re.search(r"주주배정|일반공모", method) and (stale or need_rt) and not done:
             doc = latest_offer_doc(key, top["corp_code"], first)
-            if doc and ((c.get("doc") or {}).get("rcept_no") != doc["rcept_no"] or "rt_start" not in (c.get("doc") or {})):
+            if doc and ((c.get("doc") or {}).get("rcept_no") != doc["rcept_no"] or "rt_cands" not in (c.get("doc") or {})):
                 got = offer_price_from_doc(key, doc["rcept_no"])
-                c["doc"] = dict(doc, **(got or {"price": None, "final": False, "rt_start": None, "rt_end": None}))
+                c["doc"] = dict(doc, **(got or {"price": None, "final": False, "rt_cands": []}))
         # 공개매수신고서: 원문에서 가격·기간·결제일 (최신 신고서가 바뀔 때만 다시 읽는다)
         if top["type"] == "tender" and "공개매수신고서" in top["report_nm"]:
             if (c.get("tender") or {}).get("rcept_no") != top["rcept_no"] and c.get("tender_tries", 0) < 3:
