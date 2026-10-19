@@ -35,9 +35,14 @@ jobs:
           LOOKBACK_DAYS: ${{ inputs.lookback_days || '1' }}
         run: python collector/dart_collect.py
 
+      - name: 대시보드 데이터 생성 (상세·일정·시세)
+        env:
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+        run: python collector/build_view.py
+
       - name: 변경 사항 커밋
         run: |
-          git add data/dart_events.json
+          git add data/dart_events.json data/view.json data/details.json
           if git diff --cached --quiet; then
             echo "변경 없음"
             exit 0
