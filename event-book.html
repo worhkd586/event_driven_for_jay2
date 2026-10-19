@@ -143,6 +143,23 @@ details.add summary { cursor: pointer; padding: 10px 16px; font-size: 13px; colo
 .rule.entry { --rc: var(--up); } .rule.exit { --rc: var(--accent); } .rule.risk { --rc: var(--down); }
 .rule ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 13px; }
 
+/* timeline + calculator */
+.sect { border-top: 1px solid var(--line); padding: 12px 16px 16px; }
+.sect h3 { margin: 0 0 10px; font-size: 13px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.sect h3 small { font-weight: 400; color: var(--muted); font-size: 12px; }
+.steps-wrap { overflow-x: auto; }
+.steps { list-style: none; margin: 0; padding: 0 0 4px; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(118px, 1fr); }
+.steps li { position: relative; padding: 18px 10px 0 0; font-size: 12.5px; }
+.steps li::before { content: ""; position: absolute; top: 5px; left: 0; right: 0; height: 2px; background: var(--line); }
+.steps li::after { content: ""; position: absolute; top: 0; left: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 2px solid var(--muted); box-sizing: border-box; }
+.steps li.key::after { border-color: var(--accent); background: var(--accent); }
+.steps b { display: block; font-weight: 600; }
+.steps span { color: var(--muted); font-size: 11.5px; }
+.calc { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px; }
+@media (max-width: 640px) { .calc { grid-template-columns: minmax(0, 1fr); } }
+.calc-in { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 10px; align-content: start; }
+.calc-in input { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; }
+.calc-note { margin: 8px 0 0; font-size: 12px; color: var(--muted); }
 /* sizing ticket */
 .ticket { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 0; }
 @media (max-width: 920px) { .ticket { grid-template-columns: minmax(0, 1fr); } }
@@ -176,16 +193,16 @@ footer { font-size: 12px; color: var(--muted); }
   <header class="topbar">
     <div class="brand">
       <h1>이벤트 북</h1>
-      <p>공시·수급 이벤트 캘린더와 유형별 플레이북</p>
+      <p>자본·지배구조 이벤트 7종 캘린더와 플레이북</p>
     </div>
     <div class="clock">
-      <span>기준일 <b class="num" id="today">2026-10-14 (수)</b></span>
+      <span>기준일 <b class="num" id="today">—</b></span>
       <span>KST <b class="num" id="kst">--:--</b></span>
       <span class="session-pill" id="session">장 상태</span>
     </div>
   </header>
 
-  <p class="notice"><b>예시 화면</b> · 종목명은 가상이고, 수익률 곡선과 승률은 화면 구성을 보여주기 위한 가정치입니다. 실제 백테스트(DART 공시 시각 기준 이벤트 스터디) 결과로 교체해서 쓰세요.</p>
+  <p class="notice"><b>예시 화면</b> · 종목명은 가상이고, 수익률 곡선과 승률은 화면 구성을 보여주기 위한 가정치입니다. 실제 백테스트(DART 공시 시각 기준 이벤트 스터디) 결과로 교체해서 쓰세요. 일정과 제도는 통상 흐름을 요약한 것이니 건별로 증권신고서와 주요사항보고서를 확인하세요.</p>
 
   <div class="main">
     <section class="panel" aria-labelledby="cal-h">
@@ -198,7 +215,7 @@ footer { font-size: 12px; color: var(--muted); }
       <details class="add" id="add-wrap">
         <summary>이벤트 추가</summary>
         <form class="add-form" id="add-form" novalidate>
-          <div class="field"><label for="f-date">날짜</label><input id="f-date" type="date" required value="2026-10-16"></div>
+          <div class="field"><label for="f-date">날짜</label><input id="f-date" type="date" required value="2026-10-23"></div>
           <div class="field"><label for="f-time">시각</label><input id="f-time" type="text" placeholder="장전 / 15:40 / 미정" value="장후"></div>
           <div class="field"><label for="f-name">종목</label><input id="f-name" type="text" placeholder="종목명" required></div>
           <div class="field"><label for="f-mkt">시장</label><select id="f-mkt"><option>KOSPI</option><option>KOSDAQ</option></select></div>
@@ -228,7 +245,19 @@ footer { font-size: 12px; color: var(--muted); }
       <div class="chart-legend">
         <span><i style="background: var(--accent)"></i>평균 CAR (vs KOSPI/KOSDAQ)</span>
         <span><i style="background: var(--accent-soft)"></i>±1σ 범위</span>
-        <span>T0 = 공시 후 첫 거래 가능 시점</span>
+        <span>T0 = 이사회 결의 공시 후 첫 거래 가능 시점</span>
+      </div>
+      <div class="sect">
+        <h3>주요 일정 흐름 <small>통상 순서 · 건별 공시로 확인</small></h3>
+        <div class="steps-wrap"><ol class="steps" id="pb-steps"></ol></div>
+      </div>
+      <div class="sect">
+        <h3><span id="calc-h">계산기</span> <small>입력값은 예시입니다</small></h3>
+        <div class="calc">
+          <form class="calc-in" id="calc-in" novalidate></form>
+          <div id="calc-out" aria-live="polite"></div>
+        </div>
+        <p class="calc-note" id="calc-note"></p>
       </div>
       <div class="rules" id="pb-rules"></div>
     </section>
@@ -263,114 +292,185 @@ footer { font-size: 12px; color: var(--muted); }
 (function () {
   "use strict";
 
-  // ---- 이벤트 유형별 플레이북 (예시 값) ----
-  // pts: [T, 누적초과수익률 %] 키포인트, sd: T별 표준편차 기본값
+  // ---- 이벤트 유형별 플레이북 (수익률·승률은 예시 값) ----
+  // pts: [T, 누적초과수익률 %] 키포인트, sd: 표준편차 기본값
   var TYPES = {
-    burn: {
-      name: "자사주 소각 결정", bias: "pos",
-      dart: ["주요사항보고서(자기주식소각결정)", "자기주식취득결정"],
-      n: 214, win: 63, t1: 1.9, mdd: -2.4, hold: "T0~T+5",
-      pts: [[-5, 0], [-1, 0.4], [0, 2.3], [3, 3.1], [10, 3.6], [20, 3.9]], sd: 2.2,
-      entry: ["장후 공시면 익일 동시호가 참여, 시가 갭 3% 이내일 때만", "시총 대비 소각 규모 1% 이상 우선", "'취득 후 소각' 계획은 실제 소각보다 약하게 봄"],
-      exit: ["T+3 이후 전일 저가 이탈 시 정리", "T+5 시간 청산 기본", "갭 5% 이상 출발은 첫 30분 고점 대비 -2%에서 절반"],
-      risk: ["밸류업 공시와 동시 발표면 이미 선반영된 경우 많음", "대주주 지분 매각과 묶인 소각은 제외", "저유동성 종목은 동시호가 체결 슬리피지 확인"]
-    },
     rights: {
-      name: "유상증자 (주주배정)", bias: "neg",
-      dart: ["주요사항보고서(유상증자결정)", "증권신고서(지분증권)"],
-      n: 168, win: 71, t1: -6.4, mdd: -1.8, hold: "T0~신주상장",
+      name: "유상증자", bias: "neg", side: "발행회사",
+      dart: ["주요사항보고서(유상증자결정)", "증권신고서(지분증권)", "투자설명서"],
+      n: 168, win: 71, t1: -6.4, hold: "T0~신주상장",
       pts: [[-5, 0], [-1, -0.6], [0, -6.8], [2, -8.1], [10, -9.4], [20, -10.6]], sd: 3.4,
-      entry: ["대차 가능 물량 확인 후 T0 반등 시 숏", "할인율 25% 이상, 증자 규모 시총 20% 이상 우선", "1차 발행가 산정일 전후 하방 압력 집중"],
-      exit: ["권리락 당일 절반 커버", "신주 상장 전일 전량 커버", "최대주주 100% 청약 공시 시 즉시 커버"],
-      risk: ["공매도 규제·대차 리콜 확인", "시설투자 목적 + 업황 호재 시 반등 사례", "상한가 근접 숏 금지 (가격제한폭 ±30%)"]
+      steps: [["이사회 결의", "주요사항보고서", 1], ["증권신고서 제출", "예정발행가·할인율"], ["권리락", "신주배정기준일 전 거래일", 1], ["신주인수권증서 거래", "증서 상장·매매"], ["확정발행가 산정", "청약일 전 기준"], ["구주주 청약", "실권주 일반공모"], ["납입·신주상장", "상장일 매도 물량", 1]],
+      entry: ["배정방식부터 구분: 주주배정·일반공모는 하방, 제3자배정(전략적 투자자)은 상방 사례 많음", "증자 규모 시총 대비 20% 이상, 할인율 25% 이상 주주배정은 T0 반등 시 숏 (대차 확인)", "신주인수권증서 이론가 대비 증서 할인 시 증서 매수 + 본주 숏 차익"],
+      exit: ["권리락일 절반 커버", "신주 상장 전일 전량 커버 (상장일 물량 출회 회피)", "최대주주 100% 청약·추가 출자 공시 시 즉시 커버"],
+      risk: ["확정발행가가 예정가보다 낮아지면 희석 확대", "시설투자 목적 + 업황 호재면 반등", "대차 리콜과 공매도 규제, 상한가 근접 숏 금지"]
     },
     bonus: {
-      name: "무상증자 결정", bias: "mix",
+      name: "무상증자", bias: "mix", side: "발행회사",
       dart: ["주요사항보고서(무상증자결정)"],
-      n: 97, win: 58, t1: 8.7, mdd: -9.5, hold: "T0~T+2",
+      n: 97, win: 58, t1: 8.7, hold: "T0~T+2",
       pts: [[-5, 0], [-1, 0.8], [0, 9.2], [1, 11.4], [5, 7.0], [10, 4.1], [20, 1.8]], sd: 6.5,
-      entry: ["T0 상한가 미진입·첫 눌림에서만 짧게", "1주당 배정 1주 이상일 때만 관심", "권리락 이후 착시 반등은 별도 트레이드로 분리"],
-      exit: ["T+1~T+2 고점권 분할 청산", "VI 발동 후 재개 첫 5분 내 고점 갱신 실패 시 정리", "권리락일 전 전량 정리 기본"],
-      risk: ["펀더멘털 변화 없음, 수급만으로 움직이는 이벤트", "T+5 이후 평균 되돌림이 큼", "소형주 위주라 체결 강도 급변"]
-    },
-    k200: {
-      name: "KOSPI200 정기변경 편입", bias: "pos",
-      dart: ["거래소 공지: KOSPI200 구성종목 정기변경"],
-      n: 86, win: 66, t1: 1.2, mdd: -3.1, hold: "발표~변경 전일",
-      pts: [[-5, 0], [0, 1.1], [5, 3.0], [10, 4.6], [12, 5.0], [14, 3.4], [20, 2.2]], sd: 2.8,
-      entry: ["예상 편입 종목 사전 포지션은 발표 2~3주 전부터 분할", "패시브 예상 매수 수요 ÷ 일평균 거래대금 비율로 순위", "발표일 갭 크면 추격 매수 대신 눌림 대기"],
-      exit: ["변경 기준일(선물옵션 만기 다음 거래일) 전일 종가 동시호가에서 청산", "만기일 프로그램 매수와 맞춰 물량 넘김", "기준일 이후 보유하지 않음"],
-      risk: ["편출 종목은 대칭 숏이 아니라 대차 가능 여부부터", "선반영이 큰 해는 발표 후 하락", "특례 편입·유동비율 변경 공지 확인"]
-    },
-    earn: {
-      name: "잠정실적 서프라이즈", bias: "pos",
-      dart: ["연결재무제표기준영업(잠정)실적(공정공시)"],
-      n: 342, win: 61, t1: 3.8, mdd: -2.9, hold: "T0~T+10",
-      pts: [[-5, 0], [-1, 0.3], [0, 4.1], [2, 4.9], [10, 6.0], [20, 6.6]], sd: 3.6,
-      entry: ["영업이익이 컨센서스를 20% 이상 상회할 때만", "일회성 이익 제외한 영업이익 기준으로 판단", "장중 공시는 VI 해제 후 첫 눌림, 장후 공시는 익일 시가"],
-      exit: ["T+10 시간 청산 (PEAD 구간)", "증권사 목표가 상향이 몰리는 T+1~T+2에 일부 차익", "T0 저가 이탈 시 전량"],
-      risk: ["컨센서스 표본 3개 미만이면 신뢰 낮음", "실적 시즌 후반엔 섹터 내 선반영", "가이던스 하향 동반 시 반대 방향"]
-    },
-    block: {
-      name: "대주주 블록딜", bias: "neg",
-      dart: ["최대주주등소유주식변동신고서", "임원ㆍ주요주주특정증권등소유상황보고서"],
-      n: 131, win: 57, t1: -4.6, mdd: -3.8, hold: "T0 장중",
-      pts: [[-5, 0], [-1, -0.4], [0, -5.2], [1, -4.7], [5, -3.6], [10, -3.0], [20, -2.5]], sd: 2.9,
-      entry: ["시간외 대량매매 할인율 확인 후 T0 시가 대응", "할인율보다 시가 하락폭이 크면 반등 롱 검토", "보호예수 기간 없는 잔여 물량이 남았으면 숏 유지"],
-      exit: ["블록딜 가격 근처 도달 시 숏 커버", "반등 롱은 T0 당일 청산", "추가 매각 공시 시 즉시 재평가"],
-      risk: ["매수자가 장기 투자자로 알려지면 반등 강함", "외국인 한도 소진 종목은 별도", "공시 시각과 뉴스 시각 차이 확인"]
-    },
-    lockup: {
-      name: "보호예수 해제", bias: "neg",
-      dart: ["거래소: 의무보유 등록 해제 예정 안내", "증권신고서 내 의무보유 확약 비율"],
-      n: 158, win: 59, t1: -1.4, mdd: -2.2, hold: "T-5~T+1",
-      pts: [[-5, 0], [-3, -1.2], [-1, -2.6], [0, -3.9], [1, -4.2], [5, -3.6], [20, -2.8]], sd: 3.1,
-      entry: ["해제 물량 ÷ 유통주식 10% 이상 우선", "상장 후 1개월·3개월 확약 해제일 기준", "공모가 대비 수익 구간이 클수록 매도 압력 큼"],
-      exit: ["해제일 T0~T+1 거래량 정점 확인 후 커버", "해제 물량 대비 누적 거래량 100% 소화 시 종료", "VC 지분 매각 공시 확인"],
-      risk: ["공모가 하회 구간이면 매도 압력 약함", "해제 일정은 이미 알려진 정보라 선반영", "IPO 직후 대차 물량 부족"]
+      steps: [["이사회 결의", "배정비율 공시", 1], ["신주배정기준일 공고", ""], ["권리락", "기준일 전 거래일 · 기준가 조정", 1], ["신주배정기준일", ""], ["신주상장", "유통주식 증가", 1]],
+      entry: ["T0 상한가 미진입, 첫 눌림에서만 짧게", "1주당 배정 1주 이상일 때만 관심", "권리락 후 '싸 보이는 착시' 반등은 별도 트레이드로 분리"],
+      exit: ["T+1~T+2 고점권 분할 청산", "VI 발동 후 재개 5분 내 고점 갱신 실패 시 정리", "권리락일 전 전량 정리 기본"],
+      risk: ["펀더멘털 변화 없는 수급 이벤트", "T+5 이후 평균 되돌림이 큼", "신주상장일 물량 출회"]
     },
     tender: {
-      name: "공개매수 발표", bias: "pos",
-      dart: ["공개매수신고서", "공개매수설명서"],
-      n: 41, win: 82, t1: 16.8, mdd: -1.2, hold: "T0~공개매수 종료",
+      name: "공개매수", bias: "pos", side: "대상회사",
+      dart: ["공개매수신고서", "공개매수설명서", "공개매수결과보고서"],
+      n: 41, win: 82, t1: 16.8, hold: "T0~결제일",
       pts: [[-5, 0], [-1, 1.4], [0, 17.5], [2, 18.6], [10, 19.0], [20, 19.3]], sd: 4.0,
-      entry: ["공개매수가 대비 괴리율이 남아 있을 때만 차익거래", "응모 목표 수량과 상한 확인 (전량 매수 여부)", "경쟁 공개매수 가능성 있으면 상방 옵션 가치"],
-      exit: ["응모 후 결제일까지 보유 또는 괴리 축소 시 장내 매도", "상장폐지 목적이면 잔여 주주 리스크 계산", "경쟁 매수자 등장 시 재평가"],
-      risk: ["안분 비례 매수 시 미매수분 가격 급락", "공개매수 철회 조건 확인", "자금 묶이는 기간 대비 연환산 수익률로 비교"]
+      steps: [["공개매수 공고·신고서", "매수가·수량·기간", 1], ["대상회사 의견표명", ""], ["청약 기간", "20~60일", 1], ["정정·경쟁 공개매수", "가격 상향 가능"], ["결과 공고", "안분 비율 확정"], ["결제", "미매수분 반환", 1]],
+      entry: ["공개매수가 대비 괴리율이 남았을 때만 차익거래", "전량 매수인지, 상한이 있어 안분 매수인지 먼저 확인", "경쟁 공개매수·가격 상향 가능성은 상방 옵션"],
+      exit: ["응모 후 결제 대기 또는 괴리 축소 시 장내 매도", "자진 상폐 목적이면 잔여 주식 처리 방식 확인", "경쟁 매수자 등장 시 재평가"],
+      risk: ["안분 매수 시 미매수분이 결과 공고 후 급락", "철회 조건과 자금조달 증빙 확인", "자금이 묶이는 기간 대비 연환산 수익률로 비교"]
+    },
+    split: {
+      name: "물적분할", bias: "neg", side: "분할회사(모회사)",
+      dart: ["주요사항보고서(회사분할결정)", "주주보호방안"],
+      n: 64, win: 68, t1: -4.6, hold: "T0~주총",
+      pts: [[-5, 0], [-1, -0.5], [0, -4.8], [3, -6.2], [10, -5.4], [20, -4.6]], sd: 3.0,
+      steps: [["이사회 결의", "분할 대상 사업부", 1], ["주총 기준일", ""], ["반대의사 통지", "주총 전"], ["임시주총", "특별결의", 1], ["주식매수청구", "반대주주 하방 보호"], ["분할기일", "신설법인 설립", 1], ["자회사 상장 추진", "중복상장 할인"]],
+      entry: ["핵심 사업부 분할 + 자회사 상장 계획 언급 시 T0 반등 숏", "주식매수청구가 아래로 밀리면 매수청구가를 하방으로 두고 롱", "국민연금·외국인 지분율 높으면 주총 부결 가능성 반영"],
+      exit: ["주총 결과 공시 직후 방향 정리", "매수청구 롱은 청구 행사 또는 매수청구가 근접 시 청산", "자회사 비상장 확약 등 주주보호방안 발표 시 숏 커버"],
+      risk: ["주총 부결·철회 시 급반등", "매수청구 규모가 한도를 넘으면 분할 무산 조항", "인적분할 병행 여부 확인"]
+    },
+    merge: {
+      name: "인수합병", bias: "mix", side: "피합병(대상)회사",
+      dart: ["주요사항보고서(회사합병결정)", "증권신고서(합병)", "최대주주변경을수반하는주식양수도계약체결"],
+      n: 112, win: 64, t1: 7.2, hold: "T0~합병기일",
+      pts: [[-5, 0], [-1, 1.5], [0, 7.8], [3, 8.6], [10, 8.9], [20, 9.4]], sd: 5.5,
+      steps: [["이사회 결의", "합병비율 공시", 1], ["증권신고서", "외부평가"], ["주총 기준일", ""], ["임시주총", "반대의사 통지 주주", 1], ["주식매수청구", "주총 후 20일 이내"], ["채권자 이의", ""], ["합병기일", ""], ["신주상장", "대상주 거래정지 후 전환", 1]],
+      entry: ["합병비율 스프레드: 대상 매수 + 존속(인수)사 비율만큼 숏", "스프레드 연환산이 조달·대차비용보다 클 때만", "계열사 합병은 합병비율이 시가 기준이라 소수주주 불리 이슈 확인"],
+      exit: ["스프레드 1% 이내 수렴 시 청산", "신주상장 전 대상주 거래정지일 전에 포지션 정리 또는 상장일 숏 커버 계획", "매수청구가가 시가 위면 청구 행사로 청산"],
+      risk: ["주총 부결·매수청구 한도 초과로 합병 무산", "공정위·해외 기업결합 심사 지연", "존속사 숏 대차 리콜"]
+    },
+    exchange: {
+      name: "주식교환", bias: "pos", side: "완전자회사 대상",
+      dart: ["주요사항보고서(주식교환ㆍ이전결정)", "증권신고서(주식의포괄적교환ㆍ이전)"],
+      n: 58, win: 74, t1: 9.1, hold: "T0~교환일",
+      pts: [[-5, 0], [-1, 0.9], [0, 9.6], [2, 10.8], [10, 11.2], [20, 11.5]], sd: 4.2,
+      steps: [["이사회 결의", "교환비율 공시", 1], ["주총 기준일", ""], ["임시주총", "소규모 교환은 이사회 갈음", 1], ["주식매수청구", "반대주주"], ["교환일", "자회사 상장폐지"], ["모회사 신주상장", "", 1]],
+      entry: ["교환비율 스프레드: 자회사 매수 + 모회사 비율만큼 숏", "자회사 측 매수청구가가 시가 위면 하방 보호", "모회사가 자사주로 교환하면 신주 희석 없음"],
+      exit: ["스프레드 수렴 또는 교환일 전 정리", "모회사 신주상장일 숏 커버", "매수청구가 > 시가면 청구 행사"],
+      risk: ["주총 부결 시 자회사 주가 원위치", "교환비율 산정 불공정 소송", "모회사 숏 대차 비용"]
+    },
+    bw: {
+      name: "BW 발행 (공모)", bias: "neg", side: "발행회사",
+      dart: ["주요사항보고서(신주인수권부사채권발행결정)", "증권신고서(채무증권)"],
+      n: 143, win: 62, t1: -3.6, hold: "T0~워런트 상장",
+      pts: [[-5, 0], [-1, -0.4], [0, -3.9], [3, -5.1], [10, -6.0], [20, -6.8]], sd: 3.2,
+      steps: [["이사회 결의", "발행금액·행사가", 1], ["증권신고서", "구주주 우선배정"], ["구주주 청약", "실권분 일반공모"], ["납입", ""], ["신주인수권증권 상장", "분리형 워런트 매매", 1], ["행사가 조정(리픽싱)", "하한 확인"], ["행사 기간", "오버행", 1]],
+      entry: ["발행금액 ÷ 시총 10% 이상이면 T0 반등 시 숏", "청약 배정 BW 받고 워런트 상장 후 매도 + 본주 헤지 (워런트 차익)", "행사가 대비 현재가 괴리로 행사 가능성 판단"],
+      exit: ["워런트 상장일 워런트 매도·헤지 해제", "행사가 리픽싱 하한 도달 후 숏 커버", "행사 물량 출회 확인 후 정리"],
+      risk: ["리픽싱 하한까지 내려가면 희석 최대", "자금 사용 목적이 운영자금·차환이면 더 약함", "워런트 상장 첫날 가격 변동 큼"]
     }
   };
-  var ORDER = ["earn", "burn", "k200", "tender", "bonus", "rights", "block", "lockup"];
+  var ORDER = ["rights", "bonus", "tender", "split", "merge", "exchange", "bw"];
   var BIAS_LABEL = { pos: "상방", neg: "하방", mix: "양방" };
+
+  // ---- 유형별 계산기 ----
+  var pct = function (x) { return { v: (x > 0 ? "+" : "") + (x * 100).toFixed(2) + "%", c: x >= 0 ? "up" : "down" }; };
+  var won = function (x) { return { v: fmt(Math.round(x)) + "원" }; };
+  function spreadCalc(lbl) {
+    return {
+      title: lbl.title,
+      fields: [["tgt", lbl.tgt, 12350], ["acq", lbl.acq, 31800], ["ratio", lbl.ratio, 0.4127], ["days", "완료까지 일수", 74], ["appr", lbl.tgt.replace("주가", "매수청구가"), 11900], ["lot", lbl.tgt.replace("주가", "매수 수량"), 10000]],
+      out: function (v) {
+        var implied = v.acq * v.ratio, sp = implied / v.tgt - 1;
+        return [["내재가치 (" + lbl.acq.replace(" 주가", "") + " × 비율)", won(implied)], ["스프레드", pct(sp)], ["연환산", pct(sp * 365 / Math.max(1, v.days))],
+          ["매수청구가 하방", pct(v.appr / v.tgt - 1)], ["헤지 숏 수량", { v: fmt(Math.round(v.lot * v.ratio)) + "주" }], ["기대 차익 (수렴 시)", won((implied - v.tgt) * v.lot)]];
+      },
+      note: lbl.note
+    };
+  }
+  var CALC = {
+    rights: {
+      title: "권리락 이론가 (TERP)",
+      fields: [["p", "기준주가", 9870], ["disc", "할인율 (%)", 25], ["r", "증자비율 (구주 1주당 신주)", 0.45]],
+      out: function (v) {
+        var I = roundTick(v.p * (1 - v.disc / 100), 0), terp = (v.p + v.r * I) / (1 + v.r);
+        return [["예정발행가", won(I)], ["권리락 이론가", won(terp)], ["권리락 하락폭", pct(terp / v.p - 1)], ["신주인수권증서 이론가", won(terp - I)], ["희석률", { v: (v.r / (1 + v.r) * 100).toFixed(1) + "%" }]];
+      },
+      note: "실제 발행가는 기준일 전 가중산술평균주가로 산정하고 확정발행가에서 다시 바뀝니다."
+    },
+    bonus: {
+      title: "권리락 기준가",
+      fields: [["p", "권리락 전일 종가", 15200], ["r", "배정비율 (1주당)", 1]],
+      out: function (v) {
+        var b = v.p / (1 + v.r);
+        return [["권리락 기준가", won(b)], ["호가단위 반영", won(roundTick(b, 0))], ["기준가 하락폭", pct(b / v.p - 1)], ["주식수 증가", { v: "×" + (1 + v.r).toFixed(2) }]];
+      },
+      note: "기준가 = 전일 종가 × 기존 주식수 ÷ (기존 + 신주). 상하한가 ±30%는 조정된 기준가에서 계산합니다."
+    },
+    tender: {
+      title: "공개매수 기대수익",
+      fields: [["p", "현재가", 17600], ["o", "공개매수가", 18500], ["a", "예상 매수비율 (%)", 100], ["f", "미매수분 예상가", 14000], ["days", "결제까지 일수", 28]],
+      out: function (v) {
+        var a = v.a / 100, ev = a * v.o + (1 - a) * v.f, r = ev / v.p - 1, be = (v.p - v.f) / (v.o - v.f);
+        return [["괴리율 (전량 매수 시)", pct(v.o / v.p - 1)], ["기대가치", won(ev)], ["기대수익", pct(r)], ["연환산", pct(r * 365 / Math.max(1, v.days))], ["손익분기 매수비율", { v: (be * 100).toFixed(1) + "%" }]];
+      },
+      note: "응모 예정 수량이 매수 예정 수량을 넘으면 안분 비례로 매수하고 나머지는 돌려받습니다."
+    },
+    split: {
+      title: "분할 후 SOTP와 매수청구가",
+      fields: [["p", "현재가", 48500], ["appr", "주식매수청구가", 46300], ["newco", "신설법인 가치 (억원)", 32000], ["remain", "존속 사업가치 (억원)", 18000], ["disc", "자회사 지분 할인율 (%)", 40], ["shares", "발행주식수 (만주)", 10200]],
+      out: function (v) {
+        var sh = v.shares * 1e4, rem = v.remain * 1e8 / sh, sub = v.newco * (1 - v.disc / 100) * 1e8 / sh, sotp = rem + sub;
+        return [["존속 사업 주당가치", won(rem)], ["자회사 지분 주당가치 (할인 후)", won(sub)], ["SOTP 주당가치", won(sotp)], ["현재가 대비", pct(sotp / v.p - 1)], ["매수청구가 하방", pct(v.appr / v.p - 1)]];
+      },
+      note: "자회사 상장 시 지주 할인이 커지는 점을 할인율로 반영합니다. 순차입금이 있으면 존속 사업가치에서 빼서 넣으세요."
+    },
+    merge: spreadCalc({ title: "합병비율 스프레드", tgt: "대상 주가", acq: "존속사 주가", ratio: "합병비율 (대상 1주당)", note: "대상주는 합병기일 전후 거래정지 구간이 있어 그 기간 동안 헤지만 남습니다. 대차비용을 연환산 수익에서 빼세요." }),
+    exchange: (function () {
+      var c = spreadCalc({ title: "교환비율 스프레드", tgt: "자회사 주가", acq: "모회사 주가", ratio: "교환비율 (자회사 1주당)", note: "모회사가 자사주로 교환 대가를 주면 신주상장 물량이 없어 숏 커버 부담이 작습니다." });
+      c.fields = [["tgt", "자회사 주가", 8420], ["acq", "모회사 주가", 30500], ["ratio", "교환비율 (자회사 1주당)", 0.2856], ["days", "완료까지 일수", 52], ["appr", "자회사 매수청구가", 8150], ["lot", "자회사 매수 수량", 20000]];
+      return c;
+    })(),
+    bw: {
+      title: "희석률과 워런트 가치",
+      fields: [["p", "현재가", 23900], ["x", "행사가", 21450], ["amt", "발행금액 (억원)", 300], ["shares", "발행주식수 (만주)", 2850], ["floor", "리픽싱 하한 (%)", 70]],
+      out: function (v) {
+        var sh = v.shares * 1e4, n0 = v.amt * 1e8 / v.x, xf = roundTick(v.x * v.floor / 100, 0), n1 = v.amt * 1e8 / xf;
+        return [["행사 시 신주", { v: fmt(Math.round(n0)) + "주" }], ["희석률 (현재 행사가)", { v: (n0 / sh * 100).toFixed(1) + "%" }], ["리픽싱 하한 행사가", won(xf)], ["최대 희석률 (하한)", { v: (n1 / sh * 100).toFixed(1) + "%" }], ["워런트 내재가치 (주당)", won(Math.max(0, v.p - v.x))], ["현재가 vs 행사가", pct(v.p / v.x - 1)]];
+      },
+      note: "공모 BW는 분리형 발행이 가능해 신주인수권증권이 따로 상장됩니다. 행사 개시일과 리픽싱 조건은 증권신고서에서 확인하세요."
+    }
+  };
 
   // ---- 예시 캘린더 (가상 종목) ----
   var SAMPLE = [
-    { d: "2026-10-14", t: "07:30", n: "한결전자", m: "KOSPI", k: "earn", note: "3Q 잠정실적 · 영업이익 컨센 대비 +24%" },
-    { d: "2026-10-14", t: "15:52", n: "누리바이오", m: "KOSDAQ", k: "rights", note: "주주배정 유증 1,200억 · 시총 대비 31%" },
-    { d: "2026-10-15", t: "장전", n: "다온화학", m: "KOSPI", k: "block", note: "2대 주주 지분 4.1% 시간외 매각 · 할인율 8%" },
-    { d: "2026-10-15", t: "장후", n: "새벽소재", m: "KOSPI", k: "burn", note: "자사주 2.3% 소각 결정 예상 (이사회)" },
-    { d: "2026-10-16", t: "09:00", n: "온빛로보틱스", m: "KOSDAQ", k: "lockup", note: "상장 3개월 확약 해제 · 유통주식 대비 18%" },
-    { d: "2026-10-19", t: "장후", n: "가람소프트", m: "KOSDAQ", k: "bonus", note: "1주당 1주 무상증자 이사회 예정" },
-    { d: "2026-10-21", t: "장전", n: "한빛금융지주", m: "KOSPI", k: "tender", note: "자진 상폐 목적 공개매수 · 매수가 18,500원" },
-    { d: "2026-10-22", t: "15:40", n: "세움건설", m: "KOSPI", k: "earn", note: "3Q 잠정실적 · 컨센 표본 5개" },
-    { d: "2026-10-27", t: "장전", n: "모아에너지", m: "KOSPI", k: "earn", note: "3Q 잠정실적 · 원가 하락 반영 여부" },
-    { d: "2026-11-27", t: "장후", n: "KOSPI200 정기변경", m: "KOSPI", k: "k200", note: "예상 편입 후보 4종목 · 패시브 수요/거래대금 1.8~3.2일" }
+    { d: "2026-10-19", t: "15:52", n: "누리바이오", m: "KOSDAQ", k: "rights", note: "주주배정 후 실권주 일반공모 1,200억 · 시총 대비 31% · 할인율 25%" },
+    { d: "2026-10-20", t: "장후", n: "가람소프트", m: "KOSDAQ", k: "bonus", note: "1주당 1주 무상증자 · 권리락 10/30 예정" },
+    { d: "2026-10-21", t: "장전", n: "한빛금융지주", m: "KOSPI", k: "tender", note: "자진 상폐 목적 · 매수가 18,500원 · 청약 10/21~11/10" },
+    { d: "2026-10-22", t: "16:10", n: "다온화학", m: "KOSPI", k: "split", note: "배터리소재 사업부 물적분할 · 신설법인 상장 계획 미정" },
+    { d: "2026-10-23", t: "장후", n: "세움건설", m: "KOSPI", k: "merge", note: "세움엔지니어링 흡수합병 · 합병비율 1 : 0.4127" },
+    { d: "2026-10-26", t: "장전", n: "모아솔라", m: "KOSDAQ", k: "exchange", note: "모아에너지 완전자회사화 · 교환비율 1 : 0.2856 · 자사주 교부" },
+    { d: "2026-10-28", t: "장후", n: "온빛로보틱스", m: "KOSDAQ", k: "bw", note: "공모 분리형 BW 300억 · 구주주 우선청약 · 행사가 21,450원" },
+    { d: "2026-10-30", t: "09:00", n: "가람소프트", m: "KOSDAQ", k: "bonus", note: "권리락일 · 기준가 조정" },
+    { d: "2026-11-06", t: "—", n: "다온화학", m: "KOSPI", k: "split", note: "분할 승인 임시주총 기준일 · 반대의사 통지 준비" },
+    { d: "2026-11-10", t: "15:30", n: "한빛금융지주", m: "KOSPI", k: "tender", note: "공개매수 청약 마감" },
+    { d: "2026-11-12", t: "10:00", n: "누리바이오", m: "KOSDAQ", k: "rights", note: "신주인수권증서 상장 예정" },
+    { d: "2026-11-27", t: "10:00", n: "세움건설", m: "KOSPI", k: "merge", note: "합병 승인 임시주총 · 매수청구가 11,900원 (대상)" }
   ];
 
-  var STORE_KEY = "eventbook.mine.v1";
-  function loadMine() { try { var v = JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+  var STORE_KEY = "eventbook.mine.v2";
+  function loadMine() { try { var v = JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); return Array.isArray(v) ? v.filter(function (e) { return TYPES[e.k]; }) : []; } catch (e) { return []; } }
   function saveMine(list) { try { localStorage.setItem(STORE_KEY, JSON.stringify(list)); return true; } catch (e) { return false; } }
 
-  var state = { filter: "all", type: "earn", sel: null, mine: loadMine() };
+  var state = { filter: "all", type: "rights", sel: null, mine: loadMine(), calc: {} };
   var $ = function (id) { return document.getElementById(id); };
   var fmt = function (x, d) { return Number(x).toLocaleString("ko-KR", { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); };
   var sgn = function (x, d) { return (x > 0 ? "+" : "") + Number(x).toFixed(d == null ? 1 : d); };
   var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var WD = ["일", "월", "화", "수", "목", "금", "토"];
+  function kstNow() { return new Date(Date.now() + 9 * 3600e3); }
+  function todayKey() { return kstNow().toISOString().slice(0, 10); }
 
   // ---- 시계 / 장 상태 ----
   function tick() {
-    var now = new Date(Date.now() + 9 * 3600e3); // KST
-    var hh = now.getUTCHours(), mm = now.getUTCMinutes(), dow = now.getUTCDay();
+    var now = kstNow(), hh = now.getUTCHours(), mm = now.getUTCMinutes(), dow = now.getUTCDay();
+    $("today").textContent = todayKey() + " (" + WD[dow] + ")";
     $("kst").textContent = String(hh).padStart(2, "0") + ":" + String(mm).padStart(2, "0");
     var m = hh * 60 + mm, label = "장 마감", live = 0;
     if (dow === 0 || dow === 6) label = "휴장";
@@ -398,12 +498,12 @@ footer { font-size: 12px; color: var(--muted); }
     var list = allEvents().filter(function (e) { return state.filter === "all" || e.k === state.filter; });
     $("cal-count").textContent = list.length + "건";
     if (!list.length) { $("cal").innerHTML = '<li class="empty">이 유형의 예정 이벤트가 없습니다. 아래 \'이벤트 추가\'로 등록하세요.</li>'; return; }
-    var html = "", last = "";
+    var html = "", last = "", today = new Date(todayKey() + "T00:00:00Z");
     list.forEach(function (e) {
       if (e.d !== last) {
         last = e.d;
         var dt = new Date(e.d + "T00:00:00Z");
-        var diff = Math.round((dt - new Date("2026-10-14T00:00:00Z")) / 864e5);
+        var diff = Math.round((dt - today) / 864e5);
         var rel = diff === 0 ? "오늘" : diff > 0 ? "D-" + diff : "D+" + (-diff);
         html += '<li class="day-label"><span class="num">' + e.d.slice(5).replace("-", ".") + " (" + WD[dt.getUTCDay()] + ")</span><span>" + rel + "</span></li>";
       }
@@ -427,8 +527,7 @@ footer { font-size: 12px; color: var(--muted); }
         if (t >= p[i][0] && t <= p[i + 1][0]) { var r = (t - p[i][0]) / (p[i + 1][0] - p[i][0]); v = p[i][1] + r * (p[i + 1][1] - p[i][1]); break; }
       }
       v += t === 0 || t === -5 ? 0 : Math.sin(t * 1.7 + T.n) * 0.18;
-      var sd = T.sd * (0.35 + 0.65 * Math.min(1, Math.sqrt(Math.abs(t) + 1) / 4.6));
-      if (t === -5) sd = 0;
+      var sd = t === -5 ? 0 : T.sd * (0.35 + 0.65 * Math.min(1, Math.sqrt(Math.abs(t) + 1) / 4.6));
       out.push({ t: t, v: v, sd: sd });
     }
     return out;
@@ -480,11 +579,37 @@ footer { font-size: 12px; color: var(--muted); }
     hit.addEventListener("pointermove", move);
     hit.addEventListener("pointerleave", function () { tip.hidden = true; hov.setAttribute("visibility", "hidden"); dot.setAttribute("visibility", "hidden"); });
   }
+  function renderCalcInputs() {
+    var C = CALC[state.type], saved = state.calc[state.type] || {};
+    $("calc-h").textContent = C.title;
+    $("calc-note").textContent = C.note;
+    $("calc-in").innerHTML = C.fields.map(function (f) {
+      var id = "c-" + state.type + "-" + f[0], v = saved[f[0]] != null ? saved[f[0]] : f[2];
+      return '<div class="field"><label for="' + id + '">' + f[1] + '</label><input id="' + id + '" data-k="' + f[0] + '" inputmode="decimal" value="' + (Math.abs(v) >= 1000 ? fmt(v) : v) + '"></div>';
+    }).join("");
+    renderCalcOut();
+  }
+  function renderCalcOut() {
+    var C = CALC[state.type], v = {}, ok = true;
+    C.fields.forEach(function (f) {
+      var el = $("c-" + state.type + "-" + f[0]);
+      var n = parseFloat(String(el ? el.value : f[2]).replace(/[^0-9.\-]/g, ""));
+      if (!isFinite(n)) ok = false;
+      v[f[0]] = n;
+    });
+    state.calc[state.type] = v;
+    if (!ok) { $("calc-out").innerHTML = '<p class="empty">모든 칸에 숫자를 입력하면 결과가 나옵니다.</p>'; return; }
+    var rows = C.out(v);
+    $("calc-out").innerHTML = '<dl class="kv" style="grid-template-columns:minmax(0,1fr)">' + rows.map(function (r) {
+      var val = isFinite(parseFloat(String(r[1].v).replace(/[^0-9.\-]/g, ""))) ? r[1].v : "—";
+      return "<div><dt>" + r[0] + '</dt><dd class="' + (r[1].c || "") + '">' + val + "</dd></div>";
+    }).join("") + "</dl>";
+  }
   function renderPlaybook() {
     var T = TYPES[state.type], S = series(T);
     $("pb-name").textContent = T.name;
     $("pb-type").value = state.type;
-    $("pb-dart").innerHTML = "DART·거래소 키워드 " + T.dart.map(function (d) { return "<code>" + esc(d) + "</code>"; }).join(" ");
+    $("pb-dart").innerHTML = "기준: " + esc(T.side) + " · DART 키워드 " + T.dart.map(function (d) { return "<code>" + esc(d) + "</code>"; }).join(" ");
     var car20 = S[S.length - 1].v;
     var cls = function (v) { return v >= 0 ? "up" : "down"; };
     $("pb-stats").innerHTML =
@@ -493,12 +618,14 @@ footer { font-size: 12px; color: var(--muted); }
       '<div><div class="k">T0 평균</div><div class="v ' + cls(T.t1) + '">' + sgn(T.t1) + "%</div></div>" +
       '<div><div class="k">T+20 CAR</div><div class="v ' + cls(car20) + '">' + sgn(car20) + "%</div></div>" +
       '<div><div class="k">권장 보유</div><div class="v" style="font-size:15px;font-family:var(--font-body)">' + T.hold + "</div></div>";
+    $("pb-steps").innerHTML = T.steps.map(function (s) { return '<li class="' + (s[2] ? "key" : "") + '"><b>' + esc(s[0]) + "</b>" + (s[1] ? "<span>" + esc(s[1]) + "</span>" : "") + "</li>"; }).join("");
     function ul(a) { return "<ul>" + a.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ul>"; }
     $("pb-rules").innerHTML =
       '<div class="rule entry"><h3>진입 조건</h3>' + ul(T.entry) + "</div>" +
       '<div class="rule exit"><h3>청산 규칙</h3>' + ul(T.exit) + "</div>" +
       '<div class="rule risk"><h3>리스크 체크</h3>' + ul(T.risk) + "</div>";
     renderChart(T);
+    renderCalcInputs();
   }
 
   // ---- 포지션 사이징 ----
@@ -517,7 +644,6 @@ footer { font-size: 12px; color: var(--muted); }
     if (!(cap > 0 && entry > 0 && stop > 0)) { out.innerHTML = '<p class="empty">운용 한도, 진입가, 손절가를 입력하면 주문 수량을 계산합니다.</p>'; return; }
     var wrong = buy ? stop >= entry : stop <= entry;
     if (wrong) { out.innerHTML = '<p class="warn">' + (buy ? "매수 손절가는 진입가보다 낮아야 합니다." : "매도 손절가는 진입가보다 높아야 합니다.") + "</p>"; return; }
-    // 1주당 손실: 가격차 + 왕복 수수료 + 매도 측 거래세
     var sellPx = buy ? stop : entry;
     var perShare = Math.abs(entry - stop) + (entry + stop) * fee + sellPx * tax;
     var byRisk = Math.floor(cap * risk / perShare);
@@ -568,8 +694,9 @@ footer { font-size: 12px; color: var(--muted); }
     renderChips(); renderCal();
   });
   function pick(li) {
-    state.sel = li.dataset.id; state.type = li.dataset.k;
-    renderCal(); renderPlaybook();
+    state.sel = li.dataset.id;
+    if (state.type !== li.dataset.k) { state.type = li.dataset.k; renderPlaybook(); }
+    renderCal();
   }
   $("cal").addEventListener("click", function (e) {
     var d = e.target.closest("[data-del]");
@@ -584,6 +711,8 @@ footer { font-size: 12px; color: var(--muted); }
     var li = e.target.closest(".ev"); if (li) { e.preventDefault(); pick(li); }
   });
   $("pb-type").addEventListener("change", function () { state.type = this.value; state.sel = null; renderPlaybook(); renderCal(); });
+  $("calc-in").addEventListener("input", renderCalcOut);
+  $("calc-in").addEventListener("submit", function (e) { e.preventDefault(); });
   $("add-form").addEventListener("submit", function (e) {
     e.preventDefault();
     var name = $("f-name").value.trim(), d = $("f-date").value;
