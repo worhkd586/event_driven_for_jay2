@@ -229,6 +229,12 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
 .ms th.r, .ms td.r { text-align: right; }
 .ms th.d { border-left: 1px solid var(--line); text-align: center; }
 .ms th.metric { color: var(--fg); }
+.ms th.sortable { cursor: pointer; user-select: none; }
+.ms th.sortable:hover { color: var(--fg); background: var(--bg); }
+.ms th .sa { font-style: normal; font-size: 9px; margin-left: 4px; color: var(--faint); opacity: 0; }
+.ms th.sortable:hover .sa, .ms th.on .sa { opacity: 1; }
+.ms th.on { color: var(--accent); }
+.ms th.on .sa { color: var(--accent); }
 .ms td { padding: 9px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; vertical-align: middle; }
 .ms td.d { border-left: 1px solid var(--line); text-align: center; min-width: 74px; }
 .ms tbody tr { cursor: pointer; }
@@ -394,7 +400,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
 
   var NAMES = { rights: "유상증자", bonus: "무상증자", tender: "공개매수", split: "물적분할", merge: "인수합병", exchange: "주식교환·이전", transfer: "영업양수도", bw: "BW 발행(공모)" };
   var ORDER = ["rights", "merge", "exchange", "split", "transfer", "bonus", "tender", "bw"];
-  var state = { view: "active", tab: "latest", ldays: 7, noAmd: false, cal: "week", anchor: null, q: "", third: false, sel: null, histOpen: false };
+  var state = { sort: {}, view: "active", tab: "latest", ldays: 7, noAmd: false, cal: "week", anchor: null, q: "", third: false, sel: null, histOpen: false };
   var DATA = { status: "loading", groups: [], prices: {}, updated: null, eventsUpdated: null };
 
   // ---- 일정 계산 ----
@@ -439,7 +445,11 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
 
   // ---- 지표 ----
   function px(g) { return (g.s && DATA.prices[g.s]) || null; }
-  function issue(g) { var mx = g.mx || {}; return N(mx.last_price) || N(mx.plan_price); }
+  function issue(g) { var mx = g.mx || {}; return N(mx.last_price) || N(mx.plan_price) || N(mx.board_price); }
+  // 발행가 단계: 증권신고서 정정 머리말 기준 (확정 / 1차 / 2차 / 예정), 제3자배정은 이사회 결의 가격
+  function stage(g) { var mx = g.mx || {}; return mx.price_stage || (mx.price_final ? "확정" : mx.board_price && !mx.last_price && !mx.plan_price ? "이사회" : "예정"); }
+  function mcapOf(g) { var p = px(g); return p && p.mcap != null ? p.mcap : null; }
+  function mcapCell(g) { var v = mcapOf(g); return v == null ? '<span class="faint">—</span>' : fmt(v); }
   function parity(g) { var p = px(g), i = issue(g); return p && i ? (p.price / i - 1) * 100 : null; }
   function apGap(g) { var p = px(g), a = N((g.mx || {}).appraisal_price); return p && a ? (a / p.price - 1) * 100 : null; }
   function signed(v, cls) { if (v == null || !isFinite(v)) return '<span class="faint">—</span>'; return '<span class="' + (cls || "") + " " + (v >= 0 ? "pos" : "neg") + '">' + (v > 0 ? "+" : "") + v.toFixed(2) + "%</span>"; }
@@ -458,31 +468,31 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     var a = apGap(g); return a == null ? null : { v: a, label: "청구가 괴리" };
   }
 
-  // 분류별 지표 열 [제목, 함수, 오른쪽 정렬]
+  // 분류별 지표 열 [제목, 함수, 오른쪽 정렬, 정렬값(없으면 글자순)]
+  function curPx(g) { var p = px(g); return p ? p.price : null; }
+  var MCAP = ["시가총액(억)", mcapCell, 1, mcapOf];
   var METRICS = {
-    rights: [["패리티", function (g) { return signed(parity(g), "big"); }, 1], ["현재가", priceCell, 1],
-      ["발행가", function (g) { var mx = g.mx || {}; var i = issue(g); return i == null ? '<span class="faint">—</span>' : fmt(i) + ' <small class="' + (mx.price_final ? "pos" : "dim") + '">' + (mx.price_final ? "확정" : "예정") + "</small>"; }, 1],
-      ["증서이론가", function (g) { var p = px(g), i = issue(g); return p && i ? fmt(p.price - i) : '<span class="faint">—</span>'; }, 1]],
-    bonus: [["현재가", priceCell, 1], ["1주당 배정", function (g) { var r = N(g.mx && g.mx.nstk_ascnt_ps_ostk); return r == null ? "—" : trimNum(String(r)) + "주"; }, 1],
-      ["이론 권리락가", function (g) { var p = px(g), r = N(g.mx && g.mx.nstk_ascnt_ps_ostk); return p && r ? fmt(Math.round(p.price / (1 + r))) : '<span class="faint">—</span>'; }, 1]],
-    merge: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1], ["매수청구가", apCell, 1], ["현재가", priceCell, 1],
+    rights: [["패리티", function (g) { return signed(parity(g), "big"); }, 1, parity], ["현재가", priceCell, 1, curPx], MCAP,
+      ["발행가", function (g) { var i = issue(g), st = stage(g); return i == null ? '<span class="faint">—</span>' : fmt(i) + ' <small class="' + (st === "확정" || st === "이사회" ? "pos" : "dim") + '">' + st + "</small>"; }, 1, issue],
+      ["증서이론가", function (g) { var p = px(g), i = issue(g); return p && i ? fmt(p.price - i) : '<span class="faint">—</span>'; }, 1, function (g) { var p = px(g), i = issue(g); return p && i ? p.price - i : null; }]],
+    bonus: [["현재가", priceCell, 1, curPx], MCAP, ["1주당 배정", function (g) { var r = N(g.mx && g.mx.nstk_ascnt_ps_ostk); return r == null ? "—" : trimNum(String(r)) + "주"; }, 1, function (g) { return N(g.mx && g.mx.nstk_ascnt_ps_ostk); }],
+      ["이론 권리락가", function (g) { var p = px(g), r = N(g.mx && g.mx.nstk_ascnt_ps_ostk); return p && r ? fmt(Math.round(p.price / (1 + r))) : '<span class="faint">—</span>'; }, 1, function (g) { var p = px(g), r = N(g.mx && g.mx.nstk_ascnt_ps_ostk); return p && r ? p.price / (1 + r) : null; }]],
+    merge: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1, apGap], ["매수청구가", apCell, 1, function (g) { return N((g.mx || {}).appraisal_price); }], ["현재가", priceCell, 1, curPx], MCAP,
       ["비율 · 상대회사", function (g) { var mx = g.mx || {}; return esc(((mx.mg_rt ? ratioShort(mx.mg_rt) + " · " : "") + (counterpart(g) || (g.f || []).join(", ") || "—")).slice(0, 60)); }]],
-    exchange: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1], ["매수청구가", apCell, 1], ["현재가", priceCell, 1],
+    exchange: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1, apGap], ["매수청구가", apCell, 1, function (g) { return N((g.mx || {}).appraisal_price); }], ["현재가", priceCell, 1, curPx], MCAP,
       ["교환비율 · 대상", function (g) { var mx = g.mx || {}; return esc((ratioShort(mx.extr_rt) + " · " + (counterpart(g) || "—")).slice(0, 60)); }]],
-    split: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1], ["매수청구가", apCell, 1], ["현재가", priceCell, 1],
+    split: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1, apGap], ["매수청구가", apCell, 1, function (g) { return N((g.mx || {}).appraisal_price); }], ["현재가", priceCell, 1, curPx], MCAP,
       ["신설회사", function (g) { return esc(counterpart(g) || "—"); }]],
-    transfer: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1], ["매수청구가", apCell, 1], ["현재가", priceCell, 1],
+    transfer: [["청구가 괴리", function (g) { return signed(apGap(g), "big"); }, 1, apGap], ["매수청구가", apCell, 1, function (g) { return N((g.mx || {}).appraisal_price); }], ["현재가", priceCell, 1, curPx], MCAP,
       ["가액 · 상대방", function (g) { var mx = g.mx || {}, v = N(mx.inh_prc || mx.trf_prc); return esc(((v ? fmt(Math.round(v / 1e8)) + "억 · " : "") + (counterpart(g) || "—")).slice(0, 60)); }]],
-    tender: [["공개매수가 괴리", function (g) { return signed(tenderGap(g), "big"); }, 1], ["공개매수가", function (g) { return won(g.mx && g.mx.tender_price) + (g.mx && g.mx.tender_alt ? ' <small style="color:var(--warn)" title="원문에 다른 금액도 있음: ' + esc(g.mx.tender_alt.join(", ")) + '">확인</small>' : ""); }, 1], ["현재가", priceCell, 1],
+    tender: [["공개매수가 괴리", function (g) { return signed(tenderGap(g), "big"); }, 1, tenderGap], ["공개매수가", function (g) { return won(g.mx && g.mx.tender_price) + (g.mx && g.mx.tender_alt ? ' <small style="color:var(--warn)" title="원문에 다른 금액도 있음: ' + esc(g.mx.tender_alt.join(", ")) + '">확인</small>' : ""); }, 1, function (g) { return N((g.mx || {}).tender_price); }], ["현재가", priceCell, 1, curPx], MCAP,
       ["최근 문서", function (g) { return esc(g.nm); }]],
-    bw: [["현재가", priceCell, 1], ["최근 문서", function (g) { return esc(g.nm); }]]
+    bw: [["현재가", priceCell, 1, curPx], MCAP, ["최근 문서", function (g) { return esc(g.nm); }]]
   };
 
   // ---- 필터 ----
   function apCell(g) {
-    var mx = g.mx || {}, gap = apGap(g);
-    // 원문에서 읽은 값이 현재가와 50% 넘게 벌어지면 상대회사 가격을 읽었을 수 있다
-    if (mx.appraisal_src && gap != null && Math.abs(gap) > 50) return won(mx.appraisal_price) + ' <small style="color:var(--warn)" title="원문에서 읽은 값이 현재가와 50% 이상 차이 납니다. 상대회사 매수가격일 수 있으니 원문을 확인하세요.">확인</small>';
+    var mx = g.mx || {};
     return won(mx.appraisal_price) + (mx.appraisal_alt ? ' <small style="color:var(--warn)" title="원문에 다른 금액도 있음: ' + esc(mx.appraisal_alt.join(", ")) + '">확인</small>' :
       mx.appraisal_src ? ' <small class="dim" title="DART 항목에 없어 공시 원문에서 읽은 값">원문</small>' : "");
   }
@@ -653,13 +663,26 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     ORDER.forEach(function (k) {
       var rows = by[k]; if (!rows) return;
       rows = rows.map(function (g) { return { g: g, ms: msOf(g), nx: nextOf(g) }; });
+      var mcols = METRICS[k], dcols = MS[k], so = state.sort[k];
       var key = function (r) { return r.nx ? r.nx.d : "9999"; };
       if (state.view === "active") rows.sort(function (a, b) { return key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0; });
       else rows.sort(function (a, b) { return a.g.end < b.g.end ? 1 : -1; });
-      var mcols = METRICS[k], dcols = MS[k];
+      if (so) {   // 머리글을 눌러 고른 열로 정렬 (값이 없는 행은 방향과 상관없이 맨 아래)
+        var val = sortVal(k, so.c);
+        rows = rows.map(function (r, i) { return { r: r, v: val(r), i: i }; }).sort(function (a, b) {
+          if (a.v == null || b.v == null) return a.v == null && b.v == null ? a.i - b.i : a.v == null ? 1 : -1;
+          var c = typeof a.v === "string" ? a.v.localeCompare(b.v, "ko") : a.v - b.v;
+          return c ? c * so.dir : a.i - b.i;
+        }).map(function (x) { return x.r; });
+      }
+      var th = function (id, label, cls) {
+        var on = so && so.c === id;
+        return '<th class="' + cls + ' sortable' + (on ? " on" : "") + '" data-sort="' + id + '" data-k="' + k + '" tabindex="0" aria-sort="' + (on ? (so.dir > 0 ? "ascending" : "descending") : "none") + '">' + label +
+          '<i class="sa">' + (on ? (so.dir > 0 ? "▲" : "▼") : "↕") + "</i></th>";
+      };
       h += '<section class="card grid-card" style="--cc:var(--c-' + k + ')">' +
-        '<div class="twrap" style="border-top:0"><table class="ms"><thead><tr><th>기업</th>' + mcols.map(function (c) { return '<th class="metric' + (c[2] ? " r" : "") + '">' + c[0] + "</th>"; }).join("") +
-        dcols.map(function (c) { return '<th class="d">' + c[0] + "</th>"; }).join("") + '<th class="d">진행</th></tr></thead><tbody>' +
+        '<div class="twrap" style="border-top:0"><table class="ms"><thead><tr>' + th("n", "기업", "") + mcols.map(function (c, i) { return th("m" + i, c[0], "metric" + (c[2] ? " r" : "")); }).join("") +
+        dcols.map(function (c, i) { return th("d" + i, c[0], "d"); }).join("") + th("p", "진행", "d") + '</tr></thead><tbody>' +
         rows.map(function (r) {
           var g = r.g;
           return '<tr tabindex="0" data-id="' + esc(g.id) + '" aria-selected="' + (state.sel === g.id) + '"><td>' + corpCell(g) + "</td>" +
@@ -669,6 +692,26 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
         }).join("") + "</tbody></table></div></section>";
     });
     el.innerHTML = h || '<div class="card empty">조건에 맞는 이벤트가 없습니다.' + (state.view === "active" ? " 끝난 이벤트는 위쪽의 지난 이벤트에서 볼 수 있습니다." : "") + "</div>";
+  }
+  // 정렬값: 기업명, 지표 열(정렬 함수 또는 표시 글자), 일정 열(날짜), 진행(다음 일정)
+  function sortVal(k, id) {
+    if (id === "n") return function (r) { return r.g.n; };
+    if (id === "p") return function (r) { return r.nx ? r.nx.d : null; };
+    var i = +id.slice(1);
+    if (id[0] === "d") return function (r) { var m = r.ms[i]; return m && m.v ? m.v.d : null; };
+    var c = METRICS[k][i];
+    return function (r) {
+      if (c[3]) { var v = c[3](r.g); return v == null || !isFinite(v) ? null : v; }
+      var t = String(c[1](r.g)).replace(/<[^>]+>/g, "").trim(); return t && t !== "—" ? t : null;
+    };
+  }
+  function toggleSort(k, id, refocus) {   // 오름차순 → 내림차순 → 기본(다음 일정 순)
+    var so = state.sort[k];
+    if (!so || so.c !== id) state.sort[k] = { c: id, dir: id[0] === "m" && METRICS[k][+id.slice(1)][3] ? -1 : 1 };
+    else if (so.dir === (id[0] === "m" && METRICS[k][+id.slice(1)][3] ? -1 : 1)) so.dir = -so.dir;
+    else delete state.sort[k];
+    renderGrid();
+    var f = document.querySelector('th[data-k="' + k + '"][data-sort="' + id + '"]'); if (f && refocus) f.focus();
   }
   function renderCounts() {
     if (DATA.status !== "ok") return;
@@ -696,7 +739,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     $("d-title").textContent = g.n + " · " + NAMES[g.k];
     $("d-sub").textContent = g.nm + " · " + g.id;
     var hero = [];
-    if (g.k === "rights") hero.push(["패리티", signed(parity(g)), "발행가 " + (issue(g) ? fmt(issue(g)) + (mx.price_final ? " 확정" : " 예정") : "없음")]);
+    if (g.k === "rights") hero.push(["패리티", signed(parity(g)), "발행가 " + (issue(g) ? fmt(issue(g)) + " " + stage(g) : "없음")]);
     else if (g.k === "tender") hero.push(["공개매수가 괴리", signed(tenderGap(g)), "공개매수가 " + (mx.tender_price ? esc(mx.tender_price) : "확인 필요") + (mx.tender_alt ? ' <span style="color:var(--warn)">· 원문에 ' + esc(mx.tender_alt.join(", ")) + "원도 있음</span>" : "")]);
     else if (mx.appraisal_price) hero.push(["청구가 괴리", signed(apGap(g)), "매수청구가 " + fmt(N(mx.appraisal_price)) + (mx.appraisal_src ? " (원문)" : "") + (mx.appraisal_alt ? ' <span style="color:var(--warn)">· 원문에 ' + esc(mx.appraisal_alt.join(", ")) + "원도 있음</span>" : "")]);
     hero.push(["현재가", p ? fmt(p.price) : "—", p ? '<span class="' + (p.chg > 0 ? "up" : p.chg < 0 ? "down" : "") + '">' + (p.pct > 0 ? "+" : "") + Number(p.pct).toFixed(2) + "%</span> · 전일 " + fmt(p.prev) : (g.status === "past" ? "종료 이벤트" : "시세 없음")]);
@@ -790,11 +833,14 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   $("q").addEventListener("input", function () { state.q = this.value.trim(); renderAll(); });
   $("f-3rd").addEventListener("change", function () { state.third = this.checked; renderAll(); });
   $("content").addEventListener("click", function (e) {
+    var s = e.target.closest("th[data-sort]"); if (s) { toggleSort(s.dataset.k, s.dataset.sort); return; }
     var w = e.target.closest("[data-week]");   // 월별 보기에서 '+N건' → 그 주의 주별 보기
     if (w) { state.anchor = w.dataset.week; setCal("week"); renderAll(); return; }
     var r = e.target.closest("[data-id]"); if (r) openDrawer(r.dataset.id);
   });
-  $("content").addEventListener("keydown", function (e) { if (e.key !== "Enter" && e.key !== " ") return; var tr = e.target.closest("tr[data-id]"); if (tr) { e.preventDefault(); openDrawer(tr.dataset.id); } });
+  $("content").addEventListener("keydown", function (e) { if (e.key !== "Enter" && e.key !== " ") return;
+    var s = e.target.closest("th[data-sort]"); if (s) { e.preventDefault(); toggleSort(s.dataset.k, s.dataset.sort, true); return; }
+    var tr = e.target.closest("tr[data-id]"); if (tr) { e.preventDefault(); openDrawer(tr.dataset.id); } });
   $("scrim").addEventListener("click", closeDrawer);
   $("d-close").addEventListener("click", closeDrawer);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeDrawer(); });
