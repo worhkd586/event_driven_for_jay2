@@ -82,7 +82,54 @@ a { color: inherit; }
 .sec-head h2 { margin: 0; font-size: 15px; font-weight: 700; }
 .sec-head p { margin: 0; font-size: 12px; color: var(--muted); }
 
-/* agenda list (이벤트 일정 탭) */
+/* calendar (이벤트 일정 탭) */
+.calnav { display: inline-flex; align-items: center; gap: 6px; }
+.calnav button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 5px 10px; cursor: pointer; font-weight: 600; font-size: 13px; }
+.calnav button:hover { border-color: var(--muted); }
+.calnav b { font-family: var(--font-mono); font-size: 14px; min-width: 150px; text-align: center; }
+.cal { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
+.cal-hd, .cal-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)) repeat(2, minmax(0, 0.6fr)); }
+.cal-hd div { padding: 8px 10px; font-size: 12px; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--line); background: var(--sunken); }
+.cal-hd div:nth-child(n+6) { color: var(--faint); }
+.cal-cell { min-width: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 6px; display: flex; flex-direction: column; gap: 3px; }
+.cal-row > .cal-cell:nth-child(7n) { border-right: 0; }
+.cal-row:last-child .cal-cell { border-bottom: 0; }
+.cal.week .cal-cell { min-height: 420px; }
+.cal.month .cal-cell { min-height: 118px; }
+.cal-cell.out { background: rgba(0, 0, 0, 0.18); }
+.cal-cell.out .cal-d { color: var(--faint); }
+.cal-cell.wknd { background: rgba(0, 0, 0, 0.12); }
+.cal-cell.today { box-shadow: inset 0 0 0 2px rgba(61, 181, 230, 0.6); }
+.cal-d { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 12.5px; padding: 0 2px 2px; }
+.cal-d b { font-weight: 600; }
+.cal-cell.today .cal-d b { color: var(--accent); }
+.cal-d small { color: var(--muted); font-size: 11px; }
+.ev-chip { display: grid; grid-template-columns: 3px minmax(0, 1fr); gap: 0 6px; width: 100%; text-align: left; border: 0; background: var(--bg); border-radius: 5px; padding: 3px 6px 3px 0; cursor: pointer; line-height: 1.3; }
+.ev-chip:hover { background: var(--sunken); }
+.ev-chip i { grid-row: span 2; border-radius: 2px; background: var(--cc, var(--muted)); }
+.ev-chip b { font-size: 12px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ev-chip span { font-size: 11.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ev-chip.est span::after { content: " ≈"; color: var(--warn); }
+.ev-chip.past { opacity: 0.45; }
+.cal.month .ev-chip { grid-template-columns: 3px minmax(0, 1fr); padding: 2px 5px 2px 0; }
+.cal.month .ev-chip b { font-size: 11.5px; }
+.cal.month .ev-chip span { display: inline; font-size: 11px; }
+.cal.month .ev-chip.one { grid-template-rows: auto; }
+.more-btn { border: 0; background: transparent; color: var(--accent); font-size: 11.5px; text-align: left; cursor: pointer; padding: 1px 4px; }
+.cal-key { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--muted); }
+.cal-key span::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: var(--cc); margin-right: 5px; }
+@media (max-width: 720px) {
+  .cal.week .cal-hd { display: none; }
+  .cal.week .cal-row { grid-template-columns: minmax(0, 1fr); }
+  .cal.week .cal-cell { min-height: 0; border-right: 0; }
+  .cal.week .cal-cell .cal-d::before { content: attr(data-wd); color: var(--muted); }
+  .cal.month .cal-hd, .cal.month .cal-row { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .cal.month .cal-cell { min-height: 58px; padding: 3px; }
+  .cal.month .ev-chip { display: none; }
+  .cal.month .more-btn { padding: 0; font-family: var(--font-mono); }
+}
+
+/* agenda list (unused) */
 .range { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; padding: 2px; background: var(--surface); }
 .range button { border: 0; background: transparent; padding: 5px 11px; border-radius: 7px; cursor: pointer; font-size: 12.5px; color: var(--muted); font-weight: 600; }
 .range button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
@@ -232,6 +279,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   .side { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 25; height: auto; flex-direction: row; align-items: center; overflow-x: auto; overflow-y: hidden;
     padding: 8px 12px; padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px)); border-right: 0; border-bottom: 1px solid var(--line); gap: 4px; }
   .side .brand, .nav-label, .side .sync { display: none; }
+  .side nav { display: flex; gap: 4px; }
   .nav-btn { width: auto; white-space: nowrap; padding: 7px 10px; }
   .top { position: static; }
 }
@@ -257,10 +305,15 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
           <button type="button" data-view="active" aria-pressed="true">진행 중<small id="n-active">–</small></button>
           <button type="button" data-view="past" aria-pressed="false">지난 이벤트<small id="n-past">–</small></button>
         </div>
-        <div class="range" id="range" role="group" aria-label="기간">
-          <button type="button" data-days="7" aria-pressed="false">1주</button>
-          <button type="button" data-days="14" aria-pressed="true">2주</button>
-          <button type="button" data-days="28" aria-pressed="false">4주</button>
+        <div class="range" id="range" role="group" aria-label="캘린더 보기">
+          <button type="button" data-cal="week" aria-pressed="true">주별</button>
+          <button type="button" data-cal="month" aria-pressed="false">월별</button>
+        </div>
+        <div class="calnav" id="calnav">
+          <button type="button" data-nav="-1" aria-label="이전">‹</button>
+          <b id="cal-label">—</b>
+          <button type="button" data-nav="1" aria-label="다음">›</button>
+          <button type="button" data-nav="0">오늘</button>
         </div>
         <div class="tools">
           <input type="search" id="q" placeholder="기업명·종목코드 검색" aria-label="기업 검색">
@@ -304,7 +357,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
 
   var NAMES = { rights: "유상증자", bonus: "무상증자", tender: "공개매수", split: "물적분할", merge: "인수합병", exchange: "주식교환·이전", transfer: "영업양수도", bw: "BW 발행(공모)" };
   var ORDER = ["rights", "merge", "exchange", "split", "transfer", "bonus", "tender", "bw"];
-  var state = { view: "active", tab: "agenda", days: 14, q: "", third: false, sel: null, histOpen: false };
+  var state = { view: "active", tab: "agenda", cal: "week", anchor: null, q: "", third: false, sel: null, histOpen: false };
   var DATA = { status: "loading", groups: [], prices: {}, updated: null, eventsUpdated: null };
 
   // ---- 일정 계산 ----
@@ -419,7 +472,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   function renderNav() {
     var b = base(), cnt = {};
     b.forEach(function (g) { cnt[g.k] = (cnt[g.k] || 0) + 1; });
-    var upcoming = 0, t = todayKey(), end = addDays(t, state.days - 1);
+    var upcoming = 0, t = todayKey(), end = addDays(t, 13);
     base("active").forEach(function (g) { timeline(g).forEach(function (x) { if (x.d >= t && x.d <= end && !/이사회|계약/.test(x.label)) upcoming++; }); });
     var h = '<button type="button" class="nav-btn cal" data-tab="agenda"' + (state.tab === "agenda" ? ' aria-current="page"' : "") + "><span>이벤트 일정</span><small>" + (DATA.status === "ok" ? upcoming : "") + "</small></button>";
     h += '<div class="nav-label">분류 · ' + (state.view === "active" ? "진행 중" : "지난 이벤트") + "</div>";
@@ -430,34 +483,62 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   }
   function renderHeader() {
     var ag = state.tab === "agenda";
-    $("title").innerHTML = ag ? "이벤트 일정 <small>진행 중 이벤트의 다가오는 마일스톤</small>" : esc(NAMES[state.tab]) + " <small>" + esc(DESC[state.tab]) + "</small>";
-    $("seg").hidden = ag; $("range").hidden = !ag;
-    $("legend").innerHTML = '<span><b class="nx">10.24 · D-5</b> 다음 일정</span><span><b class="es">≈</b> 영업일 기준 추정일 (공휴일 미반영)</span>' +
-      (ag ? "<span>숫자: 유상증자 패리티 · 공개매수가 괴리 · 매수청구가 괴리</span><span>행을 누르면 전체 일정과 상세</span>" : '<span><b class="faint">10.02</b> 지난 일정</span><span>행 정렬: 다음 일정이 가까운 순 · 행을 누르면 전체 일정과 상세</span>');
+    $("title").innerHTML = ag ? "이벤트 일정 <small>마일스톤 캘린더 · 지난 일정 포함</small>" : esc(NAMES[state.tab]) + " <small>" + esc(DESC[state.tab]) + "</small>";
+    $("seg").hidden = ag; $("range").hidden = !ag; $("calnav").hidden = !ag;
+    $("legend").innerHTML = (ag ? "" : '<span><b class="nx">10.24 · D-5</b> 다음 일정</span>') + '<span><b class="es">≈</b> 영업일 기준 추정일 (공휴일 미반영)</span>' +
+      (ag ? '<span class="cal-key">' + ORDER.map(function (k) { return '<span style="--cc:var(--c-' + k + ')">' + NAMES[k] + "</span>"; }).join("") + "</span><span>흐린 칸은 지난 일정 · 칸을 누르면 상세</span>" : '<span><b class="faint">10.02</b> 지난 일정</span><span>행 정렬: 다음 일정이 가까운 순 · 행을 누르면 전체 일정과 상세</span>');
   }
-  function renderAgenda() {
-    var el = $("content");
-    var t = todayKey(), end = addDays(t, state.days - 1), days = {};
-    base("active").forEach(function (g) {
+  // ---- 캘린더 ----
+  function mondayOf(d) { var x = dt(d), w = (x.getUTCDay() + 6) % 7; return addDays(d, -w); }
+  function weekNo(d) { var x = dt(d); x.setUTCDate(x.getUTCDate() + 3 - (x.getUTCDay() + 6) % 7); var y = new Date(Date.UTC(x.getUTCFullYear(), 0, 4)); return 1 + Math.round(((x - y) / 864e5 - 3 + (y.getUTCDay() + 6) % 7) / 7); }
+  function eventsByDay(from, to) {
+    var days = {}, seen = {};
+    base("active").concat(base("past")).forEach(function (g) {
       timeline(g).forEach(function (x) {
-        if (x.d < t || x.d > end || /이사회|계약/.test(x.label)) return;
+        if (x.d < from || x.d > to) return;
+        var key = g.id + x.d + x.label; if (seen[key]) return; seen[key] = 1;
         (days[x.d] = days[x.d] || []).push({ g: g, x: x });
       });
     });
-    var keys = Object.keys(days).sort();
-    if (!keys.length) { el.innerHTML = '<div class="card empty">이 기간에 걸린 일정이 없습니다. 기간을 늘려 보세요.</div>'; return; }
-    el.innerHTML = '<div class="agd">' + keys.map(function (d) {
-      var items = days[d].sort(function (a, b) { return ORDER.indexOf(a.g.k) - ORDER.indexOf(b.g.k) || (a.g.n < b.g.n ? -1 : 1); });
-      var n = dday(d);
-      return '<section class="agd-day' + (n === 0 ? " today" : "") + '"><div class="agd-h"><b>' + md(d) + " " + WD[dt(d).getUTCDay()] + "</b><span>" + (n === 0 ? "오늘" : "D-" + n) + "</span><em>" + items.length + "건</em></div>" +
-        items.map(function (it) {
-          var g = it.g, hl = headline(g), p = px(g);
-          return '<button type="button" class="agd-row" data-id="' + esc(g.id) + '" style="--cc:var(--c-' + g.k + ')"><i></i><b>' + esc(g.n) + '</b><span class="cat">' + esc(NAMES[g.k]) + "</span>" +
-            '<span class="ms-l">' + esc(it.x.label) + (it.x.est ? "<em>≈</em>" : "") + "</span>" +
-            '<span class="mv">' + (hl ? signed(hl.v) + "<small>" + hl.label + "</small>" : '<span class="faint">—</span>') + "</span>" +
-            '<span class="px">' + (p ? fmt(p.price) : "—") + "</span></button>";
-        }).join("") + "</section>";
-    }).join("") + "</div>";
+    Object.keys(days).forEach(function (d) { days[d].sort(function (a, b) { return ORDER.indexOf(a.g.k) - ORDER.indexOf(b.g.k) || (a.g.n < b.g.n ? -1 : 1); }); });
+    return days;
+  }
+  function chip(it, t) {
+    var g = it.g;
+    return '<button type="button" class="ev-chip' + (it.x.d < t ? " past" : "") + (it.x.est ? " est" : "") + '" data-id="' + esc(g.id) + '" style="--cc:var(--c-' + g.k + ')" title="' +
+      esc(g.n + " · " + NAMES[g.k] + " · " + it.x.label + (it.x.est ? " (추정)" : "")) + '"><i></i><b>' + esc(g.n) + "</b><span>" + esc(it.x.label) + "</span></button>";
+  }
+  var HEAD = ["월", "화", "수", "목", "금", "토", "일"];
+  function renderAgenda() {
+    var el = $("content"), t = todayKey(), a = state.anchor || t;
+    var h = '<div class="cal-hd">' + HEAD.map(function (x) { return "<div>" + x + "</div>"; }).join("") + "</div>";
+    if (state.cal === "week") {
+      var s0 = mondayOf(a), days = eventsByDay(s0, addDays(s0, 6));
+      $("cal-label").textContent = md(s0) + " – " + md(addDays(s0, 6)) + " · " + weekNo(s0) + "주";
+      h += '<div class="cal-row">';
+      for (var i = 0; i < 7; i++) {
+        var d = addDays(s0, i), items = days[d] || [];
+        h += '<div class="cal-cell' + (i > 4 ? " wknd" : "") + (d === t ? " today" : "") + '"><div class="cal-d" data-wd="' + HEAD[i] + " " + '"><b>' + md(d) + "</b><small>" +
+          (items.length ? items.length + "건" : "") + "</small></div>" + items.map(function (it) { return chip(it, t); }).join("") + "</div>";
+      }
+      el.innerHTML = '<div class="cal week">' + h + "</div></div>";
+    } else {
+      var first = a.slice(0, 8) + "01", gs = mondayOf(first), mo = first.slice(0, 7);
+      var last = addDays(addDays(first, 32).slice(0, 8) + "01", -1), ge = addDays(mondayOf(last), 6);
+      var dm = eventsByDay(gs, ge);
+      $("cal-label").textContent = first.slice(0, 4) + "년 " + (+first.slice(5, 7)) + "월";
+      for (var d2 = gs; d2 <= ge; d2 = addDays(d2, 7)) {
+        h += '<div class="cal-row">';
+        for (var j = 0; j < 7; j++) {
+          var dd = addDays(d2, j), its = dm[dd] || [], show = its.slice(0, 4);
+          h += '<div class="cal-cell' + (dd.slice(0, 7) !== mo ? " out" : "") + (j > 4 ? " wknd" : "") + (dd === t ? " today" : "") + '"><div class="cal-d"><b>' + (+dd.slice(8)) + "</b></div>" +
+            show.map(function (it) { return chip(it, t); }).join("") +
+            (its.length > show.length || (its.length && window.innerWidth <= 720) ? '<button type="button" class="more-btn" data-week="' + dd + '">' + (window.innerWidth <= 720 ? its.length + "건" : "+" + (its.length - show.length) + "건") + "</button>" : "") + "</div>";
+        }
+        h += "</div>";
+      }
+      el.innerHTML = '<div class="cal month">' + h + "</div>";
+    }
   }
   function dateCell(v, t, isNext) {
     if (!v) return '<div class="dc none"><b>—</b></div>';
@@ -603,10 +684,18 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     Array.prototype.forEach.call(document.querySelectorAll("#seg button"), function (x) { x.setAttribute("aria-pressed", x === b); });
     renderAll();
   });
-  $("range").addEventListener("click", function (e) {
-    var b = e.target.closest("button[data-days]"); if (!b) return;
-    state.days = +b.dataset.days;
-    Array.prototype.forEach.call(document.querySelectorAll("#range button"), function (x) { x.setAttribute("aria-pressed", x === b); });
+  function setCal(mode) {
+    state.cal = mode;
+    Array.prototype.forEach.call(document.querySelectorAll("#range button"), function (x) { x.setAttribute("aria-pressed", x.dataset.cal === mode); });
+    try { localStorage.setItem("eventbook.cal", mode); } catch (x) {}
+  }
+  $("range").addEventListener("click", function (e) { var b = e.target.closest("button[data-cal]"); if (!b) return; setCal(b.dataset.cal); renderAll(); });
+  $("calnav").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-nav]"); if (!b) return;
+    var n = +b.dataset.nav, a = state.anchor || todayKey();
+    if (n === 0) state.anchor = null;
+    else if (state.cal === "week") state.anchor = addDays(a, 7 * n);
+    else { var m = new Date(Date.UTC(+a.slice(0, 4), +a.slice(5, 7) - 1 + n, 1)); state.anchor = m.toISOString().slice(0, 10); }
     renderAll();
   });
   $("nav").addEventListener("click", function (e) {
@@ -617,7 +706,11 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   });
   $("q").addEventListener("input", function () { state.q = this.value.trim(); renderAll(); });
   $("f-3rd").addEventListener("change", function () { state.third = this.checked; renderAll(); });
-  $("content").addEventListener("click", function (e) { var r = e.target.closest("[data-id]"); if (r) openDrawer(r.dataset.id); });
+  $("content").addEventListener("click", function (e) {
+    var w = e.target.closest("[data-week]");   // 월별 보기에서 '+N건' → 그 주의 주별 보기
+    if (w) { state.anchor = w.dataset.week; setCal("week"); renderAll(); return; }
+    var r = e.target.closest("[data-id]"); if (r) openDrawer(r.dataset.id);
+  });
   $("content").addEventListener("keydown", function (e) { if (e.key !== "Enter" && e.key !== " ") return; var tr = e.target.closest("tr[data-id]"); if (tr) { e.preventDefault(); openDrawer(tr.dataset.id); } });
   $("scrim").addEventListener("click", closeDrawer);
   $("d-close").addEventListener("click", closeDrawer);
@@ -630,6 +723,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   });
 
   try { var t0 = localStorage.getItem("eventbook.tab2"); if (t0 && (t0 === "agenda" || NAMES[t0])) state.tab = t0; } catch (x) {}
+  try { var c0 = localStorage.getItem("eventbook.cal"); if (c0 === "week" || c0 === "month") setCal(c0); } catch (x) {}
   renderAll();
   loadData();
 })();
