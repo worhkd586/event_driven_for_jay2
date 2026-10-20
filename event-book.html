@@ -723,7 +723,9 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     if (DATA.status !== "ok") { s.className = "sync"; s.textContent = DATA.status === "loading" ? "불러오는 중" : "데이터 없음"; return; }
     var age = DATA.updated ? (Date.now() - new Date(DATA.updated).getTime()) / 60000 : 1e9;
     s.className = "sync " + (age < 120 ? "ok" : "late");
-    s.textContent = "DART·시세 " + (DATA.updated ? DATA.updated.slice(5, 16).replace("T", " ").replace("-", "/") : "—") + (age < 120 ? "" : " · " + Math.round(age / 60) + "시간 전");
+    s.textContent = "DART·시세 " + (DATA.updated ? DATA.updated.slice(5, 16).replace("T", " ").replace("-", "/") : "—") + (age < 120 ? "" : " · " + Math.round(age / 60) + "시간 전") +
+      (DATA.source ? " · " + (DATA.source === "github" ? "GitHub 직접" : "저장소") : "");
+    s.title = DATA.source === "github" ? "GitHub 저장소의 data/view.json을 직접 읽었습니다 (5분마다 확인)" : "아티팩트 저장소(db)의 데이터입니다";
   }
   function renderAll() {
     renderCounts(); renderSync(); renderNav(); renderHeader();
@@ -776,24 +778,42 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   function closeDrawer() { if ($("drawer").hidden) return; $("drawer").hidden = true; $("scrim").hidden = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
 
   // ---- 데이터 (db 컬렉션 "view": meta + c-0..c-n) ----
-  function applyData(docs) {
-    var meta = null, chunks = {};
-    docs.forEach(function (d) { var v = d.data() || {}; if (d.id === "meta") meta = v; else if (/^c-\d+$/.test(d.id)) chunks[d.id] = v.groups || []; });
-    if (!meta) { DATA.status = "empty"; renderAll(); return; }
-    var groups = [];
-    for (var i = 0; i < (meta.chunks || 0); i++) { if (!chunks["c-" + i]) return; groups = groups.concat(chunks["c-" + i]); }   // 모든 조각이 올 때까지 기다린다
-    DATA.groups = groups; DATA.prices = meta.prices || {}; DATA.updated = meta.updated_at; DATA.eventsUpdated = meta.events_updated_at;
-    DATA.status = groups.length ? "ok" : "empty";
+  // 데이터는 두 곳에서 온다: GitHub 저장소의 data/view.json(수집기가 직접 올림)과 아티팩트 db. 더 최근 것을 쓴다.
+  var GH_URL = "https://raw.githubusercontent.com/worhkd586/event_driven_for_jay2/refs/heads/claude/bold-mayer-mw3vwe/data/view.json";
+  var GH_POLL_MS = 5 * 60e3;
+  function setData(v, src) {
+    if (!v || !v.groups) return;
+    var t = function (x) { return x ? new Date(x).getTime() : 0; };
+    if (DATA.status === "ok" && DATA.source !== src && t(v.updated_at) < t(DATA.updated)) return;   // 다른 쪽이 더 최신
+    DATA.groups = v.groups; DATA.prices = v.prices || {}; DATA.updated = v.updated_at; DATA.eventsUpdated = v.events_updated_at; DATA.source = src;
+    DATA.status = v.groups.length ? "ok" : "empty";
     renderAll();
     if (!$("drawer").hidden && state.sel) { var g = DATA.groups.filter(function (x) { return x.id === state.sel; })[0]; if (g) renderDrawer(g); }
   }
+  function applyData(docs) {
+    var meta = null, chunks = {};
+    docs.forEach(function (d) { var v = d.data() || {}; if (d.id === "meta") meta = v; else if (/^c-\d+$/.test(d.id)) chunks[d.id] = v.groups || []; });
+    if (!meta) { if (DATA.status !== "ok") { DATA.status = "empty"; renderAll(); } return; }
+    var groups = [];
+    for (var i = 0; i < (meta.chunks || 0); i++) { if (!chunks["c-" + i]) return; groups = groups.concat(chunks["c-" + i]); }   // 모든 조각이 올 때까지 기다린다
+    setData({ groups: groups, prices: meta.prices, updated_at: meta.updated_at, events_updated_at: meta.events_updated_at }, "db");
+  }
+  function loadGitHub() {
+    if (!window.fetch) return;
+    fetch(GH_URL + "?t=" + Math.floor(Date.now() / GH_POLL_MS), { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (v) { setData(v, "github"); }, function () { /* 막히거나 실패하면 db 데이터를 그대로 쓴다 */ });
+  }
   function loadData() {
-    var fail = function (s) { DATA.status = s; renderAll(); };
-    if (!(window.claude && window.claude.use)) { fail("nodb"); return; }
+    var fail = function (s) { if (DATA.status !== "ok") { DATA.status = s; renderAll(); } };
+    loadGitHub();
+    setInterval(function () { if (!document.hidden) loadGitHub(); }, GH_POLL_MS);
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) loadGitHub(); });
+    if (!(window.claude && window.claude.use)) { setTimeout(function () { fail("nodb"); }, 4000); return; }
     Promise.resolve(window.claude.use("db")).then(function (db) {
-      if (!db) { fail("nodb"); return; }
+      if (!db) { setTimeout(function () { fail("nodb"); }, 4000); return; }
       db.collection("view").onSnapshot(function (snap) { applyData(snap.docs); }, function () { fail("error"); });
-    }, function () { fail("nodb"); });
+    }, function () { setTimeout(function () { fail("nodb"); }, 4000); });
   }
 
   // ---- 바인딩 ----
