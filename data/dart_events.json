@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-20T07:59+09:00",
+ "updated_at": "2026-10-20T15:11+09:00",
  "events": [
   {
    "rcept_no": "20261020000003",
@@ -16,6 +16,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261020000003"
+  },
+  {
+   "rcept_no": "20261019800137",
+   "rcept_dt": "20261019",
+   "first_seen": "2026-10-20T15:11+09:00",
+   "type": "transfer",
+   "corp_name": "현대위아",
+   "corp_code": "00106623",
+   "stock_code": "011210",
+   "market": "KOSPI",
+   "report_nm": "영업양도결정",
+   "filer": "현대위아",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "영업양도"
+   ],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019800137"
   },
   {
    "rcept_no": "20261019000333",
