@@ -724,8 +724,8 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     var age = DATA.updated ? (Date.now() - new Date(DATA.updated).getTime()) / 60000 : 1e9;
     s.className = "sync " + (age < 120 ? "ok" : "late");
     s.textContent = "DART·시세 " + (DATA.updated ? DATA.updated.slice(5, 16).replace("T", " ").replace("-", "/") : "—") + (age < 120 ? "" : " · " + Math.round(age / 60) + "시간 전") +
-      (DATA.source ? " · " + (DATA.source === "github" ? "GitHub 직접" : "저장소") : "");
-    s.title = DATA.source === "github" ? "GitHub 저장소의 data/view.json을 직접 읽었습니다 (5분마다 확인)" : "아티팩트 저장소(db)의 데이터입니다";
+      (DATA.source ? " · " + (DATA.source === "github" ? "GitHub 직접" : "저장소" + (DATA.gh && DATA.gh !== "ok" ? " (GitHub 연결 안 됨)" : DATA.gh ? "" : " (GitHub 확인 중)")) : "");
+    s.title = DATA.source === "github" ? "GitHub 저장소의 data/view.json을 직접 읽었습니다 (5분마다 확인)" : "아티팩트 저장소(db)의 데이터입니다" + (DATA.gh && DATA.gh !== "ok" ? " · GitHub " + DATA.gh : "");
   }
   function renderAll() {
     renderCounts(); renderSync(); renderNav(); renderHeader();
@@ -784,7 +784,8 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
   function setData(v, src) {
     if (!v || !v.groups) return;
     var t = function (x) { return x ? new Date(x).getTime() : 0; };
-    if (DATA.status === "ok" && DATA.source !== src && t(v.updated_at) < t(DATA.updated)) return;   // 다른 쪽이 더 최신
+    // 다른 쪽이 더 최신이면 무시. 같은 시각이면 GitHub 쪽을 쓴다 (db는 같은 파일을 옮긴 것)
+    if (DATA.status === "ok" && DATA.source !== src && (t(v.updated_at) < t(DATA.updated) || (src === "db" && t(v.updated_at) === t(DATA.updated)))) return;
     DATA.groups = v.groups; DATA.prices = v.prices || {}; DATA.updated = v.updated_at; DATA.eventsUpdated = v.events_updated_at; DATA.source = src;
     DATA.status = v.groups.length ? "ok" : "empty";
     renderAll();
@@ -802,7 +803,8 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     if (!window.fetch) return;
     fetch(GH_URL + "?t=" + Math.floor(Date.now() / GH_POLL_MS), { cache: "no-store" })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (v) { setData(v, "github"); }, function () { /* 막히거나 실패하면 db 데이터를 그대로 쓴다 */ });
+      .then(function (v) { DATA.gh = "ok"; setData(v, "github"); renderSync(); },
+        function (e) { DATA.gh = "실패: " + (e && e.message || e); renderSync(); });   // 막히거나 실패하면 db 데이터를 그대로 쓴다
   }
   function loadData() {
     var fail = function (s) { if (DATA.status !== "ok") { DATA.status = s; renderAll(); } };
