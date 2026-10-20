@@ -127,11 +127,22 @@ def base_name(nm):
     return re.sub(r"^\s*(\[[^\]]*\]\s*)+", "", nm or "").strip()
 
 
+def decision_name(nm):
+    """묶음 기준 이름: 주요사항보고서(영업양도결정)와 거래소 공시 영업양도결정을 같은 결정으로 본다."""
+    b = base_name(nm)
+    m = re.match(r"주요사항보고서\s*\((.+)\)$", b)
+    return re.sub(r"\s+", "", m.group(1) if m else b)
+
+
 def build_groups(events):
     by, out = {}, []
     for e in sorted(events, key=lambda e: e["rcept_no"]):
-        lst = by.setdefault((e["corp_code"], base_name(e["report_nm"])), [])
-        if not lst or not e.get("amended"):
+        lst = by.setdefault((e["corp_code"], decision_name(e["report_nm"])), [])
+        # 새 원공시는 새 묶음. 다만 거래소 공시와 주요사항보고서가 2주 안에 짝으로 나오면 같은 결정이다
+        pair = lst and (e.get("krx") or any(x.get("krx") for x in lst[-1])) and \
+            (datetime.strptime(e["rcept_dt"], "%Y%m%d") - datetime.strptime(lst[-1][-1]["rcept_dt"], "%Y%m%d")).days <= 14 and \
+            not (e.get("krx") and any(x.get("krx") and not x.get("amended") for x in lst[-1]))
+        if not lst or (not e.get("amended") and not pair):
             lst.append([])
         lst[-1].append(e)
     for items_list in by.values():
