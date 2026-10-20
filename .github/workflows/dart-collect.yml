@@ -2,7 +2,9 @@ name: DART 이벤트 수집
 
 on:
   schedule:
-    - cron: "*/10 * * * *"   # 10분마다 (UTC 기준, GitHub 사정으로 몇 분 밀릴 수 있음)
+    # GitHub 예약 실행은 몇 시간씩 밀리기도 해서, 평소 주기는 아래 next 작업이 이어 붙인다.
+    # 이 예약은 이어 붙이기가 끊겼을 때 다시 시작시키는 용도 (KST 07~18시대, UTC 기준 표기)
+    - cron: "*/20 22-23,0-9 * * *"
   workflow_dispatch:
     inputs:
       lookback_days:
@@ -11,6 +13,7 @@ on:
 
 permissions:
   contents: write
+  actions: write   # next 작업이 다음 실행을 건다
 
 concurrency:
   group: dart-collect
@@ -55,3 +58,26 @@ jobs:
             sleep $((i * 5))
           done
           exit 1
+
+  # 평일 07~19시(KST)에는 끝난 뒤 10분 쉬고 다음 실행을 직접 건다. 이미 대기 중인 실행이 있으면 건너뛴다.
+  next:
+    needs: collect
+    if: always() && (github.event_name == 'schedule' || inputs.lookback_days == '1')   # 과거 채우기 실행은 잇지 않는다
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 다음 실행 예약
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          sleep 600
+          dow=$(TZ=Asia/Seoul date +%u); hour=$(TZ=Asia/Seoul date +%H)
+          if [ "$dow" -gt 5 ] || [ "$((10#$hour))" -lt 7 ] || [ "$((10#$hour))" -ge 19 ]; then
+            echo "평일 07~19시가 아니라 멈춤 ($dow, $hour시)"; exit 0
+          fi
+          waiting=$(gh run list --workflow dart-collect.yml --limit 20 --json status \
+            --jq '[.[] | select(.status=="queued" or .status=="pending" or .status=="waiting" or .status=="requested")] | length')
+          if [ "$waiting" -gt 0 ]; then echo "대기 중인 실행 $waiting건: 건너뜀"; exit 0; fi
+          gh workflow run dart-collect.yml --ref "${GITHUB_REF_NAME}" -f lookback_days=1
+          echo "다음 실행 예약됨"

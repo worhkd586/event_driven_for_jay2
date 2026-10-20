@@ -724,7 +724,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     var age = DATA.updated ? (Date.now() - new Date(DATA.updated).getTime()) / 60000 : 1e9;
     s.className = "sync " + (age < 120 ? "ok" : "late");
     s.textContent = "DART·시세 " + (DATA.updated ? DATA.updated.slice(5, 16).replace("T", " ").replace("-", "/") : "—") + (age < 120 ? "" : " · " + Math.round(age / 60) + "시간 전") +
-      (DATA.source ? " · " + (DATA.source === "github" ? "GitHub 직접" : "저장소" + (DATA.gh && DATA.gh !== "ok" ? " (GitHub 연결 안 됨)" : DATA.gh ? "" : " (GitHub 확인 중)")) : "");
+      (DATA.source === "github" ? " · GitHub 직접" : "");
     s.title = DATA.source === "github" ? "GitHub 저장소의 data/view.json을 직접 읽었습니다 (5분마다 확인)" : "아티팩트 저장소(db)의 데이터입니다" + (DATA.gh && DATA.gh !== "ok" ? " · GitHub " + DATA.gh : "");
   }
   function renderAll() {
