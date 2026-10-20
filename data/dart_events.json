@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-10-20T15:11+09:00",
+ "updated_at": "2026-10-20T16:09+09:00",
  "events": [
+  {
+   "rcept_no": "20261020000255",
+   "rcept_dt": "20261020",
+   "first_seen": "2026-10-20T16:09+09:00",
+   "type": "rights",
+   "corp_name": "프리티",
+   "corp_code": "00122825",
+   "stock_code": "006490",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "프리티",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261020000255"
+  },
   {
    "rcept_no": "20261020000003",
    "rcept_dt": "20261020",
