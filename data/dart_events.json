@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-10-21T18:01+09:00",
+ "updated_at": "2026-10-22T08:48+09:00",
  "events": [
+  {
+   "rcept_no": "20261022000001",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T08:48+09:00",
+   "type": "tender",
+   "corp_name": "한화머시너리앤서비스홀딩스",
+   "corp_code": "02042949",
+   "stock_code": "0220W0",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]공개매수신고서",
+   "filer": "김동선",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000001"
+  },
   {
    "rcept_no": "20261021900604",
    "rcept_dt": "20261021",
@@ -38,6 +55,25 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261021900333"
+  },
+  {
+   "rcept_no": "20261021000442",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T08:48+09:00",
+   "type": "merge",
+   "corp_name": "IBKS제25호스팩",
+   "corp_code": "01949584",
+   "stock_code": "0099X0",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(회사합병결정)",
+   "filer": "IBKS제25호스팩",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261021000442"
   },
   {
    "rcept_no": "20261021000422",
