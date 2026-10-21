@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-10-21T11:11+09:00",
+ "updated_at": "2026-10-21T15:02+09:00",
  "events": [
+  {
+   "rcept_no": "20261021000191",
+   "rcept_dt": "20261021",
+   "first_seen": "2026-10-21T15:02+09:00",
+   "type": "rights",
+   "corp_name": "비케이홀딩스",
+   "corp_code": "00369569",
+   "stock_code": "050090",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "비케이홀딩스",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261021000191"
+  },
   {
    "rcept_no": "20261021000091",
    "rcept_dt": "20261021",
