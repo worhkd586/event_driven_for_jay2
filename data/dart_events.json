@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-21T17:48+09:00",
+ "updated_at": "2026-10-21T18:01+09:00",
  "events": [
   {
    "rcept_no": "20261021900604",
@@ -38,6 +38,23 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261021900333"
+  },
+  {
+   "rcept_no": "20261021000422",
+   "rcept_dt": "20261021",
+   "first_seen": "2026-10-21T18:01+09:00",
+   "type": "rights",
+   "corp_name": "오늘이엔엠",
+   "corp_code": "00623184",
+   "stock_code": "192410",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "오늘이엔엠",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261021000422"
   },
   {
    "rcept_no": "20261021000326",
