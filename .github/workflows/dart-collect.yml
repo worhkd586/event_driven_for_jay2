@@ -59,23 +59,36 @@ jobs:
           done
           exit 1
 
-  # 평일 07~19시(KST)에는 끝난 뒤 10분 쉬고 다음 실행을 직접 건다. 이미 대기 중인 실행이 있으면 건너뛴다.
+  # 다음 실행을 직접 건다. GitHub 예약 실행은 몇 시간씩 밀리거나 아예 안 돌 때가 있어 믿지 않는다.
+  # 평일 07~19시(KST): 10분 쉬고 다음 실행. 그 밖의 시간: 다음 평일 07시까지 기다리되 한 번에 최대 5시간
+  # (작업 제한 6시간) 쉬고 다음 실행을 걸어 사슬이 끊기지 않게 한다. 이미 대기 중인 실행이 있으면 건너뛴다.
   next:
     needs: collect
     if: always() && (github.event_name == 'schedule' || inputs.lookback_days == '1')   # 과거 채우기 실행은 잇지 않는다
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 330
     steps:
       - name: 다음 실행 예약
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          sleep 600
-          dow=$(TZ=Asia/Seoul date +%u); hour=$(TZ=Asia/Seoul date +%H)
-          if [ "$dow" -gt 5 ] || [ "$((10#$hour))" -lt 7 ] || [ "$((10#$hour))" -ge 19 ]; then
-            echo "평일 07~19시가 아니라 멈춤 ($dow, $hour시)"; exit 0
-          fi
+          wait=$(python3 - <<'PY'
+          from datetime import datetime, timedelta, timezone
+          now = datetime.now(timezone(timedelta(hours=9)))
+          if now.weekday() < 5 and 7 <= now.hour < 19:
+              print(600)
+          else:
+              t = now.replace(hour=7, minute=0, second=0, microsecond=0)
+              if t <= now:
+                  t += timedelta(days=1)
+              while t.weekday() >= 5:
+                  t += timedelta(days=1)
+              print(max(60, min(int((t - now).total_seconds()), 5 * 3600)))
+          PY
+          )
+          echo "다음 실행까지 ${wait}초 대기"
+          sleep "$wait"
           waiting=$(gh run list --workflow dart-collect.yml --limit 20 --json status \
             --jq '[.[] | select(.status=="queued" or .status=="pending" or .status=="waiting" or .status=="requested")] | length')
           if [ "$waiting" -gt 0 ]; then echo "대기 중인 실행 $waiting건: 건너뜀"; exit 0; fi
