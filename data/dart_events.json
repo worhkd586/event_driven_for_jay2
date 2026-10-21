@@ -1,6 +1,26 @@
 {
- "updated_at": "2026-10-20T18:06+09:00",
+ "updated_at": "2026-10-21T10:20+09:00",
  "events": [
+  {
+   "rcept_no": "20261021000052",
+   "rcept_dt": "20261021",
+   "first_seen": "2026-10-21T10:20+09:00",
+   "type": "merge",
+   "corp_name": "경농",
+   "corp_code": "00101433",
+   "stock_code": "002100",
+   "market": "KOSPI",
+   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
+   "filer": "경농",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병",
+    "소규모합병"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261021000052"
+  },
   {
    "rcept_no": "20261020000377",
    "rcept_dt": "20261020",
