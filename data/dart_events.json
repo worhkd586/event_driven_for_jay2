@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-10-21T15:02+09:00",
+ "updated_at": "2026-10-21T15:53+09:00",
  "events": [
+  {
+   "rcept_no": "20261021900333",
+   "rcept_dt": "20261021",
+   "first_seen": "2026-10-21T15:53+09:00",
+   "type": "merge",
+   "corp_name": "다보링크",
+   "corp_code": "01416642",
+   "stock_code": "340360",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]최대주주변경을수반하는주식양수도계약체결",
+   "filer": "다보링크",
+   "amended": true,
+   "krx": true,
+   "flags": [
+    "경영권 양수도"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261021900333"
+  },
   {
    "rcept_no": "20261021000191",
    "rcept_dt": "20261021",
