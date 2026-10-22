@@ -1,6 +1,40 @@
 {
- "updated_at": "2026-10-22T13:44+09:00",
+ "updated_at": "2026-10-22T14:10+09:00",
  "events": [
+  {
+   "rcept_no": "20261022000134",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T14:10+09:00",
+   "type": "rights",
+   "corp_name": "비비안",
+   "corp_code": "00107677",
+   "stock_code": "002070",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "비비안",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000134"
+  },
+  {
+   "rcept_no": "20261022000133",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T14:10+09:00",
+   "type": "rights",
+   "corp_name": "비비안",
+   "corp_code": "00107677",
+   "stock_code": "002070",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "비비안",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000133"
+  },
   {
    "rcept_no": "20261022000116",
    "rcept_dt": "20261022",
