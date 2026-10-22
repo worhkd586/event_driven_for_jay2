@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-10-23T07:39+09:00",
+ "updated_at": "2026-10-23T07:53+09:00",
  "events": [
+  {
+   "rcept_no": "20261023000001",
+   "rcept_dt": "20261023",
+   "first_seen": "2026-10-23T07:53+09:00",
+   "type": "tender",
+   "corp_name": "아이패밀리에스씨",
+   "corp_code": "00692254",
+   "stock_code": "114840",
+   "market": "KOSDAQ",
+   "report_nm": "공개매수신고서",
+   "filer": "웰라이언트",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000001"
+  },
   {
    "rcept_no": "20261022000513",
    "rcept_dt": "20261023",
