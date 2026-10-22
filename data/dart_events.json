@@ -1,6 +1,44 @@
 {
- "updated_at": "2026-10-22T15:42+09:00",
+ "updated_at": "2026-10-22T17:00+09:00",
  "events": [
+  {
+   "rcept_no": "20261022000439",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T17:00+09:00",
+   "type": "merge",
+   "corp_name": "주성코퍼레이션",
+   "corp_code": "00753643",
+   "stock_code": "109070",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "주성코퍼레이션",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000439"
+  },
+  {
+   "rcept_no": "20261022000429",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T17:00+09:00",
+   "type": "merge",
+   "corp_name": "주성코퍼레이션",
+   "corp_code": "00753643",
+   "stock_code": "109070",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "주성코퍼레이션",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000429"
+  },
   {
    "rcept_no": "20261022000288",
    "rcept_dt": "20261022",
