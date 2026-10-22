@@ -1,6 +1,40 @@
 {
- "updated_at": "2026-10-22T15:15+09:00",
+ "updated_at": "2026-10-22T15:42+09:00",
  "events": [
+  {
+   "rcept_no": "20261022000288",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T15:42+09:00",
+   "type": "rights",
+   "corp_name": "엑스플러스",
+   "corp_code": "01514698",
+   "stock_code": "373200",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "엑스플러스",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000288"
+  },
+  {
+   "rcept_no": "20261022000279",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T15:42+09:00",
+   "type": "rights",
+   "corp_name": "광진실업",
+   "corp_code": "00104120",
+   "stock_code": "026910",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "광진실업",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000279"
+  },
   {
    "rcept_no": "20261022000238",
    "rcept_dt": "20261022",
@@ -19,6 +53,25 @@
    ],
    "appraisal": "?",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000238"
+  },
+  {
+   "rcept_no": "20261022000206",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T15:42+09:00",
+   "type": "merge",
+   "corp_name": "IBKS제25호스팩",
+   "corp_code": "01949584",
+   "stock_code": "0099X0",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
+   "filer": "IBKS제25호스팩",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000206"
   },
   {
    "rcept_no": "20261022000194",
