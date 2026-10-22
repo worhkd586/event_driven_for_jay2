@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-10-22T17:00+09:00",
+ "updated_at": "2026-10-22T17:14+09:00",
  "events": [
+  {
+   "rcept_no": "20261022000456",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T17:14+09:00",
+   "type": "merge",
+   "corp_name": "피스피스스튜디오",
+   "corp_code": "01755259",
+   "stock_code": "0117P0",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "피스피스스튜디오",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000456"
+  },
   {
    "rcept_no": "20261022000439",
    "rcept_dt": "20261022",
@@ -15,9 +34,10 @@
    "amended": false,
    "krx": false,
    "flags": [
-    "합병"
+    "합병",
+    "소규모합병"
    ],
-   "appraisal": "?",
+   "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000439"
   },
   {
@@ -34,9 +54,10 @@
    "amended": false,
    "krx": false,
    "flags": [
-    "합병"
+    "합병",
+    "소규모합병"
    ],
-   "appraisal": "?",
+   "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000429"
   },
   {
