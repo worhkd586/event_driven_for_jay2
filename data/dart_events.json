@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-22T17:14+09:00",
+ "updated_at": "2026-10-22T17:28+09:00",
  "events": [
   {
    "rcept_no": "20261022000456",
@@ -15,9 +15,10 @@
    "amended": false,
    "krx": false,
    "flags": [
-    "합병"
+    "합병",
+    "소규모합병"
    ],
-   "appraisal": "?",
+   "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000456"
   },
   {
@@ -59,6 +60,25 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000429"
+  },
+  {
+   "rcept_no": "20261022000424",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T17:28+09:00",
+   "type": "merge",
+   "corp_name": "휴맥스",
+   "corp_code": "00787057",
+   "stock_code": "115160",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "휴맥스",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000424"
   },
   {
    "rcept_no": "20261022000288",
