@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-10-22T13:31+09:00",
+ "updated_at": "2026-10-22T13:44+09:00",
  "events": [
+  {
+   "rcept_no": "20261022000116",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T13:44+09:00",
+   "type": "rights",
+   "corp_name": "시큐레터",
+   "corp_code": "01579570",
+   "stock_code": "418250",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "시큐레터",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000116"
+  },
   {
    "rcept_no": "20261022000100",
    "rcept_dt": "20261022",
