@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-22T17:28+09:00",
+ "updated_at": "2026-10-22T17:42+09:00",
  "events": [
   {
    "rcept_no": "20261022000456",
@@ -42,6 +42,23 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000439"
   },
   {
+   "rcept_no": "20261022000435",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-22T17:42+09:00",
+   "type": "rights",
+   "corp_name": "모아데이타",
+   "corp_code": "01423837",
+   "stock_code": "288980",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "모아데이타",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000435"
+  },
+  {
    "rcept_no": "20261022000429",
    "rcept_dt": "20261022",
    "first_seen": "2026-10-22T17:00+09:00",
@@ -75,9 +92,10 @@
    "amended": false,
    "krx": false,
    "flags": [
-    "합병"
+    "합병",
+    "소규모합병"
    ],
-   "appraisal": "?",
+   "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000424"
   },
   {
