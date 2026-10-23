@@ -351,6 +351,7 @@ def rights_trading_period(plain):
 TENDER_V = 2    # 파서가 바뀌면 올려서 기존 캐시를 다시 읽게 한다
 APDOC_V = 2
 OFFER_V = 5
+MDOC_V = 2
 
 
 def public_offer_period(plain):
@@ -476,8 +477,23 @@ def rights_from_main(key, rcept_no):
         return None
     m = re.search(r"증자\s*방식\s*([가-힣0-9]+(?:\s*실권주\s*일반공모)?)", plain)
     p = re.search(r"신주\s*발행가액\s*보통주식\s*\(\s*원\s*\)\s*(\d{1,3}(?:,\d{3})+|\d{2,})", plain)
-    return {"rcept_no": rcept_no, "method": m.group(1) if m else None,
-            "price": int(p.group(1).replace(",", "")) if p else None}
+    out = {"rcept_no": rcept_no, "v": MDOC_V, "method": m.group(1) if m else None,
+           "price": int(p.group(1).replace(",", "")) if p else None}
+    # 일정 칸: '9. 청약예정일 … 구주주 시작일 D 종료일 D … 일반공모 시작일 D 종료일 D 10. 납입일 D … 신주의 상장예정일 D'
+    def d(x):
+        q = re.match(r"\s*" + DATE_RE, x)
+        return f"{int(q.group(1)):04d}-{int(q.group(2)):02d}-{int(q.group(3)):02d}" if q and 1 <= int(q.group(2)) <= 12 and 1 <= int(q.group(3)) <= 31 else None
+    sec = re.search(r"청약\s*예정일(.{0,400})", plain)
+    if sec:
+        for who, key2 in (("구주주", "sh"), ("일반공모", "gp")):
+            w = re.search(who + r"\s*시작일\s*(.{0,20}?)\s*종료일\s*(.{0,20})", sec.group(1))
+            if w and d(w.group(1)):
+                out[key2] = [d(w.group(1)), d(w.group(2)) or d(w.group(1))]
+    pay = re.search(r"\d+\.\s*납입일\s*(.{0,20})", plain)
+    lst = re.search(r"신주의\s*상장\s*예정일\s*(.{0,20})", plain)
+    out["pay"] = d(pay.group(1)) if pay else None
+    out["list"] = d(lst.group(1)) if lst else None
+    return out
 
 
 def num(v):
@@ -541,7 +557,7 @@ def market_cap(code):
     return next((eok(x.get("value")) for x in infos if x.get("code") == "marketValue"), None)
 
 
-def summarize(items, det, estk, today, tender=None, apdoc=None):
+def summarize(items, det, estk, today, tender=None, apdoc=None, mdoc=None):
     top = items[0]
     rcepts = {e["rcept_no"] for e in items}
     first = min(e["rcept_dt"] for e in items)
@@ -614,6 +630,17 @@ def summarize(items, det, estk, today, tender=None, apdoc=None):
         if pick:
             sched.append(["일반공모 청약 시작", pick[0], "doc"])
             sched.append(["일반공모 청약 종료", pick[1], "doc"])
+    if mdoc:   # 주요사항보고서 본문 일정 (증권신고서가 없거나 아직 일정이 비어 있을 때만)
+        have = {a for a, _, _ in sched}
+        sub = mdoc.get("sh") or mdoc.get("gp")
+        if sub and "청약 시작" not in have:
+            sched += [["청약 시작", sub[0], "mdoc"], ["청약 종료", sub[1], "mdoc"]]
+        if mdoc.get("sh") and mdoc.get("gp") and "일반공모 청약 시작" not in have:
+            sched += [["일반공모 청약 시작", mdoc["gp"][0], "mdoc"], ["일반공모 청약 종료", mdoc["gp"][1], "mdoc"]]
+        if mdoc.get("pay") and "납입일" not in have:
+            sched.append(["납입일", mdoc["pay"], "mdoc"])
+        if mdoc.get("list") and not any("상장" in a for a in have):
+            sched.append(["신주 상장예정일", mdoc["list"], "mdoc"])
     if tender:
         for lab, k in (("공개매수 시작", "start"), ("공개매수 종료", "end"), ("결제일", "settle")):
             if tender.get(k):
@@ -801,10 +828,11 @@ def main():
                 and (c.get("amend") or {}).get("rcept_no") != top["rcept_no"]:
             c["amend"] = amend_check(key, top["rcept_no"]) or c.get("amend")
         # 증권신고서가 없는 유상증자(제3자배정·소액공모)나 상세 API가 빈 건은 주요사항보고서 본문에서 방식·발행가를 읽는다
-        if top["type"] == "rights" and recent and not (c.get("doc") or {}).get("price") \
-                and (c.get("mdoc") or {}).get("rcept_no") != top["rcept_no"]:
+        if top["type"] == "rights" and recent and ((c.get("mdoc") or {}).get("rcept_no") != top["rcept_no"]
+                                                   or (c.get("mdoc") or {}).get("v") != MDOC_V):
             c["mdoc"] = rights_from_main(key, top["rcept_no"]) or c.get("mdoc")
-        g = summarize(items, c, c.get("estk"), today, c.get("tender"), c.get("apdoc"))
+        md0 = c.get("mdoc") if (c.get("mdoc") or {}).get("rcept_no") == top["rcept_no"] else None
+        g = summarize(items, c, c.get("estk"), today, c.get("tender"), c.get("apdoc"), md0)
         md = c.get("mdoc") or {}
         if g["k"] == "rights" and md.get("rcept_no") == top["rcept_no"]:
             if md.get("method") and not g["mx"].get("method"):
