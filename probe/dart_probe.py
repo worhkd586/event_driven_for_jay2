@@ -5,10 +5,15 @@ from datetime import datetime, timedelta
 KEY = os.environ["DART_API_KEY"]
 def call(params):
     q = urllib.parse.urlencode(dict(params, crtfc_key=KEY))
-    with urllib.request.urlopen(f"https://opendart.fss.or.kr/api/list.json?{q}", timeout=40) as r:
-        return json.load(r)
+    for i in range(4):
+        try:
+            with urllib.request.urlopen(f"https://opendart.fss.or.kr/api/list.json?{q}", timeout=60) as r:
+                return json.load(r)
+        except Exception as e:
+            err = e
+    return {"status": "err", "message": str(err)}
 end = datetime.now() + timedelta(hours=9)
-bgn = end - timedelta(days=89)
+bgn = end - timedelta(days=60)
 out = {"names": {}, "rows": []}
 for ty in ("B", "C", "D", "I"):
     page = 1
