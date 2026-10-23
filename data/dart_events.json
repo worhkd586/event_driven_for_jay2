@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-10-23T14:52+09:00",
+ "updated_at": "2026-10-23T15:44+09:00",
  "events": [
+  {
+   "rcept_no": "20261023000333",
+   "rcept_dt": "20261023",
+   "first_seen": "2026-10-23T15:44+09:00",
+   "type": "transfer",
+   "corp_name": "에스트래픽",
+   "corp_code": "01014055",
+   "stock_code": "234300",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(영업양수결정)",
+   "filer": "에스트래픽",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "영업양수"
+   ],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000333"
+  },
   {
    "rcept_no": "20261023000237",
    "rcept_dt": "20261023",
