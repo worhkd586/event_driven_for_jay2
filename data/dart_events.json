@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-10-23T15:44+09:00",
+ "updated_at": "2026-10-23T15:58+09:00",
  "events": [
+  {
+   "rcept_no": "20261023000356",
+   "rcept_dt": "20261023",
+   "first_seen": "2026-10-23T15:58+09:00",
+   "type": "merge",
+   "corp_name": "아센디오",
+   "corp_code": "00145437",
+   "stock_code": "012170",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "아센디오",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000356"
+  },
   {
    "rcept_no": "20261023000333",
    "rcept_dt": "20261023",
