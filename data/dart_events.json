@@ -1,6 +1,42 @@
 {
- "updated_at": "2026-10-23T11:07+09:00",
+ "updated_at": "2026-10-23T11:26+09:00",
  "events": [
+  {
+   "rcept_no": "20261023000112",
+   "rcept_dt": "20261023",
+   "first_seen": "2026-10-23T11:26+09:00",
+   "type": "merge",
+   "corp_name": "우성",
+   "corp_code": "00142661",
+   "stock_code": "006980",
+   "market": "KOSPI",
+   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
+   "filer": "우성",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000112"
+  },
+  {
+   "rcept_no": "20261023000102",
+   "rcept_dt": "20261023",
+   "first_seen": "2026-10-23T11:26+09:00",
+   "type": "rights",
+   "corp_name": "한솔아이원스",
+   "corp_code": "00625942",
+   "stock_code": "114810",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "한솔아이원스",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000102"
+  },
   {
    "rcept_no": "20261023000005",
    "rcept_dt": "20261023",
