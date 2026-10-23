@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-10-23T07:53+09:00",
+ "updated_at": "2026-10-23T08:58+09:00",
  "events": [
+  {
+   "rcept_no": "20261023000005",
+   "rcept_dt": "20261023",
+   "first_seen": "2026-10-23T08:58+09:00",
+   "type": "rights",
+   "corp_name": "노을",
+   "corp_code": "01494118",
+   "stock_code": "376930",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "노을",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000005"
+  },
   {
    "rcept_no": "20261023000001",
    "rcept_dt": "20261023",
