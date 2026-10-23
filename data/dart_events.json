@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-23T15:58+09:00",
+ "updated_at": "2026-10-23T16:11+09:00",
  "events": [
   {
    "rcept_no": "20261023000356",
@@ -15,9 +15,10 @@
    "amended": false,
    "krx": false,
    "flags": [
-    "합병"
+    "합병",
+    "소규모합병"
    ],
-   "appraisal": "?",
+   "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000356"
   },
   {
