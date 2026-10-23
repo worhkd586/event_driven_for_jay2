@@ -412,14 +412,18 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     var m = gm(g); return hasAp(g) && m ? { d: addDays(m.d, 20), est: true } : null;
   }
   function exRight(g) { var b = find(g, /배정기준일/); return b ? { d: bizBack(b.d, 1), est: true } : null; }
-  function priceFix(g) { var s = find(g, /청약 시작/); return s && !(g.mx && g.mx.price_final) ? { d: bizBack(s.d, 3), est: true } : null; }
-  function subRange(g) { var s = find(g, /청약 시작/), e = find(g, /청약 종료/); return s ? { d: s.d, e: e && e.d } : null; }
+  function priceFix(g) { var s = find(g, /^청약 시작/); return s && !(g.mx && g.mx.price_final) ? { d: bizBack(s.d, 3), est: true } : null; }
+  function subRange(g) { var s = find(g, /^청약 시작/), e = find(g, /^청약 종료/); return s ? { d: s.d, e: e && e.d } : null; }
 
   // 분류별 일정 열 [제목, 함수(g) -> {d, est, e?}]
   var MS = {
     rights: [["권리락", exRight], ["배정기준일", function (g) { return find(g, /배정기준일/); }],
       ["권리매매", function (g) { var a = find(g, /신주인수권증서 매매 시작/), b = find(g, /신주인수권증서 매매 종료/); return a ? { d: a.d, e: b && b.d } : null; }], ["확정가 산정", function (g) { return priceFix(g) || (g.mx && g.mx.price_doc && g.mx.price_final ? { d: g.mx.price_doc.d } : null); }],
-      ["청약", subRange], ["납입", function (g) { return find(g, /납입/); }], ["신주 상장", function (g) { return find(g, /상장/); }]],
+      ["주주 청약", function (g) { return methodShort(g) === "일반공모" ? null : subRange(g); }],
+      ["일반공모", function (g) {   // 실권주 일반공모 청약 (신고서 원문). 일반공모 증자는 그 청약 자체
+        if (methodShort(g) === "일반공모") return subRange(g);
+        var a = find(g, /일반공모 청약 시작/), b = find(g, /일반공모 청약 종료/); return a ? { d: a.d, e: b && b.d } : null;
+      }], ["납입", function (g) { return find(g, /납입/); }], ["신주 상장", function (g) { return find(g, /상장/); }]],
     bonus: [["이사회", function (g) { return find(g, /이사회/); }], ["권리락", exRight], ["배정기준일", function (g) { return find(g, /배정기준일/); }], ["신주 상장", function (g) { return find(g, /상장/); }]],
     merge: [["이사회 결의", function (g) { return find(g, /이사회/); }], ["주총 기준일", function (g) { return find(g, /주주확정 기준일/); }], ["반대의사 마감", function (g) { return find(g, /반대의사 통지 종료/); }], ["주총", gm],
       ["매수청구 마감", apEnd], ["합병·분할기일", function (g) { return find(g, /합병기일|분할기일/); }], ["신주 상장", function (g) { return find(g, /상장/); }]],

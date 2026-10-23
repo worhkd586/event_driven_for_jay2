@@ -258,9 +258,10 @@ def offer_price_from_doc(key, rcept_no):
         head = plain[:4000]
         stage = "2차" if re.search(r"2\s*차\s*발행\s*가액", head) else "1차" if re.search(r"1\s*차\s*발행\s*가액", head) else "예정"
     cands = rights_trading_period(plain)
-    if hit is None and not cands:
+    gp = public_offer_period(plain)
+    if hit is None and not cands and not gp:
         return None
-    out = {"price": hit, "final": final, "stage": stage, "rt_cands": cands, "rt_start": None}
+    out = {"price": hit, "final": final, "stage": stage, "rt_cands": cands, "gp_cands": gp, "rt_start": None}
     if not cands:   # 표현 확인용: '신주인수권증서' 주변 날짜가 있는 구간 몇 개
         snips = [plain[max(0, m.start() - 20): m.end() + 90] for m in re.finditer(r"신주인수권\s*증서", plain)]
         out["rt_snip"] = [x for x in snips if re.search(DATE_RE, x)][:4] or snips[:2]
@@ -349,7 +350,40 @@ def rights_trading_period(plain):
 
 TENDER_V = 2    # 파서가 바뀌면 올려서 기존 캐시를 다시 읽게 한다
 APDOC_V = 2
-OFFER_V = 4
+OFFER_V = 5
+
+
+def public_offer_period(plain):
+    """주주배정 후 실권주 일반공모의 '일반공모 청약' 기간 후보. 신고서에 세 가지로 적힌다:
+    일정표 '2026-12-07 ~2026-12-08 일반공모 청약', 요약 '일반공모의 청약기일은 2026년 10월 20일 ~ 2026년 10월 21일'
+    ('일반공모 청약 예정일은 … 과 …', '… 및 12월 18일' 포함), 모집조건표 '일반모집 또는 매출 개시일 … 종료일 …'.
+    어느 것이 맞는지는 summarize에서 구주주 청약·납입일과 비교해 고른다."""
+    cands = []
+    def iso(y, mo, d):
+        y, mo, d = int(y), int(mo), int(d)
+        return f"{y:04d}-{mo:02d}-{d:02d}" if 1 <= mo <= 12 and 1 <= d <= 31 else None
+    def add(a, b):
+        if a and b and [a, b] not in cands:
+            cands.append([a, b])
+    END = r"(?:(20\d{2})\s*[년.\-/]\s*)?(\d{1,2})\s*[월.\-/]\s*(\d{1,2})"
+    for m in re.finditer(r"일반\s*(?:공모|모집)", plain):
+        after = plain[m.end(): m.end() + 30]
+        if re.match(r"\s*(?:의\s*)?청약\s*(?:공고|결과)", after):   # 청약 공고·결과는 기간이 아니다
+            continue
+        before = plain[max(0, m.start() - 50): m.start()]
+        bm = re.search(DATE_RE + r"\s*일?\s*[~∼]\s*" + END + r"\s*일?\s*$", before)
+        if bm and re.match(r"\s*청약", after):
+            add(iso(*bm.group(1, 2, 3)), iso(bm.group(4) or bm.group(1), bm.group(5), bm.group(6)))
+        seg = plain[m.end(): m.end() + 90]
+        if not re.match(r"\s*(?:의\s*)?(?:청약|또는\s*매출)", seg):
+            continue
+        d1 = re.search(DATE_RE, seg)
+        if not d1:
+            continue
+        m2 = re.match(r"\s*일?\s*(?:\([^)]{0,6}\))?\s*(?:부터)?\s*(?:[~∼\-–]|과|와|및|종료일)\s*" + END, seg[d1.end(): d1.end() + 40])
+        if m2:
+            add(iso(*d1.groups()), iso(m2.group(1) or d1.group(1), m2.group(2), m2.group(3)))
+    return cands[:12]
 
 
 def tender_from_doc(key, rcept_no):
@@ -568,6 +602,18 @@ def summarize(items, det, estk, today, tender=None, apdoc=None):
             sched.append(["신주인수권증서 매매 시작", pick[0], "doc"])
             if pick[1]:
                 sched.append(["신주인수권증서 매매 종료", pick[1], "doc"])
+    if doc.get("gp_cands"):   # 실권주 일반공모 청약: 구주주 청약이 끝난 뒤, 납입일 이전의 7일 이내 구간
+        sub_end = next((b for a, b, k in sched if a == "청약 종료"), None) or next((b for a, b, k in sched if a == "청약 시작"), None)
+        pay = next((b for a, b, k in sched if a == "납입일"), None)
+        def gp_fits(c):
+            s0, e0 = c
+            if not sub_end or s0 <= sub_end or (pay and e0 > pay):
+                return False
+            return 0 <= (datetime.strptime(e0, "%Y-%m-%d") - datetime.strptime(s0, "%Y-%m-%d")).days <= 7
+        pick = next((c for c in doc["gp_cands"] if gp_fits(c)), None)
+        if pick:
+            sched.append(["일반공모 청약 시작", pick[0], "doc"])
+            sched.append(["일반공모 청약 종료", pick[1], "doc"])
     if tender:
         for lab, k in (("공개매수 시작", "start"), ("공개매수 종료", "end"), ("결제일", "settle")):
             if tender.get(k):
@@ -690,10 +736,11 @@ def main():
                 got = offer_price_from_doc(key, doc["rcept_no"]) or {"price": None, "final": False, "rt_cands": []}
                 # [발행조건확정] 정정본에는 매매기간이 빠져 있는 경우가 많아, 구간이 없으면 이전 신고서에서 찾는다
                 for older in doc.get("older", []):
-                    if any(c2[1] for c2 in got.get("rt_cands", [])):
+                    if any(c2[1] for c2 in got.get("rt_cands", [])) and got.get("gp_cands"):
                         break
                     o = offer_price_from_doc(key, older) or {}
                     got["rt_cands"] = got.get("rt_cands", []) + [c2 for c2 in o.get("rt_cands", []) if c2 not in got.get("rt_cands", [])]
+                    got["gp_cands"] = (got.get("gp_cands") or []) + [c2 for c2 in o.get("gp_cands", []) if c2 not in (got.get("gp_cands") or [])]
                 c["doc"] = dict(doc, **got, v=OFFER_V)
         # 공개매수신고서: 원문에서 가격·기간·결제일 (최신 신고서가 바뀔 때만 다시 읽는다)
         if top["type"] == "tender" and "공개매수신고서" in top["report_nm"]:
