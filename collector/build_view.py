@@ -613,7 +613,8 @@ def summarize(items, det, estk, today, tender=None, apdoc=None, mdoc=None):
             if e0 and not (0 <= (datetime.strptime(e0, "%Y-%m-%d") - datetime.strptime(s0, "%Y-%m-%d")).days <= 21):
                 return False
             return bool(rec or sub)   # 비교할 일정이 하나도 없으면 믿지 않는다
-        pick = next((c for c in doc["rt_cands"] if fits(c)), None)
+        # 정정 전·후 일정이 함께 적혀 있거나 이전 신고서에서 모은 후보가 섞이므로, 맞는 후보 중 청약에 가장 가까운(끝이 가장 늦은) 것을 쓴다
+        pick = max((c for c in doc["rt_cands"] if fits(c)), key=lambda c: c[1], default=None)
         if pick:
             sched.append(["신주인수권증서 매매 시작", pick[0], "doc"])
             if pick[1]:
