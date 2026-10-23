@@ -627,6 +627,7 @@ def apply_cancels(out, cancels):
         target = (c.get("flags") or ["rights"])[0]
         kinds = {"split", "merge"} if target == "split" else {target}
         day = ymd(c["rcept_dt"])
+        c = dict(c, report_nm=re.sub(r"\s+", " ", c["report_nm"]).replace("( ", "("))   # 거래소 공시명의 긴 공백 정리
         cands = [g for g in out if g["c"] == c["corp_code"] and g["k"] in kinds and g["d0"] <= day and not g.get("cancel")]
         if not cands:
             continue
