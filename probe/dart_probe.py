@@ -1,37 +1,34 @@
-"""일회성 조사: 최근 90일 철회·취소·중단·해지 관련 공시명 (B, C, D, I)."""
-import json, os, re, urllib.request, urllib.parse
-from datetime import datetime, timedelta
+"""일회성 조사: 증권신고서에서 일반공모(실권주) 청약일 표현."""
+import io, json, os, re, urllib.request, zipfile
 
 KEY = os.environ["DART_API_KEY"]
-def call(params):
-    q = urllib.parse.urlencode(dict(params, crtfc_key=KEY))
-    for i in range(4):
-        try:
-            with urllib.request.urlopen(f"https://opendart.fss.or.kr/api/list.json?{q}", timeout=60) as r:
-                return json.load(r)
-        except Exception as e:
-            err = e
-    return {"status": "err", "message": str(err)}
-end = datetime.now() + timedelta(hours=9)
-bgn = end - timedelta(days=60)
-out = {"names": {}, "rows": []}
-for ty in ("B", "C", "D", "I"):
-    page = 1
-    while True:
-        d = call({"bgn_de": bgn.strftime("%Y%m%d"), "end_de": end.strftime("%Y%m%d"), "pblntf_ty": ty, "page_no": page, "page_count": 100})
-        if d.get("status") != "000":
-            break
-        for x in d["list"]:
-            nm = re.sub(r"\s+", "", x["report_nm"])
-            if x.get("corp_cls") not in ("Y", "K"):
+DOCS = {"뷰노": "20261015000309", "에코프로비엠": "20261013000214", "휴림에이텍": "20261021000435"}
+DATE = r"20\d{2}\s*[년.\-/]\s*\d{1,2}\s*[월.\-/]\s*\d{1,2}"
+
+def text(r):
+    with urllib.request.urlopen(f"https://opendart.fss.or.kr/api/document.xml?crtfc_key={KEY}&rcept_no={r}", timeout=60) as f:
+        z = zipfile.ZipFile(io.BytesIO(f.read()))
+    t = ""
+    for n in z.namelist():
+        raw = z.read(n)
+        for enc in ("utf-8", "euc-kr", "cp949"):
+            try:
+                t += raw.decode(enc); break
+            except UnicodeDecodeError:
                 continue
-            if re.search(r"철회|취소|중단|해지|해제|무산|중지", nm) and re.search(r"증자|합병|분할|교환|이전|양수|양도|공개매수|사채|신고서|발행", nm):
-                key = ty + ":" + re.sub(r"^\[[^\]]*\]", "", nm)
-                out["names"][key] = out["names"].get(key, 0) + 1
-                out["rows"].append([ty, x["corp_name"], x["corp_code"], nm, x["rcept_no"]])
-        if page >= int(d.get("total_page", 1)):
-            break
-        page += 1
-out["names"] = dict(sorted(out["names"].items(), key=lambda kv: -kv[1]))
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", t))
+
+out = {}
+for name, r in DOCS.items():
+    try:
+        p = text(r)
+    except Exception as e:
+        out[name] = str(e); continue
+    hits = []
+    for m in re.finditer(r"일반\s*공모\s*(?:청약|공고)|실권주\s*일반공모|구주주\s*청약|우리사주", p):
+        seg = p[max(0, m.start() - 80): m.end() + 200]
+        if re.search(DATE, seg):
+            hits.append(seg)
+    out[name] = hits[:25]
 json.dump(out, open("probe/out.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print("ok")
