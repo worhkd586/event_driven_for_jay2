@@ -620,6 +620,24 @@ def summarize(items, det, estk, today, tender=None, apdoc=None):
     return g
 
 
+def apply_cancels(out, cancels):
+    """철회·취소 공시를 원래 이벤트에 붙인다: 같은 회사·같은 유형에서 철회일 이전에 시작한 가장 최근 묶음을 끝낸다.
+    (인적분할은 merge로 분류되므로 분할 철회는 split·merge를 모두 본다)"""
+    for c in sorted(cancels, key=lambda e: e["rcept_no"]):
+        target = (c.get("flags") or ["rights"])[0]
+        kinds = {"split", "merge"} if target == "split" else {target}
+        day = ymd(c["rcept_dt"])
+        cands = [g for g in out if g["c"] == c["corp_code"] and g["k"] in kinds and g["d0"] <= day and not g.get("cancel")]
+        if not cands:
+            continue
+        g = max(cands, key=lambda g: (g["d0"], g["id"]))
+        g["cancel"] = {"r": c["rcept_no"], "d": day, "nm": c["report_nm"]}
+        g["items"].insert(0, {"r": c["rcept_no"], "d": day, "nm": c["report_nm"], "x": False, "cx": True,
+                              "fs": c["first_seen"][11:16] if c.get("first_seen", "")[:10] == day else ""})
+        if g["status"] == "active" or g["end"] > day:
+            g["end"], g["end_basis"], g["status"] = day, "철회 공시", "past"
+
+
 def main():
     key = os.environ.get("DART_API_KEY")
     if not key:
@@ -634,7 +652,8 @@ def main():
     except FileNotFoundError:
         cache = {}
 
-    groups = build_groups(store["events"])
+    cancels = [e for e in store["events"] if e["type"] == "cancel"]
+    groups = build_groups([e for e in store["events"] if e["type"] != "cancel"])
     fetched = estk_n = 0
     out = []
     for items in groups:
@@ -758,6 +777,7 @@ def main():
         cache[gid] = c
         out.append(g)
 
+    apply_cancels(out, cancels)
     active_codes = [g["s"] for g in out if g["status"] == "active"]
     prices = fetch_prices(active_codes)
     out.sort(key=lambda g: (g["d"], g["id"]), reverse=True)

@@ -30,6 +30,9 @@ RECHECK = 150            # 실행당 미판별 공시 재확인 최대 건수
 
 # 공시 유형(pblntf_ty)별로 보고서명 패턴 → 이벤트 키
 RULES = [
+    # 철회·취소 공시: 이벤트를 새로 만들지 않고 build_view에서 원래 이벤트를 끝낸다 (같은 유형의 다른 규칙보다 먼저 검사)
+    ("I", r"^(?!.*(?:종속회사|자회사)).*(?:유상증자|무상증자|증자결정|합병|분할|주식교환|주식이전|영업양수|영업양도|신주인수권부사채).*(?:철회|취소)", "cancel"),
+    ("D", r"공개매수철회신고서", "cancel"),
     ("B", r"유상증자결정|유무상증자결정", "rights"),
     ("B", r"무상증자결정", "bonus"),
     ("B", r"회사분할결정", "split"),            # 물적 → split, 인적 → merge (상세 API로 판별)
@@ -124,6 +127,12 @@ def classify(key, item, k):
     nm = item.get("report_nm", "")
     api = next((a for pat, a in DETAIL if re.search(pat, nm)), None)
     text = detail_text(key, api, item["corp_code"], item["rcept_dt"], item["rcept_no"]) if api else ""
+    if k == "cancel":   # 무엇을 철회했는지: flags[0]에 원래 이벤트 유형을 적는다
+        n = re.sub(r"\s+", "", nm)
+        target = ("tender" if "공개매수" in n else "merge" if "분할합병" in n or "합병" in n else "split" if "분할" in n
+                  else "exchange" if re.search(r"주식교환|주식이전", n) else "transfer" if re.search(r"영업양수|영업양도", n)
+                  else "bw" if "신주인수권부사채" in n else "bonus" if "무상증자" in n and "유상" not in n else "rights")
+        return k, [target], "N"
     if re.search(r"최대주주변경", nm):
         return k, ["경영권 양수도"] + (["계약 해제·취소"] if re.search(r"해제|취소", nm) else []), "N"
     if k == "split":

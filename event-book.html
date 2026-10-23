@@ -103,6 +103,7 @@ a { color: inherit; }
 .badge { font-size: 10.5px; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
 .badge.new { color: var(--pos); border-color: rgba(60, 199, 127, 0.5); }
 .badge.amd { color: var(--warn); border-color: rgba(232, 176, 74, 0.45); }
+.badge.cx, .corp .tg.cx { color: var(--neg); border-color: currentColor; }
 .badge.ap { color: var(--accent); border-color: rgba(61, 181, 230, 0.45); }
 .feed-tools { display: inline-flex; gap: 10px; align-items: center; font-size: 13px; color: var(--muted); }
 .feed-tools label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; white-space: nowrap; }
@@ -569,7 +570,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
           var g = r.g;
           return '<button type="button" class="feed-row" data-id="' + esc(g.id) + '" style="--cc:var(--c-' + g.k + ')"><span class="tm">' + (r.e.fs || "—") + "</span><i></i><b>" + esc(g.n) +
             '</b><span class="cat">' + esc(NAMES[g.k]) + '</span><span class="nm">' + esc(r.e.nm) + '</span><span class="tags">' +
-            (r.amd ? '<span class="badge amd">정정</span>' : '<span class="badge new">신규</span>') + (hasAp(g) ? '<span class="badge ap">매수청구</span>' : "") +
+            (r.e.cx ? '<span class="badge cx">철회</span>' : r.amd ? '<span class="badge amd">정정</span>' : '<span class="badge new">신규</span>') + (hasAp(g) ? '<span class="badge ap">매수청구</span>' : "") +
             (g.status === "past" ? '<span class="badge">종료</span>' : "") + "</span></button>";
         }).join("") + "</section>";
     }).join("") + "</div>";
@@ -649,6 +650,7 @@ table.ms { width: 100%; border-collapse: collapse; font-size: 13px; }
     if (hasAp(g)) tags += '<span class="tg ap">매수청구</span>';
     if (g.k === "merge") { var f = (g.f || []).filter(function (x) { return !/확인 필요|^합병$/.test(x); }).join(" · "); if (f) tags += '<span class="tg">' + esc(f) + "</span>"; }
     if (g.amends) tags += '<span class="tg">정정 ' + g.amends + "</span>";
+    if (g.cancel) tags += '<span class="tg cx">철회 ' + md(g.cancel.d) + "</span>";
     return '<div class="corp"><b>' + esc(g.n) + "</b>" + tags + "<small>" + esc(g.m) + " " + esc(g.s || "") + " · 최초 공시 " + md(g.d0) + "</small></div>";
   }
   function renderGrid() {
