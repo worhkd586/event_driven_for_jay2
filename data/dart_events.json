@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-23T08:58+09:00",
+ "updated_at": "2026-10-23T11:07+09:00",
  "events": [
   {
    "rcept_no": "20261023000005",
@@ -831,6 +831,25 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261016900765"
+  },
+  {
+   "rcept_no": "20261016900461",
+   "rcept_dt": "20261016",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "시지트로닉스",
+   "corp_code": "01284751",
+   "stock_code": "429270",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (일반공모증자(소액공모) 유상증자 결정 철회)",
+   "filer": "시지트로닉스",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261016900461"
   },
   {
    "rcept_no": "20261016000527",
@@ -1668,6 +1687,44 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261013000002"
   },
   {
+   "rcept_no": "20261012900618",
+   "rcept_dt": "20261012",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "다보링크",
+   "corp_code": "01416642",
+   "stock_code": "340360",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (일반공모증자(소액공모) 유상증자 결정 철회)",
+   "filer": "다보링크",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261012900618"
+  },
+  {
+   "rcept_no": "20261012900169",
+   "rcept_dt": "20261012",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "경남제약",
+   "corp_code": "00307028",
+   "stock_code": "053950",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (유상증자결정(주주배정증자)-철회)",
+   "filer": "경남제약",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261012900169"
+  },
+  {
    "rcept_no": "20261012000514",
    "rcept_dt": "20261013",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -2221,6 +2278,44 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261007000004"
   },
   {
+   "rcept_no": "20261006900429",
+   "rcept_dt": "20261006",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "파라택시스이더리움",
+   "corp_code": "01130849",
+   "stock_code": "290560",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (회사합병 결정 및 임시주주총회 소집 철회)",
+   "filer": "파라택시스이더리움",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "merge"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261006900429"
+  },
+  {
+   "rcept_no": "20261006900379",
+   "rcept_dt": "20261006",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "파라택시스코리아",
+   "corp_code": "01227039",
+   "stock_code": "288330",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (회사합병 결정 및 임시주주총회 소집결의 철회)",
+   "filer": "파라택시스코리아",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "merge"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261006900379"
+  },
+  {
    "rcept_no": "20261006000435",
    "rcept_dt": "20261006",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -2590,6 +2685,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261002900880"
   },
   {
+   "rcept_no": "20261002900832",
+   "rcept_dt": "20261002",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "스코넥",
+   "corp_code": "01290248",
+   "stock_code": "276040",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (주요사항보고서(유상증자)철회)",
+   "filer": "스코넥",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261002900832"
+  },
+  {
    "rcept_no": "20261002000673",
    "rcept_dt": "20261006",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -2805,6 +2919,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261002000167"
+  },
+  {
+   "rcept_no": "20261001900709",
+   "rcept_dt": "20261001",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "대진첨단소재",
+   "corp_code": "01549472",
+   "stock_code": "393970",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (회사 합병결정 철회)",
+   "filer": "대진첨단소재",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "merge"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261001900709"
   },
   {
    "rcept_no": "20261001000567",
@@ -3045,6 +3178,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260930901323"
   },
   {
+   "rcept_no": "20260930900908",
+   "rcept_dt": "20260930",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "케이이엠텍",
+   "corp_code": "00542898",
+   "stock_code": "106080",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (주주배정 유상증자 결정 철회)",
+   "filer": "케이이엠텍",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260930900908"
+  },
+  {
    "rcept_no": "20260930900826",
    "rcept_dt": "20260930",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -3061,6 +3213,25 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260930900826"
+  },
+  {
+   "rcept_no": "20260930900737",
+   "rcept_dt": "20260930",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "한울반도체",
+   "corp_code": "01359815",
+   "stock_code": "320000",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (유상증자결정(주주배정후 실권주 일반공모) 철회)",
+   "filer": "한울반도체",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260930900737"
   },
   {
    "rcept_no": "20260930900602",
@@ -3486,6 +3657,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260930000197"
+  },
+  {
+   "rcept_no": "20260929900874",
+   "rcept_dt": "20260929",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "아리바이오홀딩스",
+   "corp_code": "00605522",
+   "stock_code": "290690",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (회사합병 결정 철회)",
+   "filer": "아리바이오홀딩스",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "merge"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260929900874"
   },
   {
    "rcept_no": "20260929000646",
@@ -5571,6 +5761,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260915900552"
   },
   {
+   "rcept_no": "20260915900525",
+   "rcept_dt": "20260915",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "바른손이앤에이",
+   "corp_code": "00259590",
+   "stock_code": "035620",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (제3자 배정 유상증자 결정 철회)",
+   "filer": "바른손이앤에이",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260915900525"
+  },
+  {
    "rcept_no": "20260915000428",
    "rcept_dt": "20260915",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -6044,6 +6253,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260914000031"
+  },
+  {
+   "rcept_no": "20260911900703",
+   "rcept_dt": "20260911",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "아이텍",
+   "corp_code": "00626011",
+   "stock_code": "119830",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (제3자배정 유상증자 결정 철회)",
+   "filer": "아이텍",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260911900703"
   },
   {
    "rcept_no": "20260911900405",
@@ -7769,6 +7997,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260901000005"
   },
   {
+   "rcept_no": "20260831900382",
+   "rcept_dt": "20260831",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "에이전트AI",
+   "corp_code": "00367695",
+   "stock_code": "060900",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (유상증자 결정(주주배정후 실권주 일반공모) 철회)",
+   "filer": "에이전트AI",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260831900382"
+  },
+  {
    "rcept_no": "20260831001532",
    "rcept_dt": "20260831",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -8302,6 +8549,44 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260827900467"
   },
   {
+   "rcept_no": "20260827900398",
+   "rcept_dt": "20260827",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "하이퍼코퍼레이션",
+   "corp_code": "00391197",
+   "stock_code": "065650",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (유상증자결정(주주배정후 실권주 일반공모)철회)",
+   "filer": "하이퍼코퍼레이션",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260827900398"
+  },
+  {
+   "rcept_no": "20260827900260",
+   "rcept_dt": "20260827",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "캐리",
+   "corp_code": "00863038",
+   "stock_code": "313760",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (제3자배정 유상증자 결정 철회)",
+   "filer": "캐리",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260827900260"
+  },
+  {
    "rcept_no": "20260827001026",
    "rcept_dt": "20260827",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -8495,6 +8780,44 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260827000513"
+  },
+  {
+   "rcept_no": "20260826900701",
+   "rcept_dt": "20260826",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "휴온스",
+   "corp_code": "01159853",
+   "stock_code": "243070",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (회사합병 결정 및 임시주주총회 소집결의 철회)",
+   "filer": "휴온스",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "merge"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260826900701"
+  },
+  {
+   "rcept_no": "20260826900589",
+   "rcept_dt": "20260826",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "버킷스튜디오",
+   "corp_code": "00378220",
+   "stock_code": "066410",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (제3자 배정 유상증자 결정 철회)",
+   "filer": "버킷스튜디오",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260826900589"
   },
   {
    "rcept_no": "20260826000752",
@@ -9004,6 +9327,25 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260821900578"
+  },
+  {
+   "rcept_no": "20260821900504",
+   "rcept_dt": "20260821",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "크라우드웍스",
+   "corp_code": "01514005",
+   "stock_code": "355390",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (제3자배정 유상증자결정 철회)",
+   "filer": "크라우드웍스",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260821900504"
   },
   {
    "rcept_no": "20260821000627",
@@ -11086,6 +11428,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260806000006"
+  },
+  {
+   "rcept_no": "20260805900728",
+   "rcept_dt": "20260805",
+   "first_seen": "2026-10-23T11:07+09:00",
+   "type": "cancel",
+   "corp_name": "썸에이지",
+   "corp_code": "01049422",
+   "stock_code": "208640",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (유상증자결정(주주배정 후 실권주 일반공모) 철회)",
+   "filer": "썸에이지",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260805900728"
   },
   {
    "rcept_no": "20260805000454",
