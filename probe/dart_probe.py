@@ -2,7 +2,7 @@
 import io, json, os, re, urllib.request, zipfile
 
 KEY = os.environ["DART_API_KEY"]
-DOCS = {"뷰노": "20261015000309", "에코프로비엠": "20261013000214", "휴림에이텍": "20261021000435"}
+DOCS = {"이렘": "20261008000305"}
 DATE = r"20\d{2}\s*[년.\-/]\s*\d{1,2}\s*[월.\-/]\s*\d{1,2}"
 
 def text(r):
@@ -25,10 +25,10 @@ for name, r in DOCS.items():
     except Exception as e:
         out[name] = str(e); continue
     hits = []
-    for m in re.finditer(r"일반\s*공모\s*(?:청약|공고)|실권주\s*일반공모|구주주\s*청약|우리사주", p):
+    for m in re.finditer(r"신주인수권\s*증서|배정\s*기준일|구주주\s*청약|주요\s*일정", p):
         seg = p[max(0, m.start() - 80): m.end() + 200]
         if re.search(DATE, seg):
             hits.append(seg)
-    out[name] = hits[:25]
+    out[name] = hits[:40]
 json.dump(out, open("probe/out.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print("ok")
