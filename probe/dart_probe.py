@@ -25,8 +25,8 @@ for name, r in DOCS.items():
     except Exception as e:
         out[name] = str(e); continue
     hits = []
-    for m in re.finditer(r"신주인수권\s*증서|배정\s*기준일|구주주\s*청약|주요\s*일정", p):
-        seg = p[max(0, m.start() - 80): m.end() + 200]
+    for m in re.finditer(r"신주인수권\s*증서", p):
+        seg = p[max(0, m.start() - 120): m.end() + 160]
         if re.search(DATE, seg):
             hits.append(seg)
     out[name] = hits[:40]
