@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-10-26T16:17+09:00",
+ "updated_at": "2026-10-26T16:43+09:00",
  "events": [
+  {
+   "rcept_no": "20261026000284",
+   "rcept_dt": "20261026",
+   "first_seen": "2026-10-26T16:43+09:00",
+   "type": "merge",
+   "corp_name": "APS",
+   "corp_code": "00296078",
+   "stock_code": "054620",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "APS",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026000284"
+  },
   {
    "rcept_no": "20261026000222",
    "rcept_dt": "20261026",
