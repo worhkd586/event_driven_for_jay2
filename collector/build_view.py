@@ -697,6 +697,31 @@ def summarize(items, det, estk, today, tender=None, apdoc=None, mdoc=None):
     return g
 
 
+def apply_attaches(out, attaches):
+    """증권신고서 정정을 같은 회사의 이벤트에 붙인다: 공시 이력(최신 이벤트 탭)과 일정(이벤트 일정 탭)에 정정공시로 넣는다.
+    정정일 이전에 시작한 가장 최근 묶음에 붙이고, 종료일 계산에는 넣지 않는다."""
+    for a in sorted(attaches, key=lambda e: e["rcept_no"]):
+        kinds = {"rights"} if (a.get("flags") or ["rights"])[0] == "rights" else {"merge", "exchange", "split", "transfer"}
+        day = ymd(a["rcept_dt"])
+        cands = [g for g in out if g["c"] == a["corp_code"] and g["k"] in kinds and g["d0"] <= day]
+        if not cands:
+            continue
+        g = max(cands, key=lambda g: (g["d0"], g["id"]))
+        if any(e["r"] == a["rcept_no"] for e in g["items"]):
+            continue
+        g["items"].append({"r": a["rcept_no"], "d": day, "nm": a["report_nm"], "x": True,
+                           "fs": a["first_seen"][11:16] if a.get("first_seen", "")[:10] == day else ""})
+        g["items"].sort(key=lambda e: e["r"], reverse=True)
+        g["amends"] = g.get("amends", 0) + 1
+    for g in out:   # 정정공시(주요사항보고서·증권신고서)를 일정에도 넣는다
+        have = {(a, b) for a, b in g["sched"]}
+        for e in g["items"]:
+            lab = "정정공시 · " + re.sub(r"\s+", "", e["nm"])
+            if e.get("x") and (lab, e["d"]) not in have:
+                g["sched"].append([lab, e["d"]])
+        g["sched"].sort(key=lambda x: x[1])
+
+
 def apply_cancels(out, cancels):
     """철회·취소 공시를 원래 이벤트에 붙인다: 같은 회사·같은 유형에서 철회일 이전에 시작한 가장 최근 묶음을 끝낸다.
     (인적분할은 merge로 분류되므로 분할 철회는 split·merge를 모두 본다)"""
@@ -731,7 +756,8 @@ def main():
         cache = {}
 
     cancels = [e for e in store["events"] if e["type"] == "cancel"]
-    groups = build_groups([e for e in store["events"] if e["type"] != "cancel"])
+    attaches = [e for e in store["events"] if e["type"] == "attach"]
+    groups = build_groups([e for e in store["events"] if e["type"] not in ("cancel", "attach")])
     fetched = estk_n = 0
     out = []
     for items in groups:
@@ -859,6 +885,7 @@ def main():
         cache[gid] = c
         out.append(g)
 
+    apply_attaches(out, attaches)
     apply_cancels(out, cancels)
     active_codes = [g["s"] for g in out if g["status"] == "active"]
     prices = fetch_prices(active_codes)

@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-23T16:37+09:00",
+ "updated_at": "2026-10-26T14:24+09:00",
  "events": [
   {
    "rcept_no": "20261023000402",
@@ -310,6 +310,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000486"
+  },
+  {
+   "rcept_no": "20261022000473",
+   "rcept_dt": "20261022",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "삼성바이오로직스",
+   "corp_code": "00877059",
+   "stock_code": "207940",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "삼성바이오로직스",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261022000473"
   },
   {
    "rcept_no": "20261022000456",
@@ -638,6 +657,25 @@
    ],
    "appraisal": "?",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261021000442"
+  },
+  {
+   "rcept_no": "20261021000435",
+   "rcept_dt": "20261021",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "휴림에이텍",
+   "corp_code": "00230814",
+   "stock_code": "078590",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "휴림에이텍",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261021000435"
   },
   {
    "rcept_no": "20261021000422",
@@ -1300,6 +1338,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261016000127"
   },
   {
+   "rcept_no": "20261016000098",
+   "rcept_dt": "20261016",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "큐리언트",
+   "corp_code": "01042650",
+   "stock_code": "115180",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "큐리언트",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261016000098"
+  },
+  {
    "rcept_no": "20261016000096",
    "rcept_dt": "20261016",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -1334,6 +1391,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261015900736"
   },
   {
+   "rcept_no": "20261015000431",
+   "rcept_dt": "20261015",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "아이에이",
+   "corp_code": "00252269",
+   "stock_code": "038880",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "아이에이",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261015000431"
+  },
+  {
    "rcept_no": "20261015000418",
    "rcept_dt": "20261015",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -1364,6 +1440,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261015000313"
+  },
+  {
+   "rcept_no": "20261015000309",
+   "rcept_dt": "20261015",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "뷰노",
+   "corp_code": "01344202",
+   "stock_code": "338220",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "뷰노",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261015000309"
   },
   {
    "rcept_no": "20261015000277",
@@ -1845,6 +1940,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261013000251"
   },
   {
+   "rcept_no": "20261013000214",
+   "rcept_dt": "20261013",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "에코프로비엠",
+   "corp_code": "01160363",
+   "stock_code": "247540",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "에코프로비엠",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261013000214"
+  },
+  {
    "rcept_no": "20261013000198",
    "rcept_dt": "20261013",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -2125,6 +2239,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261012000356"
   },
   {
+   "rcept_no": "20261012000202",
+   "rcept_dt": "20261012",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "엘앤씨바이오",
+   "corp_code": "01181515",
+   "stock_code": "290650",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "엘앤씨바이오",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261012000202"
+  },
+  {
    "rcept_no": "20261012000188",
    "rcept_dt": "20261012",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -2253,6 +2386,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261008000384"
+  },
+  {
+   "rcept_no": "20261008000305",
+   "rcept_dt": "20261008",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "이렘",
+   "corp_code": "00116426",
+   "stock_code": "009730",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "이렘",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261008000305"
   },
   {
    "rcept_no": "20261008000279",
@@ -2466,6 +2618,25 @@
    ],
    "appraisal": "Y",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261007000082"
+  },
+  {
+   "rcept_no": "20261007000009",
+   "rcept_dt": "20261007",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "SK디앤디",
+   "corp_code": "00508344",
+   "stock_code": "210980",
+   "market": "KOSPI",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "SK디앤디",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261007000009"
   },
   {
    "rcept_no": "20261007000004",
@@ -3146,6 +3317,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261001900709"
   },
   {
+   "rcept_no": "20261001000586",
+   "rcept_dt": "20261001",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "진코스텍",
+   "corp_code": "01158632",
+   "stock_code": "250030",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "진코스텍",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261001000586"
+  },
+  {
    "rcept_no": "20261001000567",
    "rcept_dt": "20261001",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -3181,6 +3371,25 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261001000489"
+  },
+  {
+   "rcept_no": "20261001000477",
+   "rcept_dt": "20261001",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "삼성바이오로직스",
+   "corp_code": "00877059",
+   "stock_code": "207940",
+   "market": "KOSPI",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "삼성바이오로직스",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261001000477"
   },
   {
    "rcept_no": "20261001000451",
@@ -3884,6 +4093,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260929900874"
   },
   {
+   "rcept_no": "20260929000672",
+   "rcept_dt": "20260929",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "뷰노",
+   "corp_code": "01344202",
+   "stock_code": "338220",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "뷰노",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260929000672"
+  },
+  {
    "rcept_no": "20260929000646",
    "rcept_dt": "20260929",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -3987,6 +4215,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260929000566"
+  },
+  {
+   "rcept_no": "20260929000550",
+   "rcept_dt": "20260929",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "뷰노",
+   "corp_code": "01344202",
+   "stock_code": "338220",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "뷰노",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260929000550"
   },
   {
    "rcept_no": "20260929000532",
@@ -4201,6 +4448,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260929000305"
   },
   {
+   "rcept_no": "20260929000233",
+   "rcept_dt": "20260929",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "큐리언트",
+   "corp_code": "01042650",
+   "stock_code": "115180",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "큐리언트",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260929000233"
+  },
+  {
    "rcept_no": "20260929000230",
    "rcept_dt": "20260929",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -4338,6 +4604,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260928900330"
   },
   {
+   "rcept_no": "20260928000402",
+   "rcept_dt": "20260928",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "진코스텍",
+   "corp_code": "01158632",
+   "stock_code": "250030",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "진코스텍",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260928000402"
+  },
+  {
    "rcept_no": "20260928000396",
    "rcept_dt": "20260929",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -4354,6 +4639,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260928000396"
   },
   {
+   "rcept_no": "20260928000392",
+   "rcept_dt": "20260928",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "진코스텍",
+   "corp_code": "01158632",
+   "stock_code": "250030",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]증권신고서(지분증권)",
+   "filer": "진코스텍",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260928000392"
+  },
+  {
    "rcept_no": "20260928000391",
    "rcept_dt": "20260929",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -4368,6 +4672,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260928000391"
+  },
+  {
+   "rcept_no": "20260928000390",
+   "rcept_dt": "20260928",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "진코스텍",
+   "corp_code": "01158632",
+   "stock_code": "250030",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "진코스텍",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260928000390"
   },
   {
    "rcept_no": "20260928000389",
@@ -4522,6 +4845,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000638"
+  },
+  {
+   "rcept_no": "20260923000579",
+   "rcept_dt": "20260923",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "이렘",
+   "corp_code": "00116426",
+   "stock_code": "009730",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "이렘",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000579"
   },
   {
    "rcept_no": "20260923000576",
@@ -5006,6 +5348,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000327"
+  },
+  {
+   "rcept_no": "20260921000308",
+   "rcept_dt": "20260921",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "상지건설",
+   "corp_code": "00232007",
+   "stock_code": "042940",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "상지건설",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000308"
   },
   {
    "rcept_no": "20260921000303",
@@ -6018,6 +6379,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260915000380"
   },
   {
+   "rcept_no": "20260915000357",
+   "rcept_dt": "20260915",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "이렘",
+   "corp_code": "00116426",
+   "stock_code": "009730",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "이렘",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260915000357"
+  },
+  {
    "rcept_no": "20260915000331",
    "rcept_dt": "20260915",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -6347,6 +6727,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260914000210"
   },
   {
+   "rcept_no": "20260914000188",
+   "rcept_dt": "20260914",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "툴젠",
+   "corp_code": "00547510",
+   "stock_code": "199800",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "툴젠",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260914000188"
+  },
+  {
    "rcept_no": "20260914000184",
    "rcept_dt": "20260914",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -6498,6 +6897,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260911900405"
   },
   {
+   "rcept_no": "20260911000606",
+   "rcept_dt": "20260911",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "뷰노",
+   "corp_code": "01344202",
+   "stock_code": "338220",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "뷰노",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260911000606"
+  },
+  {
    "rcept_no": "20260911000600",
    "rcept_dt": "20260911",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -6592,6 +7010,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260911000504"
+  },
+  {
+   "rcept_no": "20260911000480",
+   "rcept_dt": "20260911",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "삼성바이오로직스",
+   "corp_code": "00877059",
+   "stock_code": "207940",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "삼성바이오로직스",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260911000480"
   },
   {
    "rcept_no": "20260911000380",
@@ -6695,6 +7132,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260911000113"
   },
   {
+   "rcept_no": "20260910000583",
+   "rcept_dt": "20260910",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "한울반도체",
+   "corp_code": "01359815",
+   "stock_code": "320000",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "한울반도체",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260910000583"
+  },
+  {
    "rcept_no": "20260910000580",
    "rcept_dt": "20260910",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -6709,6 +7165,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260910000580"
+  },
+  {
+   "rcept_no": "20260910000579",
+   "rcept_dt": "20260910",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "진코스텍",
+   "corp_code": "01158632",
+   "stock_code": "250030",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "진코스텍",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260910000579"
   },
   {
    "rcept_no": "20260910000465",
@@ -7039,6 +7514,44 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260909000507"
   },
   {
+   "rcept_no": "20260909000493",
+   "rcept_dt": "20260909",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "이렘",
+   "corp_code": "00116426",
+   "stock_code": "009730",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "이렘",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260909000493"
+  },
+  {
+   "rcept_no": "20260909000477",
+   "rcept_dt": "20260909",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "SK디앤디",
+   "corp_code": "00508344",
+   "stock_code": "210980",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "SK디앤디",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260909000477"
+  },
+  {
    "rcept_no": "20260909000470",
    "rcept_dt": "20260909",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -7260,6 +7773,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260908000307"
   },
   {
+   "rcept_no": "20260908000201",
+   "rcept_dt": "20260908",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "HLB제약",
+   "corp_code": "00336817",
+   "stock_code": "047920",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "HLB제약",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260908000201"
+  },
+  {
    "rcept_no": "20260908000180",
    "rcept_dt": "20260908",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -7324,6 +7856,44 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260907000272"
+  },
+  {
+   "rcept_no": "20260907000267",
+   "rcept_dt": "20260907",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "경남제약",
+   "corp_code": "00307028",
+   "stock_code": "053950",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "경남제약",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260907000267"
+  },
+  {
+   "rcept_no": "20260907000218",
+   "rcept_dt": "20260907",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "엔젠바이오",
+   "corp_code": "01397903",
+   "stock_code": "354200",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "엔젠바이오",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260907000218"
   },
   {
    "rcept_no": "20260907000217",
@@ -7502,6 +8072,25 @@
    ],
    "appraisal": "Y",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260904000355"
+  },
+  {
+   "rcept_no": "20260904000344",
+   "rcept_dt": "20260904",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "상지건설",
+   "corp_code": "00232007",
+   "stock_code": "042940",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "상지건설",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260904000344"
   },
   {
    "rcept_no": "20260904000294",
@@ -7923,6 +8512,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260902000313"
   },
   {
+   "rcept_no": "20260902000182",
+   "rcept_dt": "20260902",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "에코프로비엠",
+   "corp_code": "01160363",
+   "stock_code": "247540",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "에코프로비엠",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260902000182"
+  },
+  {
    "rcept_no": "20260902000167",
    "rcept_dt": "20260902",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -7953,6 +8561,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260902000156"
+  },
+  {
+   "rcept_no": "20260902000144",
+   "rcept_dt": "20260902",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "엘앤씨바이오",
+   "corp_code": "01181515",
+   "stock_code": "290650",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "엘앤씨바이오",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260902000144"
   },
   {
    "rcept_no": "20260902000129",
@@ -8003,6 +8630,25 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260901900389"
+  },
+  {
+   "rcept_no": "20260901000345",
+   "rcept_dt": "20260901",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "이렘",
+   "corp_code": "00116426",
+   "stock_code": "009730",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]증권신고서(지분증권)",
+   "filer": "이렘",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260901000345"
   },
   {
    "rcept_no": "20260901000318",
@@ -8056,6 +8702,44 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260901000293"
   },
   {
+   "rcept_no": "20260901000272",
+   "rcept_dt": "20260901",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "SG",
+   "corp_code": "00963976",
+   "stock_code": "255220",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "SG",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260901000272"
+  },
+  {
+   "rcept_no": "20260901000270",
+   "rcept_dt": "20260901",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "SG",
+   "corp_code": "00963976",
+   "stock_code": "255220",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]증권신고서(지분증권)",
+   "filer": "SG",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260901000270"
+  },
+  {
    "rcept_no": "20260901000241",
    "rcept_dt": "20260901",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -8086,6 +8770,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260901000196"
+  },
+  {
+   "rcept_no": "20260901000179",
+   "rcept_dt": "20260901",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "계양전기",
+   "corp_code": "00102618",
+   "stock_code": "012200",
+   "market": "KOSPI",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "계양전기",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260901000179"
   },
   {
    "rcept_no": "20260901000174",
@@ -8150,6 +8853,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260901000140"
+  },
+  {
+   "rcept_no": "20260901000133",
+   "rcept_dt": "20260901",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "퓨쳐켐",
+   "corp_code": "01053540",
+   "stock_code": "220100",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "퓨쳐켐",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260901000133"
   },
   {
    "rcept_no": "20260901000120",
@@ -8318,6 +9040,44 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260831001452"
   },
   {
+   "rcept_no": "20260831001442",
+   "rcept_dt": "20260831",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "이렘",
+   "corp_code": "00116426",
+   "stock_code": "009730",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "이렘",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260831001442"
+  },
+  {
+   "rcept_no": "20260831001387",
+   "rcept_dt": "20260831",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "엘앤씨바이오",
+   "corp_code": "01181515",
+   "stock_code": "290650",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "엘앤씨바이오",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260831001387"
+  },
+  {
    "rcept_no": "20260831001313",
    "rcept_dt": "20260831",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -8382,6 +9142,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260831001295"
   },
   {
+   "rcept_no": "20260831001215",
+   "rcept_dt": "20260831",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "HLB제약",
+   "corp_code": "00336817",
+   "stock_code": "047920",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "HLB제약",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260831001215"
+  },
+  {
    "rcept_no": "20260831001197",
    "rcept_dt": "20260831",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -8412,6 +9191,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260831001162"
+  },
+  {
+   "rcept_no": "20260831000120",
+   "rcept_dt": "20260831",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "SK디앤디",
+   "corp_code": "00508344",
+   "stock_code": "210980",
+   "market": "KOSPI",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "SK디앤디",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260831000120"
   },
   {
    "rcept_no": "20260831000079",
@@ -9758,6 +10556,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260821000008"
   },
   {
+   "rcept_no": "20260820000428",
+   "rcept_dt": "20260820",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "엔젠바이오",
+   "corp_code": "01397903",
+   "stock_code": "354200",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "엔젠바이오",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260820000428"
+  },
+  {
    "rcept_no": "20260820000381",
    "rcept_dt": "20260820",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -9836,6 +10653,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260820000363"
+  },
+  {
+   "rcept_no": "20260820000306",
+   "rcept_dt": "20260820",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "툴젠",
+   "corp_code": "00547510",
+   "stock_code": "199800",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "툴젠",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260820000306"
   },
   {
    "rcept_no": "20260820000303",
@@ -10133,6 +10969,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260818000299"
   },
   {
+   "rcept_no": "20260818000282",
+   "rcept_dt": "20260818",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "엘앤씨바이오",
+   "corp_code": "01181515",
+   "stock_code": "290650",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "엘앤씨바이오",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260818000282"
+  },
+  {
    "rcept_no": "20260818000280",
    "rcept_dt": "20260818",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -10181,6 +11036,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260818000259"
   },
   {
+   "rcept_no": "20260818000258",
+   "rcept_dt": "20260818",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "에코프로비엠",
+   "corp_code": "01160363",
+   "stock_code": "247540",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "에코프로비엠",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260818000258"
+  },
+  {
    "rcept_no": "20260818000254",
    "rcept_dt": "20260818",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -10211,6 +11085,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260818000250"
+  },
+  {
+   "rcept_no": "20260818000235",
+   "rcept_dt": "20260818",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "SK디앤디",
+   "corp_code": "00508344",
+   "stock_code": "210980",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "SK디앤디",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260818000235"
   },
   {
    "rcept_no": "20260818000149",
@@ -10371,6 +11264,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814903571"
   },
   {
+   "rcept_no": "20260814004252",
+   "rcept_dt": "20260814",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "SG",
+   "corp_code": "00963976",
+   "stock_code": "255220",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "SG",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814004252"
+  },
+  {
    "rcept_no": "20260814004178",
    "rcept_dt": "20260814",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -10401,6 +11313,82 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814004113"
+  },
+  {
+   "rcept_no": "20260814004100",
+   "rcept_dt": "20260814",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "계양전기",
+   "corp_code": "00102618",
+   "stock_code": "012200",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "계양전기",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814004100"
+  },
+  {
+   "rcept_no": "20260814003982",
+   "rcept_dt": "20260814",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "HLB제약",
+   "corp_code": "00336817",
+   "stock_code": "047920",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]증권신고서(지분증권)",
+   "filer": "HLB제약",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003982"
+  },
+  {
+   "rcept_no": "20260814003954",
+   "rcept_dt": "20260814",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "퓨쳐켐",
+   "corp_code": "01053540",
+   "stock_code": "220100",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]증권신고서(지분증권)",
+   "filer": "퓨쳐켐",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003954"
+  },
+  {
+   "rcept_no": "20260814003174",
+   "rcept_dt": "20260814",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "퓨쳐켐",
+   "corp_code": "01053540",
+   "stock_code": "220100",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "퓨쳐켐",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003174"
   },
   {
    "rcept_no": "20260814002868",
@@ -10546,6 +11534,25 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814001818"
+  },
+  {
+   "rcept_no": "20260814001272",
+   "rcept_dt": "20260814",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "HLB제약",
+   "corp_code": "00336817",
+   "stock_code": "047920",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "HLB제약",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814001272"
   },
   {
    "rcept_no": "20260814000799",
@@ -10893,6 +11900,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260812000403"
   },
   {
+   "rcept_no": "20260811000565",
+   "rcept_dt": "20260811",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "클로봇",
+   "corp_code": "01784914",
+   "stock_code": "466100",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "클로봇",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260811000565"
+  },
+  {
    "rcept_no": "20260811000550",
    "rcept_dt": "20260811",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -11005,6 +12031,25 @@
    ],
    "appraisal": "Y",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260811000467"
+  },
+  {
+   "rcept_no": "20260811000461",
+   "rcept_dt": "20260811",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "센서뷰",
+   "corp_code": "01593668",
+   "stock_code": "321370",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "센서뷰",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260811000461"
   },
   {
    "rcept_no": "20260811000451",
@@ -11123,6 +12168,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260810000728"
+  },
+  {
+   "rcept_no": "20260810000699",
+   "rcept_dt": "20260810",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "SK디앤디",
+   "corp_code": "00508344",
+   "stock_code": "210980",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "SK디앤디",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260810000699"
   },
   {
    "rcept_no": "20260810000559",
@@ -11408,6 +12472,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260807000601"
   },
   {
+   "rcept_no": "20260807000567",
+   "rcept_dt": "20260807",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "에코프로비엠",
+   "corp_code": "01160363",
+   "stock_code": "247540",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "에코프로비엠",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260807000567"
+  },
+  {
    "rcept_no": "20260807000458",
    "rcept_dt": "20260807",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -11620,6 +12703,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260806000192"
   },
   {
+   "rcept_no": "20260806000184",
+   "rcept_dt": "20260806",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "툴젠",
+   "corp_code": "00547510",
+   "stock_code": "199800",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "툴젠",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260806000184"
+  },
+  {
    "rcept_no": "20260806000006",
    "rcept_dt": "20260806",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -11785,6 +12887,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260804000545"
+  },
+  {
+   "rcept_no": "20260804000540",
+   "rcept_dt": "20260804",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "썸에이지",
+   "corp_code": "01049422",
+   "stock_code": "208640",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "썸에이지",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260804000540"
   },
   {
    "rcept_no": "20260804000538",
@@ -12054,6 +13175,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260803901011"
   },
   {
+   "rcept_no": "20260803000442",
+   "rcept_dt": "20260803",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "페니트리움바이오",
+   "corp_code": "01409022",
+   "stock_code": "187660",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "페니트리움바이오",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260803000442"
+  },
+  {
    "rcept_no": "20260803000333",
    "rcept_dt": "20260803",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -12084,6 +13224,25 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260803000258"
+  },
+  {
+   "rcept_no": "20260803000237",
+   "rcept_dt": "20260803",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "HLB제약",
+   "corp_code": "00336817",
+   "stock_code": "047920",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "HLB제약",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260803000237"
   },
   {
    "rcept_no": "20260803000211",
@@ -12288,6 +13447,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260731000458"
   },
   {
+   "rcept_no": "20260731000385",
+   "rcept_dt": "20260731",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "HLB제약",
+   "corp_code": "00336817",
+   "stock_code": "047920",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "HLB제약",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260731000385"
+  },
+  {
    "rcept_no": "20260731000380",
    "rcept_dt": "20260731",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -12414,6 +13592,44 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260730000495"
+  },
+  {
+   "rcept_no": "20260730000407",
+   "rcept_dt": "20260730",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "아모텍",
+   "corp_code": "00298447",
+   "stock_code": "052710",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "아모텍",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260730000407"
+  },
+  {
+   "rcept_no": "20260730000399",
+   "rcept_dt": "20260730",
+   "first_seen": "2026-10-26T14:24+09:00",
+   "type": "attach",
+   "corp_name": "LB세미콘",
+   "corp_code": "00412348",
+   "stock_code": "061970",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "LB세미콘",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260730000399"
   },
   {
    "rcept_no": "20260730000381",

@@ -42,6 +42,9 @@ RULES = [
     ("B", r"영업양수결정|영업양도결정", "transfer"),
     ("B", r"신주인수권부사채권발행결정", "bw"),  # 공모/사모는 상세 API로 판별
     ("D", r"공개매수신고서|공개매수결과보고서", "tender"),
+    # 증권신고서 정정: 이벤트를 새로 만들지 않고 build_view에서 같은 회사의 유상증자·합병 등 이벤트에 붙인다
+    # (발행가·일정이 주요사항보고서가 아니라 증권신고서 정정으로 바뀌는 경우가 많다). 이미 이벤트가 있는 회사만 남긴다
+    ("C", r"^\s*\[(?:기재정정|발행조건확정|첨부정정)\].*증권신고서\s*\((?:지분증권|합병등|분할)\)", "attach"),
     ("I", r"최대주주변경을수반하는주식양수도계약", "merge"),
     # 거래소 수시공시: 유가증권 상장사는 주요사항보고서보다 먼저 올라오는 경우가 있다 (예: 영업양도결정).
     # 같은 결정의 주요사항보고서가 나오면 build_view에서 한 묶음으로 합친다. 종속회사·자회사 공시는 제외.
@@ -127,6 +130,8 @@ def classify(key, item, k):
     nm = item.get("report_nm", "")
     api = next((a for pat, a in DETAIL if re.search(pat, nm)), None)
     text = detail_text(key, api, item["corp_code"], item["rcept_dt"], item["rcept_no"]) if api else ""
+    if k == "attach":   # 어느 이벤트에 붙일지: flags[0]에 유형 (지분증권 → 유상증자, 합병등·분할 → 합병·교환·분할·양수도)
+        return k, ["rights" if "지분증권" in nm else "merge"], "N"
     if k == "cancel":   # 무엇을 철회했는지: flags[0]에 원래 이벤트 유형을 적는다
         n = re.sub(r"\s+", "", nm)
         target = ("tender" if "공개매수" in n else "merge" if "분할합병" in n or "합병" in n else "split" if "분할" in n
@@ -231,6 +236,10 @@ def main():
             k = next((rk for rt, pat, rk in RULES if rt == ty and re.search(pat, nm)), None)
             if not k:
                 continue
+            if k == "attach":
+                kinds = {"rights"} if "지분증권" in nm else {"merge", "exchange", "split", "transfer"}
+                if not any(e["corp_code"] == it.get("corp_code") and e["type"] in kinds for e in seen.values()):
+                    continue
             res = classify(key, it, k)
             if res is None:
                 continue
