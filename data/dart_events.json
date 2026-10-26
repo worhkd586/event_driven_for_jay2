@@ -1,6 +1,40 @@
 {
- "updated_at": "2026-10-26T14:24+09:00",
+ "updated_at": "2026-10-26T16:04+09:00",
  "events": [
+  {
+   "rcept_no": "20261026000204",
+   "rcept_dt": "20261026",
+   "first_seen": "2026-10-26T16:04+09:00",
+   "type": "rights",
+   "corp_name": "엑시큐어하이트론",
+   "corp_code": "00156150",
+   "stock_code": "019490",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "엑시큐어하이트론",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026000204"
+  },
+  {
+   "rcept_no": "20261026000200",
+   "rcept_dt": "20261026",
+   "first_seen": "2026-10-26T16:04+09:00",
+   "type": "rights",
+   "corp_name": "엑시큐어하이트론",
+   "corp_code": "00156150",
+   "stock_code": "019490",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "엑시큐어하이트론",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026000200"
+  },
   {
    "rcept_no": "20261023000402",
    "rcept_dt": "20261023",
