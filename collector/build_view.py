@@ -303,9 +303,10 @@ def rights_trading_period(plain):
     """'신주인수권증서' 근처(뒤 100자 안, 매매·거래·상장이라는 말과 함께)에 나오는 날짜 구간 후보를 모두 모은다.
     어느 후보가 맞는지는 이벤트 일정(배정기준일·청약일)과 비교해 summarize에서 고른다."""
     cands = []
-    def add(c):
-        if c not in cands:
-            cands.append(c)
+    def add(c):   # 다시 나오면 뒤로 보낸다: 정정 신고서는 '정정 전 → 정정 후 → 본문' 순이라 마지막 등장이 최신 값
+        if c in cands:
+            cands.remove(c)
+        cands.append(c)
     def iso(y, mo, d):
         y, mo, d = int(y), int(mo), int(d)
         if y < 100:
@@ -323,8 +324,8 @@ def rights_trading_period(plain):
                 add([s0, e0])
         if not re.search(r"매매|거래|상장", seg[:70]):
             continue
-        # (나) 두 자리 연도: '상장일 5거래일 이상 동안 거래(26.09.28~26.10.02)'
-        tm = re.search(r"(\d{2})\.(\d{1,2})\.(\d{1,2})\s*[~∼\-–]\s*(\d{2})\.(\d{1,2})\.(\d{1,2})", seg)
+        # (나) 두 자리 연도: '상장일 5거래일 이상 동안 거래(26.09.28~26.10.02)'. 정정 강조 표시 때문에 '26.10. 23 ~26.10.30'처럼 공백이 끼기도 한다
+        tm = re.search(r"(\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})\s*[~∼\-–]\s*(\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})", seg)
         if tm:
             s0, e0 = iso(*tm.group(1, 2, 3)), iso(*tm.group(4, 5, 6))
             if s0 and e0:
@@ -345,12 +346,12 @@ def rights_trading_period(plain):
             if 1 <= mo2 <= 12 and 1 <= dd2 <= 31:
                 end = f"{y2:04d}-{mo2:02d}-{dd2:02d}"
         add([start, end])
-    return cands[:16]
+    return cands[-16:]
 
 
 TENDER_V = 2    # 파서가 바뀌면 올려서 기존 캐시를 다시 읽게 한다
 APDOC_V = 2
-OFFER_V = 5
+OFFER_V = 6
 MDOC_V = 2
 
 
@@ -613,8 +614,10 @@ def summarize(items, det, estk, today, tender=None, apdoc=None, mdoc=None):
             if e0 and not (0 <= (datetime.strptime(e0, "%Y-%m-%d") - datetime.strptime(s0, "%Y-%m-%d")).days <= 21):
                 return False
             return bool(rec or sub)   # 비교할 일정이 하나도 없으면 믿지 않는다
-        # 정정 전·후 일정이 함께 적혀 있거나 이전 신고서에서 모은 후보가 섞이므로, 맞는 후보 중 청약에 가장 가까운(끝이 가장 늦은) 것을 쓴다
-        pick = max((c for c in doc["rt_cands"] if fits(c)), key=lambda c: c[1], default=None)
+        # 후보는 최신 신고서 → 이전 신고서 순으로 이어 붙였다 (rt_bounds: 신고서별 끝 위치).
+        # 맞는 후보가 있는 가장 최신 신고서에서, 원문에 가장 뒤에 나온 것(정정 전 → 정정 후 → 본문 순이라 최신 값)을 쓴다
+        bounds = doc.get("rt_bounds") or [len(doc["rt_cands"])]
+        pick = next((c for lo, hi in zip([0] + bounds, bounds) for c in reversed(doc["rt_cands"][lo:hi]) if fits(c)), None)
         if pick:
             sched.append(["신주인수권증서 매매 시작", pick[0], "doc"])
             if pick[1]:
@@ -762,12 +765,14 @@ def main():
             doc = latest_offer_doc(key, top["corp_code"], first)
             if doc and ((c.get("doc") or {}).get("rcept_no") != doc["rcept_no"] or need_rt):
                 got = offer_price_from_doc(key, doc["rcept_no"]) or {"price": None, "final": False, "rt_cands": []}
+                got["rt_bounds"] = [len(got.get("rt_cands", []))]   # 신고서별 후보 끝 위치 (최신 신고서부터)
                 # [발행조건확정] 정정본에는 매매기간이 빠져 있는 경우가 많아, 구간이 없으면 이전 신고서에서 찾는다
                 for older in doc.get("older", []):
                     if any(c2[1] for c2 in got.get("rt_cands", [])) and got.get("gp_cands"):
                         break
                     o = offer_price_from_doc(key, older) or {}
                     got["rt_cands"] = got.get("rt_cands", []) + [c2 for c2 in o.get("rt_cands", []) if c2 not in got.get("rt_cands", [])]
+                    got["rt_bounds"].append(len(got["rt_cands"]))
                     got["gp_cands"] = (got.get("gp_cands") or []) + [c2 for c2 in o.get("gp_cands", []) if c2 not in (got.get("gp_cands") or [])]
                 c["doc"] = dict(doc, **got, v=OFFER_V)
         # 공개매수신고서: 원문에서 가격·기간·결제일 (최신 신고서가 바뀔 때만 다시 읽는다)
