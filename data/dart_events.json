@@ -1,6 +1,95 @@
 {
- "updated_at": "2026-10-26T17:09+09:00",
+ "updated_at": "2026-10-26T18:12+09:00",
  "events": [
+  {
+   "rcept_no": "20261026900740",
+   "rcept_dt": "20261026",
+   "first_seen": "2026-10-26T18:12+09:00",
+   "type": "cancel",
+   "corp_name": "제넥신",
+   "corp_code": "00545929",
+   "stock_code": "095700",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (유상증자결정(제3자배정-소액공모) 철회)",
+   "filer": "제넥신",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026900740"
+  },
+  {
+   "rcept_no": "20261026000365",
+   "rcept_dt": "20261026",
+   "first_seen": "2026-10-26T18:12+09:00",
+   "type": "merge",
+   "corp_name": "아이윈",
+   "corp_code": "00365624",
+   "stock_code": "090150",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "아이윈",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026000365"
+  },
+  {
+   "rcept_no": "20261026000363",
+   "rcept_dt": "20261026",
+   "first_seen": "2026-10-26T18:12+09:00",
+   "type": "rights",
+   "corp_name": "제넥신",
+   "corp_code": "00545929",
+   "stock_code": "095700",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "제넥신",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026000363"
+  },
+  {
+   "rcept_no": "20261026000355",
+   "rcept_dt": "20261026",
+   "first_seen": "2026-10-26T18:12+09:00",
+   "type": "rights",
+   "corp_name": "에이전트AI",
+   "corp_code": "00367695",
+   "stock_code": "060900",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "에이전트AI",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026000355"
+  },
+  {
+   "rcept_no": "20261026000327",
+   "rcept_dt": "20261026",
+   "first_seen": "2026-10-26T18:12+09:00",
+   "type": "rights",
+   "corp_name": "알티캐스트",
+   "corp_code": "00364254",
+   "stock_code": "085810",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "알티캐스트",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026000327"
+  },
   {
    "rcept_no": "20261026000318",
    "rcept_dt": "20261026",
@@ -15,9 +104,10 @@
    "amended": false,
    "krx": false,
    "flags": [
-    "합병"
+    "합병",
+    "소규모합병"
    ],
-   "appraisal": "?",
+   "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026000318"
   },
   {
