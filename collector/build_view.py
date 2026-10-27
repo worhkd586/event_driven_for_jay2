@@ -771,8 +771,15 @@ def main():
         retry = c.get("row") is None and c.get("tries", 0) < 5
         if api and (c.get("latest") != top["rcept_no"] or retry):
             row = fetch_detail(key, api, top["corp_code"], first, top["rcept_dt"], rcepts)
-            tries = 0 if row else (c.get("tries", 0) + 1 if c.get("latest") == top["rcept_no"] else 1)
-            c = dict(c, api=api, row=row, latest=top["rcept_no"], at=now.isoformat(timespec="minutes"), tries=tries)
+            if row is None and c.get("row") and c.get("latest") != top["rcept_no"]:
+                # 정정공시 직후에는 상세 API가 비어 있을 때가 있다. 이전 값(증자 방식 등)을 지우지 않고 다음 실행에 다시 조회한다 (최대 5회)
+                tries = c.get("pending_tries", 0) + 1
+                c = dict(c, pending_tries=tries, at=now.isoformat(timespec="minutes"))
+                if tries >= 5:
+                    c = dict(c, latest=top["rcept_no"], pending_tries=0)
+            else:
+                tries = 0 if row else (c.get("tries", 0) + 1 if c.get("latest") == top["rcept_no"] else 1)
+                c = dict(c, api=api, row=row, latest=top["rcept_no"], at=now.isoformat(timespec="minutes"), tries=tries, pending_tries=0)
             fetched += 1
         # 주주배정·일반공모 유상증자는 증권신고서로 발행가·일정을 보강 (진행 중이면 1시간마다 갱신)
         method = ((c.get("row") or {}).get("ic_mthn") or "")
