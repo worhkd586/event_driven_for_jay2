@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-27T16:30+09:00",
+ "updated_at": "2026-10-27T16:44+09:00",
  "events": [
   {
    "rcept_no": "20261027900394",
@@ -40,6 +40,43 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261027900336"
   },
   {
+   "rcept_no": "20261027000301",
+   "rcept_dt": "20261027",
+   "first_seen": "2026-10-27T16:44+09:00",
+   "type": "merge",
+   "corp_name": "애경케미칼",
+   "corp_code": "00936787",
+   "stock_code": "161000",
+   "market": "KOSPI",
+   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
+   "filer": "애경케미칼",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병",
+    "소규모합병"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261027000301"
+  },
+  {
+   "rcept_no": "20261027000281",
+   "rcept_dt": "20261027",
+   "first_seen": "2026-10-27T16:44+09:00",
+   "type": "rights",
+   "corp_name": "SKAI",
+   "corp_code": "01381984",
+   "stock_code": "357880",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "SKAI",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261027000281"
+  },
+  {
    "rcept_no": "20261027000274",
    "rcept_dt": "20261027",
    "first_seen": "2026-10-27T16:30+09:00",
@@ -55,6 +92,23 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261027000274"
+  },
+  {
+   "rcept_no": "20261027000273",
+   "rcept_dt": "20261027",
+   "first_seen": "2026-10-27T16:44+09:00",
+   "type": "rights",
+   "corp_name": "서울전자통신",
+   "corp_code": "00130587",
+   "stock_code": "027040",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "서울전자통신",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261027000273"
   },
   {
    "rcept_no": "20261027000240",
