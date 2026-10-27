@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-27T17:10+09:00",
+ "updated_at": "2026-10-27T18:13+09:00",
  "events": [
   {
    "rcept_no": "20261027900394",
@@ -38,6 +38,25 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261027900336"
+  },
+  {
+   "rcept_no": "20261027000380",
+   "rcept_dt": "20261027",
+   "first_seen": "2026-10-27T18:13+09:00",
+   "type": "merge",
+   "corp_name": "한화플러스제5호스팩",
+   "corp_code": "01881800",
+   "stock_code": "498390",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(회사합병결정)",
+   "filer": "한화플러스제5호스팩",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261027000380"
   },
   {
    "rcept_no": "20261027000321",
