@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-28T16:05+09:00",
+ "updated_at": "2026-10-28T16:18+09:00",
  "events": [
   {
    "rcept_no": "20261028900198",
@@ -19,6 +19,44 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028900198"
+  },
+  {
+   "rcept_no": "20261028000329",
+   "rcept_dt": "20261028",
+   "first_seen": "2026-10-28T16:18+09:00",
+   "type": "merge",
+   "corp_name": "SK아이이테크놀로지",
+   "corp_code": "01386916",
+   "stock_code": "361610",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(회사합병결정)",
+   "filer": "SK아이이테크놀로지",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028000329"
+  },
+  {
+   "rcept_no": "20261028000311",
+   "rcept_dt": "20261028",
+   "first_seen": "2026-10-28T16:18+09:00",
+   "type": "merge",
+   "corp_name": "DH오토넥스",
+   "corp_code": "00126089",
+   "stock_code": "000300",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(회사합병결정)",
+   "filer": "DH오토넥스",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028000311"
   },
   {
    "rcept_no": "20261028000301",
