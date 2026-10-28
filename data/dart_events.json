@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-28T17:11+09:00",
+ "updated_at": "2026-10-28T17:37+09:00",
  "events": [
   {
    "rcept_no": "20261028900198",
@@ -55,6 +55,23 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028000411"
+  },
+  {
+   "rcept_no": "20261028000375",
+   "rcept_dt": "20261028",
+   "first_seen": "2026-10-28T17:37+09:00",
+   "type": "rights",
+   "corp_name": "휴맥스",
+   "corp_code": "00787057",
+   "stock_code": "115160",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "휴맥스",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028000375"
   },
   {
    "rcept_no": "20261028000374",
