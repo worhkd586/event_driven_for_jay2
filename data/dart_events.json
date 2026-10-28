@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-28T11:16+09:00",
+ "updated_at": "2026-10-28T11:30+09:00",
  "events": [
   {
    "rcept_no": "20261028000138",
@@ -15,9 +15,9 @@
    "amended": true,
    "krx": false,
    "flags": [
-    "분할방법 확인 필요"
+    "물적분할"
    ],
-   "appraisal": "?",
+   "appraisal": "Y",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028000138"
   },
   {
