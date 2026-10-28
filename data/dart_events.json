@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-28T16:31+09:00",
+ "updated_at": "2026-10-28T16:59+09:00",
  "events": [
   {
    "rcept_no": "20261028900198",
@@ -19,6 +19,44 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028900198"
+  },
+  {
+   "rcept_no": "20261028000411",
+   "rcept_dt": "20261028",
+   "first_seen": "2026-10-28T16:59+09:00",
+   "type": "attach",
+   "corp_name": "뷰노",
+   "corp_code": "01344202",
+   "stock_code": "338220",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "뷰노",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028000411"
+  },
+  {
+   "rcept_no": "20261028000374",
+   "rcept_dt": "20261028",
+   "first_seen": "2026-10-28T16:59+09:00",
+   "type": "merge",
+   "corp_name": "콜마비앤에이치",
+   "corp_code": "01032404",
+   "stock_code": "200130",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "콜마비앤에이치",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028000374"
   },
   {
    "rcept_no": "20261028000329",
