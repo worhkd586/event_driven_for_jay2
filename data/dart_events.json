@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-10-27T18:13+09:00",
+ "updated_at": "2026-10-28T11:16+09:00",
  "events": [
+  {
+   "rcept_no": "20261028000138",
+   "rcept_dt": "20261028",
+   "first_seen": "2026-10-28T11:16+09:00",
+   "type": "split",
+   "corp_name": "현대모비스",
+   "corp_code": "00164788",
+   "stock_code": "012330",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(회사분할결정)",
+   "filer": "현대모비스",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "분할방법 확인 필요"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028000138"
+  },
   {
    "rcept_no": "20261027900394",
    "rcept_dt": "20261027",
