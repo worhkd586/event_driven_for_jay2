@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-28T15:52+09:00",
+ "updated_at": "2026-10-28T16:05+09:00",
  "events": [
   {
    "rcept_no": "20261028900198",
@@ -38,6 +38,23 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028000301"
   },
   {
+   "rcept_no": "20261028000300",
+   "rcept_dt": "20261028",
+   "first_seen": "2026-10-28T16:05+09:00",
+   "type": "rights",
+   "corp_name": "MSDI",
+   "corp_code": "00615723",
+   "stock_code": "123010",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "MSDI",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028000300"
+  },
+  {
    "rcept_no": "20261028000291",
    "rcept_dt": "20261028",
    "first_seen": "2026-10-28T15:52+09:00",
@@ -51,9 +68,10 @@
    "amended": true,
    "krx": false,
    "flags": [
-    "합병"
+    "합병",
+    "소규모합병"
    ],
-   "appraisal": "?",
+   "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261028000291"
   },
   {
