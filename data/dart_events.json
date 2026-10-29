@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-10-29T14:14+09:00",
+ "updated_at": "2026-10-29T14:53+09:00",
  "events": [
+  {
+   "rcept_no": "20261029000299",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T14:53+09:00",
+   "type": "rights",
+   "corp_name": "서울전자통신",
+   "corp_code": "00130587",
+   "stock_code": "027040",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "서울전자통신",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000299"
+  },
   {
    "rcept_no": "20261029000254",
    "rcept_dt": "20261029",
