@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-29T16:12+09:00",
+ "updated_at": "2026-10-29T16:25+09:00",
  "events": [
   {
    "rcept_no": "20261029900365",
@@ -89,25 +89,6 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000415"
-  },
-  {
-   "rcept_no": "20261029000401",
-   "rcept_dt": "20261029",
-   "first_seen": "2026-10-29T16:12+09:00",
-   "type": "bw",
-   "corp_name": "다스코",
-   "corp_code": "00353878",
-   "stock_code": "058730",
-   "market": "KOSPI",
-   "report_nm": "주요사항보고서(신주인수권부사채권발행결정)",
-   "filer": "다스코",
-   "amended": false,
-   "krx": false,
-   "flags": [
-    "발행방법 확인 필요"
-   ],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000401"
   },
   {
    "rcept_no": "20261029000348",
