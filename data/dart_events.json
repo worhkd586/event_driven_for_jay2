@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-29T17:57+09:00",
+ "updated_at": "2026-10-30T00:08+09:00",
  "events": [
   {
    "rcept_no": "20261029900365",
@@ -19,6 +19,23 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029900365"
+  },
+  {
+   "rcept_no": "20261029000669",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T00:08+09:00",
+   "type": "rights",
+   "corp_name": "시지트로닉스",
+   "corp_code": "01284751",
+   "stock_code": "429270",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "시지트로닉스",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000669"
   },
   {
    "rcept_no": "20261029000639",
