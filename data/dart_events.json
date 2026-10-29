@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-29T15:45+09:00",
+ "updated_at": "2026-10-29T15:59+09:00",
  "events": [
   {
    "rcept_no": "20261029900365",
@@ -19,6 +19,25 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029900365"
+  },
+  {
+   "rcept_no": "20261029000422",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T15:59+09:00",
+   "type": "attach",
+   "corp_name": "상지건설",
+   "corp_code": "00232007",
+   "stock_code": "042940",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "상지건설",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000422"
   },
   {
    "rcept_no": "20261029000348",
