@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-29T16:39+09:00",
+ "updated_at": "2026-10-29T17:05+09:00",
  "events": [
   {
    "rcept_no": "20261029900365",
@@ -19,6 +19,26 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029900365"
+  },
+  {
+   "rcept_no": "20261029000586",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T17:05+09:00",
+   "type": "merge",
+   "corp_name": "콜마비앤에이치",
+   "corp_code": "01032404",
+   "stock_code": "200130",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
+   "filer": "콜마비앤에이치",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병",
+    "소규모합병"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000586"
   },
   {
    "rcept_no": "20261029000532",
