@@ -1,6 +1,61 @@
 {
- "updated_at": "2026-10-29T14:53+09:00",
+ "updated_at": "2026-10-29T15:31+09:00",
  "events": [
+  {
+   "rcept_no": "20261029900365",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T15:31+09:00",
+   "type": "merge",
+   "corp_name": "이엠앤아이",
+   "corp_code": "00475718",
+   "stock_code": "083470",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]최대주주변경을수반하는주식양수도계약체결",
+   "filer": "이엠앤아이",
+   "amended": true,
+   "krx": true,
+   "flags": [
+    "경영권 양수도"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029900365"
+  },
+  {
+   "rcept_no": "20261029000334",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T15:31+09:00",
+   "type": "rights",
+   "corp_name": "셀리드",
+   "corp_code": "01235296",
+   "stock_code": "299660",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "셀리드",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000334"
+  },
+  {
+   "rcept_no": "20261029000326",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T15:31+09:00",
+   "type": "transfer",
+   "corp_name": "에스트래픽",
+   "corp_code": "01014055",
+   "stock_code": "234300",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(영업양수결정)",
+   "filer": "에스트래픽",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "영업양수"
+   ],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000326"
+  },
   {
    "rcept_no": "20261029000299",
    "rcept_dt": "20261029",
