@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-10-29T09:37+09:00",
+ "updated_at": "2026-10-29T11:21+09:00",
  "events": [
+  {
+   "rcept_no": "20261029000183",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T11:21+09:00",
+   "type": "rights",
+   "corp_name": "씨아이테크",
+   "corp_code": "00127158",
+   "stock_code": "004920",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "씨아이테크",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000183"
+  },
   {
    "rcept_no": "20261029000027",
    "rcept_dt": "20261029",
