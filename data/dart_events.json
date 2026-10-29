@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-29T17:18+09:00",
+ "updated_at": "2026-10-29T17:31+09:00",
  "events": [
   {
    "rcept_no": "20261029900365",
@@ -36,6 +36,23 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000614"
+  },
+  {
+   "rcept_no": "20261029000607",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T17:31+09:00",
+   "type": "exchange",
+   "corp_name": "SK",
+   "corp_code": "00181712",
+   "stock_code": "034730",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(주식교환ㆍ이전결정)",
+   "filer": "SK",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000607"
   },
   {
    "rcept_no": "20261029000586",
