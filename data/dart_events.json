@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-29T15:31+09:00",
+ "updated_at": "2026-10-29T15:45+09:00",
  "events": [
   {
    "rcept_no": "20261029900365",
@@ -19,6 +19,23 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029900365"
+  },
+  {
+   "rcept_no": "20261029000348",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T15:45+09:00",
+   "type": "rights",
+   "corp_name": "이엠앤아이",
+   "corp_code": "00475718",
+   "stock_code": "083470",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "이엠앤아이",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000348"
   },
   {
    "rcept_no": "20261029000334",
