@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-10-29T11:21+09:00",
+ "updated_at": "2026-10-29T13:47+09:00",
  "events": [
+  {
+   "rcept_no": "20261029000245",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T13:47+09:00",
+   "type": "tender",
+   "corp_name": "BGF에코머티리얼즈",
+   "corp_code": "00599595",
+   "stock_code": "126600",
+   "market": "KOSDAQ",
+   "report_nm": "공개매수결과보고서",
+   "filer": "BGF에코머티리얼즈",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000245"
+  },
   {
    "rcept_no": "20261029000183",
    "rcept_dt": "20261029",
