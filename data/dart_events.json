@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-29T15:59+09:00",
+ "updated_at": "2026-10-29T16:12+09:00",
  "events": [
   {
    "rcept_no": "20261029900365",
@@ -21,6 +21,23 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029900365"
   },
   {
+   "rcept_no": "20261029000438",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T16:12+09:00",
+   "type": "rights",
+   "corp_name": "테라사이언스",
+   "corp_code": "00373021",
+   "stock_code": "073640",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "테라사이언스",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000438"
+  },
+  {
    "rcept_no": "20261029000422",
    "rcept_dt": "20261029",
    "first_seen": "2026-10-29T15:59+09:00",
@@ -38,6 +55,59 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000422"
+  },
+  {
+   "rcept_no": "20261029000419",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T16:12+09:00",
+   "type": "rights",
+   "corp_name": "아이오케이이엔엠",
+   "corp_code": "00543204",
+   "stock_code": "078860",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "아이오케이이엔엠",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000419"
+  },
+  {
+   "rcept_no": "20261029000415",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T16:12+09:00",
+   "type": "rights",
+   "corp_name": "태영건설",
+   "corp_code": "00153861",
+   "stock_code": "009410",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "태영건설",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000415"
+  },
+  {
+   "rcept_no": "20261029000401",
+   "rcept_dt": "20261029",
+   "first_seen": "2026-10-29T16:12+09:00",
+   "type": "bw",
+   "corp_name": "다스코",
+   "corp_code": "00353878",
+   "stock_code": "058730",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(신주인수권부사채권발행결정)",
+   "filer": "다스코",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "발행방법 확인 필요"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000401"
   },
   {
    "rcept_no": "20261029000348",
