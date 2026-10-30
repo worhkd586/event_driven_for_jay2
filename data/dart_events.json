@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-10-30T18:27+09:00",
+ "updated_at": "2026-10-30T18:41+09:00",
  "events": [
+  {
+   "rcept_no": "20261030901313",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T18:41+09:00",
+   "type": "merge",
+   "corp_name": "블루엠텍",
+   "corp_code": "01559637",
+   "stock_code": "439580",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]최대주주변경을수반하는주식양수도계약체결",
+   "filer": "블루엠텍",
+   "amended": true,
+   "krx": true,
+   "flags": [
+    "경영권 양수도"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030901313"
+  },
   {
    "rcept_no": "20261030000754",
    "rcept_dt": "20261030",
