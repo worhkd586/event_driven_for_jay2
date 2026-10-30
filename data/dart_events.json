@@ -1,6 +1,40 @@
 {
- "updated_at": "2026-10-30T14:24+09:00",
+ "updated_at": "2026-10-30T15:03+09:00",
  "events": [
+  {
+   "rcept_no": "20261030000322",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T15:03+09:00",
+   "type": "exchange",
+   "corp_name": "KISCO홀딩스",
+   "corp_code": "00159740",
+   "stock_code": "001940",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(주식교환ㆍ이전결정)",
+   "filer": "KISCO홀딩스",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000322"
+  },
+  {
+   "rcept_no": "20261030000319",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T15:03+09:00",
+   "type": "exchange",
+   "corp_name": "한국철강",
+   "corp_code": "00687711",
+   "stock_code": "104700",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(주식교환ㆍ이전결정)",
+   "filer": "한국철강",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000319"
+  },
   {
    "rcept_no": "20261030000225",
    "rcept_dt": "20261030",
