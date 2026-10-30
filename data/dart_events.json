@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-10-30T17:46+09:00",
+ "updated_at": "2026-10-30T18:13+09:00",
  "events": [
+  {
+   "rcept_no": "20261030000754",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T18:13+09:00",
+   "type": "merge",
+   "corp_name": "키움제10호스팩",
+   "corp_code": "01877126",
+   "stock_code": "487720",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "키움제10호스팩",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000754"
+  },
   {
    "rcept_no": "20261030000732",
    "rcept_dt": "20261030",
