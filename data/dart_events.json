@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-10-30T07:39+09:00",
+ "updated_at": "2026-10-30T11:46+09:00",
  "events": [
+  {
+   "rcept_no": "20261030000106",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T11:46+09:00",
+   "type": "rights",
+   "corp_name": "삼성FN리츠",
+   "corp_code": "01688896",
+   "stock_code": "448730",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "삼성FN리츠",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000106"
+  },
   {
    "rcept_no": "20261030000001",
    "rcept_dt": "20261030",
