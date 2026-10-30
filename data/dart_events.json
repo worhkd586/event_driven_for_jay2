@@ -1,6 +1,40 @@
 {
- "updated_at": "2026-10-30T16:25+09:00",
+ "updated_at": "2026-10-30T16:38+09:00",
  "events": [
+  {
+   "rcept_no": "20261030000567",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T16:38+09:00",
+   "type": "rights",
+   "corp_name": "대양금속",
+   "corp_code": "00111111",
+   "stock_code": "009190",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "대양금속",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000567"
+  },
+  {
+   "rcept_no": "20261030000543",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T16:38+09:00",
+   "type": "rights",
+   "corp_name": "이원컴포텍",
+   "corp_code": "00409140",
+   "stock_code": "088290",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "이원컴포텍",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000543"
+  },
   {
    "rcept_no": "20261030000520",
    "rcept_dt": "20261030",
