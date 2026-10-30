@@ -1,6 +1,44 @@
 {
- "updated_at": "2026-10-30T15:57+09:00",
+ "updated_at": "2026-10-30T16:11+09:00",
  "events": [
+  {
+   "rcept_no": "20261030000485",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T16:11+09:00",
+   "type": "merge",
+   "corp_name": "샘표",
+   "corp_code": "00130091",
+   "stock_code": "007540",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "샘표",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000485"
+  },
+  {
+   "rcept_no": "20261030000482",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T16:11+09:00",
+   "type": "merge",
+   "corp_name": "샘표식품",
+   "corp_code": "01167056",
+   "stock_code": "248170",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "샘표식품",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000482"
+  },
   {
    "rcept_no": "20261030000447",
    "rcept_dt": "20261030",
