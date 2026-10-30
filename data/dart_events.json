@@ -1,6 +1,61 @@
 {
- "updated_at": "2026-10-30T16:52+09:00",
+ "updated_at": "2026-10-30T17:19+09:00",
  "events": [
+  {
+   "rcept_no": "20261030000700",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T17:19+09:00",
+   "type": "merge",
+   "corp_name": "샘표",
+   "corp_code": "00130091",
+   "stock_code": "007540",
+   "market": "KOSPI",
+   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
+   "filer": "샘표",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000700"
+  },
+  {
+   "rcept_no": "20261030000695",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T17:19+09:00",
+   "type": "merge",
+   "corp_name": "샘표식품",
+   "corp_code": "01167056",
+   "stock_code": "248170",
+   "market": "KOSPI",
+   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
+   "filer": "샘표식품",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000695"
+  },
+  {
+   "rcept_no": "20261030000683",
+   "rcept_dt": "20261030",
+   "first_seen": "2026-10-30T17:19+09:00",
+   "type": "rights",
+   "corp_name": "KS인더스트리",
+   "corp_code": "00618410",
+   "stock_code": "101000",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "KS인더스트리",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000683"
+  },
   {
    "rcept_no": "20261030000611",
    "rcept_dt": "20261030",
