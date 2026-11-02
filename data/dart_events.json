@@ -1,6 +1,26 @@
 {
- "updated_at": "2026-11-02T08:43+09:00",
+ "updated_at": "2026-11-02T11:59+09:00",
  "events": [
+  {
+   "rcept_no": "20261102000071",
+   "rcept_dt": "20261102",
+   "first_seen": "2026-11-02T11:59+09:00",
+   "type": "merge",
+   "corp_name": "SCL사이언스",
+   "corp_code": "01110182",
+   "stock_code": "246960",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
+   "filer": "SCL사이언스",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병",
+    "소규모합병"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261102000071"
+  },
   {
    "rcept_no": "20261102000001",
    "rcept_dt": "20261102",
