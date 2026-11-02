@@ -1,6 +1,40 @@
 {
- "updated_at": "2026-11-02T16:11+09:00",
+ "updated_at": "2026-11-02T17:30+09:00",
  "events": [
+  {
+   "rcept_no": "20261102000316",
+   "rcept_dt": "20261102",
+   "first_seen": "2026-11-02T17:30+09:00",
+   "type": "rights",
+   "corp_name": "SKAI",
+   "corp_code": "01381984",
+   "stock_code": "357880",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "SKAI",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261102000316"
+  },
+  {
+   "rcept_no": "20261102000286",
+   "rcept_dt": "20261102",
+   "first_seen": "2026-11-02T17:30+09:00",
+   "type": "rights",
+   "corp_name": "리튬포어스",
+   "corp_code": "00440712",
+   "stock_code": "073570",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "리튬포어스",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261102000286"
+  },
   {
    "rcept_no": "20261102000212",
    "rcept_dt": "20261102",
