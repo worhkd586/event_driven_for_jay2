@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-02T17:43+09:00",
+ "updated_at": "2026-11-03T15:11+09:00",
  "events": [
+  {
+   "rcept_no": "20261103000174",
+   "rcept_dt": "20261103",
+   "first_seen": "2026-11-03T15:11+09:00",
+   "type": "rights",
+   "corp_name": "푸드나무",
+   "corp_code": "01259311",
+   "stock_code": "290720",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "푸드나무",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261103000174"
+  },
   {
    "rcept_no": "20261102900855",
    "rcept_dt": "20261102",
