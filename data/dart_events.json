@@ -1,6 +1,40 @@
 {
- "updated_at": "2026-11-03T15:11+09:00",
+ "updated_at": "2026-11-03T16:31+09:00",
  "events": [
+  {
+   "rcept_no": "20261103000246",
+   "rcept_dt": "20261103",
+   "first_seen": "2026-11-03T16:31+09:00",
+   "type": "rights",
+   "corp_name": "엑스페릭스",
+   "corp_code": "01231786",
+   "stock_code": "317770",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "엑스페릭스",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261103000246"
+  },
+  {
+   "rcept_no": "20261103000238",
+   "rcept_dt": "20261103",
+   "first_seen": "2026-11-03T16:31+09:00",
+   "type": "rights",
+   "corp_name": "엣지파운드리",
+   "corp_code": "00766106",
+   "stock_code": "105550",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "엣지파운드리",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261103000238"
+  },
   {
    "rcept_no": "20261103000174",
    "rcept_dt": "20261103",
