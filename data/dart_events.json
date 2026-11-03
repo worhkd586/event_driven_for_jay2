@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-03T16:59+09:00",
+ "updated_at": "2026-11-03T17:12+09:00",
  "events": [
+  {
+   "rcept_no": "20261103000325",
+   "rcept_dt": "20261103",
+   "first_seen": "2026-11-03T17:12+09:00",
+   "type": "rights",
+   "corp_name": "비트맥스",
+   "corp_code": "01409095",
+   "stock_code": "377030",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "비트맥스",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261103000325"
+  },
   {
    "rcept_no": "20261103000313",
    "rcept_dt": "20261103",
@@ -17,8 +34,25 @@
    "flags": [
     "합병"
    ],
-   "appraisal": "?",
+   "appraisal": "Y",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261103000313"
+  },
+  {
+   "rcept_no": "20261103000311",
+   "rcept_dt": "20261103",
+   "first_seen": "2026-11-03T17:12+09:00",
+   "type": "rights",
+   "corp_name": "NAVER",
+   "corp_code": "00266961",
+   "stock_code": "035420",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "NAVER",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261103000311"
   },
   {
    "rcept_no": "20261103000310",
