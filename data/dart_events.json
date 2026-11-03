@@ -1,6 +1,42 @@
 {
- "updated_at": "2026-11-03T17:12+09:00",
+ "updated_at": "2026-11-03T17:40+09:00",
  "events": [
+  {
+   "rcept_no": "20261103900673",
+   "rcept_dt": "20261103",
+   "first_seen": "2026-11-03T17:40+09:00",
+   "type": "merge",
+   "corp_name": "스모트로닉",
+   "corp_code": "00301422",
+   "stock_code": "066590",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]최대주주변경을수반하는주식양수도계약체결",
+   "filer": "스모트로닉",
+   "amended": true,
+   "krx": true,
+   "flags": [
+    "경영권 양수도"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261103900673"
+  },
+  {
+   "rcept_no": "20261103000360",
+   "rcept_dt": "20261103",
+   "first_seen": "2026-11-03T17:40+09:00",
+   "type": "rights",
+   "corp_name": "파이온엑스",
+   "corp_code": "00781202",
+   "stock_code": "900100",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "파이온엑스",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261103000360"
+  },
   {
    "rcept_no": "20261103000325",
    "rcept_dt": "20261103",
