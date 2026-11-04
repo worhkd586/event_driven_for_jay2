@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-04T17:21+09:00",
+ "updated_at": "2026-11-05T08:05+09:00",
  "events": [
+  {
+   "rcept_no": "20261105000001",
+   "rcept_dt": "20261105",
+   "first_seen": "2026-11-05T08:05+09:00",
+   "type": "rights",
+   "corp_name": "피노",
+   "corp_code": "00276083",
+   "stock_code": "033790",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "피노",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105000001"
+  },
   {
    "rcept_no": "20261104000319",
    "rcept_dt": "20261104",
