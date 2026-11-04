@@ -259,9 +259,12 @@ def offer_price_from_doc(key, rcept_no):
         stage = "2차" if re.search(r"2\s*차\s*발행\s*가액", head) else "1차" if re.search(r"1\s*차\s*발행\s*가액", head) else "예정"
     cands = rights_trading_period(plain)
     gp = public_offer_period(plain)
+    # 일정표 '2026년 11월 05일 신주상장 예정일': 정정 전 → 정정 후 → 본문 순이라 뒤에 나온 것이 최신
+    lst = [f"{int(y):04d}-{int(mo):02d}-{int(d):02d}" for y, mo, d in
+           re.findall(DATE_RE + r"\s*일?\s*(?:\([^)]{0,6}\))?\s*신주\s*상장\s*(?:예정)?\s*일", plain)]
     if hit is None and not cands and not gp:
         return None
-    out = {"price": hit, "final": final, "stage": stage, "rt_cands": cands, "gp_cands": gp, "rt_start": None}
+    out = {"price": hit, "final": final, "stage": stage, "rt_cands": cands, "gp_cands": gp, "rt_start": None, "list_cands": lst[-8:]}
     if not cands:   # 표현 확인용: '신주인수권증서' 주변 날짜가 있는 구간 몇 개
         snips = [plain[max(0, m.start() - 20): m.end() + 90] for m in re.finditer(r"신주인수권\s*증서", plain)]
         out["rt_snip"] = [x for x in snips if re.search(DATE_RE, x)][:4] or snips[:2]
@@ -351,7 +354,7 @@ def rights_trading_period(plain):
 
 TENDER_V = 2    # 파서가 바뀌면 올려서 기존 캐시를 다시 읽게 한다
 APDOC_V = 2
-OFFER_V = 6
+OFFER_V = 7
 MDOC_V = 2
 
 
@@ -634,6 +637,15 @@ def summarize(items, det, estk, today, tender=None, apdoc=None, mdoc=None):
         if pick:
             sched.append(["일반공모 청약 시작", pick[0], "doc"])
             sched.append(["일반공모 청약 종료", pick[1], "doc"])
+    # 신주 상장예정일: 공시에 적힌 날짜가 이 이벤트의 납입일 뒤 45일 안이면 '납입일 + 14일' 추정치 대신 쓴다.
+    # 증권신고서 원문(최신 값) → 주요사항보고서 본문 순. 주요사항보고서는 일정이 미뤄져도 예전 날짜로 남아 있을 때가 있다
+    pay = next((b for a, b, k in sched if a == "납입일"), None) or (mdoc or {}).get("pay")
+    def list_fits(d):
+        return pay and 0 <= (datetime.strptime(d, "%Y-%m-%d") - datetime.strptime(pay, "%Y-%m-%d")).days <= 45
+    listed = next((d for d in reversed(doc.get("list_cands") or []) if list_fits(d)), None) or \
+        ((mdoc or {}).get("list") if (mdoc or {}).get("list") and list_fits(mdoc["list"]) else None)
+    if listed:
+        sched = [x for x in sched if x[0] != "신주 상장(추정)"] + [["신주 상장예정일", listed, "doc"]]
     if mdoc:   # 주요사항보고서 본문 일정 (증권신고서가 없거나 아직 일정이 비어 있을 때만)
         have = {a for a, _, _ in sched}
         sub = mdoc.get("sh") or mdoc.get("gp")
