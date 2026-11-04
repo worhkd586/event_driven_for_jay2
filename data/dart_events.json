@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-04T16:28+09:00",
+ "updated_at": "2026-11-04T17:21+09:00",
  "events": [
+  {
+   "rcept_no": "20261104000319",
+   "rcept_dt": "20261104",
+   "first_seen": "2026-11-04T17:21+09:00",
+   "type": "rights",
+   "corp_name": "프로티나",
+   "corp_code": "01688568",
+   "stock_code": "468530",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "프로티나",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261104000319"
+  },
   {
    "rcept_no": "20261104000261",
    "rcept_dt": "20261104",
