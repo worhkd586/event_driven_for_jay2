@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-03T17:40+09:00",
+ "updated_at": "2026-11-04T11:51+09:00",
  "events": [
+  {
+   "rcept_no": "20261104000107",
+   "rcept_dt": "20261104",
+   "first_seen": "2026-11-04T11:51+09:00",
+   "type": "tender",
+   "corp_name": "한화머시너리앤서비스홀딩스",
+   "corp_code": "02042949",
+   "stock_code": "0220W0",
+   "market": "KOSPI",
+   "report_nm": "공개매수결과보고서",
+   "filer": "김동선",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261104000107"
+  },
   {
    "rcept_no": "20261103900673",
    "rcept_dt": "20261103",
