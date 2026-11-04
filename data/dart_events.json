@@ -1,6 +1,26 @@
 {
- "updated_at": "2026-11-04T14:30+09:00",
+ "updated_at": "2026-11-04T15:35+09:00",
  "events": [
+  {
+   "rcept_no": "20261104000217",
+   "rcept_dt": "20261104",
+   "first_seen": "2026-11-04T15:35+09:00",
+   "type": "merge",
+   "corp_name": "아이엘",
+   "corp_code": "01326279",
+   "stock_code": "307180",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
+   "filer": "아이엘",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병",
+    "소규모합병"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261104000217"
+  },
   {
    "rcept_no": "20261104000158",
    "rcept_dt": "20261104",
