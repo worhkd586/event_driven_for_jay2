@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-05T16:10+09:00",
+ "updated_at": "2026-11-05T16:24+09:00",
  "events": [
   {
    "rcept_no": "20261105000415",
@@ -19,6 +19,23 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105000415"
+  },
+  {
+   "rcept_no": "20261105000386",
+   "rcept_dt": "20261105",
+   "first_seen": "2026-11-05T16:24+09:00",
+   "type": "rights",
+   "corp_name": "한울앤제주",
+   "corp_code": "01230255",
+   "stock_code": "276730",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "한울앤제주",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105000386"
   },
   {
    "rcept_no": "20261105000355",
