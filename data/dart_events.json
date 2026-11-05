@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-05T18:23+09:00",
+ "updated_at": "2026-11-06T07:39+09:00",
  "events": [
+  {
+   "rcept_no": "20261106000002",
+   "rcept_dt": "20261106",
+   "first_seen": "2026-11-06T07:39+09:00",
+   "type": "tender",
+   "corp_name": "롯데렌탈",
+   "corp_code": "00545716",
+   "stock_code": "089860",
+   "market": "KOSPI",
+   "report_nm": "공개매수신고서",
+   "filer": "렉시콘코리아홀드코",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000002"
+  },
   {
    "rcept_no": "20261105900856",
    "rcept_dt": "20261105",
