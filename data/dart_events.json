@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-11-05T16:52+09:00",
+ "updated_at": "2026-11-05T17:31+09:00",
  "events": [
+  {
+   "rcept_no": "20261105900856",
+   "rcept_dt": "20261105",
+   "first_seen": "2026-11-05T17:31+09:00",
+   "type": "cancel",
+   "corp_name": "더코디",
+   "corp_code": "00530413",
+   "stock_code": "224060",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (제3자배정 유상증자 결정 철회)",
+   "filer": "더코디",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105900856"
+  },
   {
    "rcept_no": "20261105900710",
    "rcept_dt": "20261105",
@@ -19,6 +38,40 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105900710"
+  },
+  {
+   "rcept_no": "20261105000555",
+   "rcept_dt": "20261105",
+   "first_seen": "2026-11-05T17:31+09:00",
+   "type": "tender",
+   "corp_name": "에스원",
+   "corp_code": "00158501",
+   "stock_code": "012750",
+   "market": "KOSPI",
+   "report_nm": "공개매수결과보고서",
+   "filer": "에스원",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105000555"
+  },
+  {
+   "rcept_no": "20261105000548",
+   "rcept_dt": "20261105",
+   "first_seen": "2026-11-05T17:31+09:00",
+   "type": "rights",
+   "corp_name": "더코디",
+   "corp_code": "00530413",
+   "stock_code": "224060",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "더코디",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105000548"
   },
   {
    "rcept_no": "20261105000495",
