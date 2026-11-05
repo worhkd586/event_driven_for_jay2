@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-05T16:38+09:00",
+ "updated_at": "2026-11-05T16:52+09:00",
  "events": [
   {
    "rcept_no": "20261105900710",
@@ -19,6 +19,40 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105900710"
+  },
+  {
+   "rcept_no": "20261105000495",
+   "rcept_dt": "20261105",
+   "first_seen": "2026-11-05T16:52+09:00",
+   "type": "rights",
+   "corp_name": "에코글로우",
+   "corp_code": "00896753",
+   "stock_code": "159910",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "에코글로우",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105000495"
+  },
+  {
+   "rcept_no": "20261105000466",
+   "rcept_dt": "20261105",
+   "first_seen": "2026-11-05T16:52+09:00",
+   "type": "rights",
+   "corp_name": "엑스페릭스",
+   "corp_code": "01231786",
+   "stock_code": "317770",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "엑스페릭스",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105000466"
   },
   {
    "rcept_no": "20261105000445",
