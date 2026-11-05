@@ -1,6 +1,59 @@
 {
- "updated_at": "2026-11-05T16:24+09:00",
+ "updated_at": "2026-11-05T16:38+09:00",
  "events": [
+  {
+   "rcept_no": "20261105900710",
+   "rcept_dt": "20261105",
+   "first_seen": "2026-11-05T16:38+09:00",
+   "type": "cancel",
+   "corp_name": "휴림에이텍",
+   "corp_code": "00230814",
+   "stock_code": "078590",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (주주배정후 실권주 일반공모 유상증자 결정 철회)",
+   "filer": "휴림에이텍",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105900710"
+  },
+  {
+   "rcept_no": "20261105000445",
+   "rcept_dt": "20261105",
+   "first_seen": "2026-11-05T16:38+09:00",
+   "type": "rights",
+   "corp_name": "휴림에이텍",
+   "corp_code": "00230814",
+   "stock_code": "078590",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "휴림에이텍",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105000445"
+  },
+  {
+   "rcept_no": "20261105000436",
+   "rcept_dt": "20261105",
+   "first_seen": "2026-11-05T16:38+09:00",
+   "type": "rights",
+   "corp_name": "지엔코",
+   "corp_code": "00258102",
+   "stock_code": "065060",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "지엔코",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105000436"
+  },
   {
    "rcept_no": "20261105000415",
    "rcept_dt": "20261105",
