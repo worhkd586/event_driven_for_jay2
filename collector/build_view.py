@@ -584,6 +584,10 @@ def summarize(items, det, estk, today, tender=None, apdoc=None, mdoc=None):
         dt = to_date(row.get(k))
         if dt:
             sched.append([lab, dt, k])
+    # 증권신고서가 정정요구 등으로 멈춘 뒤 주요사항보고서 정정으로 일정이 바뀐 경우: 더 최신인 주요사항보고서 일정을 쓴다
+    if estk and mdoc and top["rcept_no"] > (estk.get("rcept_no") or "") and mdoc.get("pay") \
+            and mdoc["pay"] != to_date(estk.get("payment")):
+        estk = dict(estk, subscription=None, payment=None, stale=True)
     if estk:
         for lab, v in (("청약 시작", estk.get("subscription")), ("납입일", estk.get("payment")), ("배정기준일", estk.get("record"))):
             dt = to_date(str(v).split("~")[0]) if v else None
