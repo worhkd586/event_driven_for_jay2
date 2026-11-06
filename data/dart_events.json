@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-11-06T16:28+09:00",
+ "updated_at": "2026-11-06T17:06+09:00",
  "events": [
+  {
+   "rcept_no": "20261106000409",
+   "rcept_dt": "20261106",
+   "first_seen": "2026-11-06T17:06+09:00",
+   "type": "attach",
+   "corp_name": "큐리언트",
+   "corp_code": "01042650",
+   "stock_code": "115180",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "큐리언트",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000409"
+  },
   {
    "rcept_no": "20261106000338",
    "rcept_dt": "20261106",
