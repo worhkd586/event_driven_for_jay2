@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-06T15:47+09:00",
+ "updated_at": "2026-11-06T16:14+09:00",
  "events": [
+  {
+   "rcept_no": "20261106000314",
+   "rcept_dt": "20261106",
+   "first_seen": "2026-11-06T16:14+09:00",
+   "type": "rights",
+   "corp_name": "블루산업개발",
+   "corp_code": "00141404",
+   "stock_code": "006740",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "블루산업개발",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000314"
+  },
   {
    "rcept_no": "20261106000242",
    "rcept_dt": "20261106",
