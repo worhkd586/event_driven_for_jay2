@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-11-06T14:28+09:00",
+ "updated_at": "2026-11-06T14:55+09:00",
  "events": [
+  {
+   "rcept_no": "20261106000195",
+   "rcept_dt": "20261106",
+   "first_seen": "2026-11-06T14:55+09:00",
+   "type": "attach",
+   "corp_name": "한솔아이원스",
+   "corp_code": "00625942",
+   "stock_code": "114810",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "한솔아이원스",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000195"
+  },
   {
    "rcept_no": "20261106000157",
    "rcept_dt": "20261106",
