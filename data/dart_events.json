@@ -1,6 +1,26 @@
 {
- "updated_at": "2026-11-06T17:46+09:00",
+ "updated_at": "2026-11-07T00:09+09:00",
  "events": [
+  {
+   "rcept_no": "20261106901023",
+   "rcept_dt": "20261106",
+   "first_seen": "2026-11-07T00:09+09:00",
+   "type": "merge",
+   "corp_name": "씨씨에스",
+   "corp_code": "00249441",
+   "stock_code": "066790",
+   "market": "KOSDAQ",
+   "report_nm": "최대주주변경을수반하는주식양수도계약해제ㆍ취소등",
+   "filer": "씨씨에스",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "경영권 양수도",
+    "계약 해제·취소"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106901023"
+  },
   {
    "rcept_no": "20261106900890",
    "rcept_dt": "20261106",
