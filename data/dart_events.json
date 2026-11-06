@@ -1,6 +1,59 @@
 {
- "updated_at": "2026-11-06T17:06+09:00",
+ "updated_at": "2026-11-06T17:20+09:00",
  "events": [
+  {
+   "rcept_no": "20261106900890",
+   "rcept_dt": "20261106",
+   "first_seen": "2026-11-06T17:20+09:00",
+   "type": "merge",
+   "corp_name": "폴라리스AI",
+   "corp_code": "00369213",
+   "stock_code": "039980",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]최대주주변경을수반하는주식양수도계약체결",
+   "filer": "폴라리스AI",
+   "amended": true,
+   "krx": true,
+   "flags": [
+    "경영권 양수도"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106900890"
+  },
+  {
+   "rcept_no": "20261106000424",
+   "rcept_dt": "20261106",
+   "first_seen": "2026-11-06T17:20+09:00",
+   "type": "rights",
+   "corp_name": "MSDI",
+   "corp_code": "00615723",
+   "stock_code": "123010",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "MSDI",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000424"
+  },
+  {
+   "rcept_no": "20261106000420",
+   "rcept_dt": "20261106",
+   "first_seen": "2026-11-06T17:20+09:00",
+   "type": "rights",
+   "corp_name": "다이나믹디자인",
+   "corp_code": "00453488",
+   "stock_code": "145210",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "다이나믹디자인",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000420"
+  },
   {
    "rcept_no": "20261106000409",
    "rcept_dt": "20261106",
@@ -19,6 +72,23 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000409"
+  },
+  {
+   "rcept_no": "20261106000408",
+   "rcept_dt": "20261106",
+   "first_seen": "2026-11-06T17:20+09:00",
+   "type": "rights",
+   "corp_name": "셀피글로벌",
+   "corp_code": "00308896",
+   "stock_code": "068940",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "셀피글로벌",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000408"
   },
   {
    "rcept_no": "20261106000338",
