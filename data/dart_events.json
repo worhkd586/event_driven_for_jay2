@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-06T14:55+09:00",
+ "updated_at": "2026-11-06T15:20+09:00",
  "events": [
+  {
+   "rcept_no": "20261106000213",
+   "rcept_dt": "20261106",
+   "first_seen": "2026-11-06T15:20+09:00",
+   "type": "bonus",
+   "corp_name": "고려제강",
+   "corp_code": "00103006",
+   "stock_code": "002240",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(무상증자결정)",
+   "filer": "고려제강",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000213"
+  },
   {
    "rcept_no": "20261106000195",
    "rcept_dt": "20261106",
