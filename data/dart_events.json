@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-11-09T17:36+09:00",
+ "updated_at": "2026-11-09T18:05+09:00",
  "events": [
+  {
+   "rcept_no": "20261109000389",
+   "rcept_dt": "20261109",
+   "first_seen": "2026-11-09T18:05+09:00",
+   "type": "attach",
+   "corp_name": "이렘",
+   "corp_code": "00116426",
+   "stock_code": "009730",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "이렘",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261109000389"
+  },
   {
    "rcept_no": "20261109000372",
    "rcept_dt": "20261109",
