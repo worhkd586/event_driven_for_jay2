@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-09T07:38+09:00",
+ "updated_at": "2026-11-09T15:12+09:00",
  "events": [
+  {
+   "rcept_no": "20261109000179",
+   "rcept_dt": "20261109",
+   "first_seen": "2026-11-09T15:12+09:00",
+   "type": "rights",
+   "corp_name": "오가닉티코스메틱",
+   "corp_code": "01169434",
+   "stock_code": "900300",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "오가닉티코스메틱",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261109000179"
+  },
   {
    "rcept_no": "20261109000001",
    "rcept_dt": "20261109",
