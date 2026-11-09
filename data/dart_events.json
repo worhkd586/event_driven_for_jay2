@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-09T16:04+09:00",
+ "updated_at": "2026-11-09T16:57+09:00",
  "events": [
+  {
+   "rcept_no": "20261109000317",
+   "rcept_dt": "20261109",
+   "first_seen": "2026-11-09T16:57+09:00",
+   "type": "rights",
+   "corp_name": "체시스",
+   "corp_code": "00125576",
+   "stock_code": "033250",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "체시스",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261109000317"
+  },
   {
    "rcept_no": "20261109000221",
    "rcept_dt": "20261109",
