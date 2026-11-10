@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-10T16:41+09:00",
+ "updated_at": "2026-11-10T16:53+09:00",
  "events": [
   {
    "rcept_no": "20261110900357",
@@ -36,6 +36,23 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110000375"
+  },
+  {
+   "rcept_no": "20261110000371",
+   "rcept_dt": "20261110",
+   "first_seen": "2026-11-10T16:53+09:00",
+   "type": "rights",
+   "corp_name": "벡트로보틱스",
+   "corp_code": "01453944",
+   "stock_code": "457600",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "벡트로보틱스",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110000371"
   },
   {
    "rcept_no": "20261110000366",
