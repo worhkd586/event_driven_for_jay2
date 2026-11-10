@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-10T10:32+09:00",
+ "updated_at": "2026-11-10T13:33+09:00",
  "events": [
+  {
+   "rcept_no": "20261110000174",
+   "rcept_dt": "20261110",
+   "first_seen": "2026-11-10T13:33+09:00",
+   "type": "bonus",
+   "corp_name": "핑거스토리",
+   "corp_code": "01584934",
+   "stock_code": "417180",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(무상증자결정)",
+   "filer": "핑거스토리",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110000174"
+  },
   {
    "rcept_no": "20261110000080",
    "rcept_dt": "20261110",
