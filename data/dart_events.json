@@ -1,6 +1,42 @@
 {
- "updated_at": "2026-11-10T13:33+09:00",
+ "updated_at": "2026-11-10T13:48+09:00",
  "events": [
+  {
+   "rcept_no": "20261110000186",
+   "rcept_dt": "20261110",
+   "first_seen": "2026-11-10T13:48+09:00",
+   "type": "rights",
+   "corp_name": "상지건설",
+   "corp_code": "00232007",
+   "stock_code": "042940",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "상지건설",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110000186"
+  },
+  {
+   "rcept_no": "20261110000178",
+   "rcept_dt": "20261110",
+   "first_seen": "2026-11-10T13:48+09:00",
+   "type": "merge",
+   "corp_name": "그리드위즈",
+   "corp_code": "01299203",
+   "stock_code": "453450",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "그리드위즈",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110000178"
+  },
   {
    "rcept_no": "20261110000174",
    "rcept_dt": "20261110",
