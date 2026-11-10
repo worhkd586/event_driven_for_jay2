@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-10T17:59+09:00",
+ "updated_at": "2026-11-11T07:54+09:00",
  "events": [
+  {
+   "rcept_no": "20261111000001",
+   "rcept_dt": "20261111",
+   "first_seen": "2026-11-11T07:54+09:00",
+   "type": "tender",
+   "corp_name": "에스텍",
+   "corp_code": "00306719",
+   "stock_code": "069510",
+   "market": "KOSDAQ",
+   "report_nm": "공개매수신고서",
+   "filer": "에프에프이케이",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261111000001"
+  },
   {
    "rcept_no": "20261110900357",
    "rcept_dt": "20261110",
