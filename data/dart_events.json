@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-10T16:53+09:00",
+ "updated_at": "2026-11-10T17:59+09:00",
  "events": [
   {
    "rcept_no": "20261110900357",
@@ -19,6 +19,43 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110900357"
+  },
+  {
+   "rcept_no": "20261110000447",
+   "rcept_dt": "20261110",
+   "first_seen": "2026-11-10T17:59+09:00",
+   "type": "exchange",
+   "corp_name": "SK",
+   "corp_code": "00181712",
+   "stock_code": "034730",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(주식교환ㆍ이전결정)",
+   "filer": "SK",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110000447"
+  },
+  {
+   "rcept_no": "20261110000396",
+   "rcept_dt": "20261110",
+   "first_seen": "2026-11-10T17:59+09:00",
+   "type": "merge",
+   "corp_name": "청보",
+   "corp_code": "00151605",
+   "stock_code": "013720",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "청보",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병",
+    "소규모합병"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110000396"
   },
   {
    "rcept_no": "20261110000375",
