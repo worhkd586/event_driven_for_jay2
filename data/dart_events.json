@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-10T14:27+09:00",
+ "updated_at": "2026-11-10T15:20+09:00",
  "events": [
   {
    "rcept_no": "20261110900357",
@@ -19,6 +19,40 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110900357"
+  },
+  {
+   "rcept_no": "20261110000237",
+   "rcept_dt": "20261110",
+   "first_seen": "2026-11-10T15:20+09:00",
+   "type": "rights",
+   "corp_name": "엔젠바이오",
+   "corp_code": "01397903",
+   "stock_code": "354200",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "엔젠바이오",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110000237"
+  },
+  {
+   "rcept_no": "20261110000233",
+   "rcept_dt": "20261110",
+   "first_seen": "2026-11-10T15:20+09:00",
+   "type": "rights",
+   "corp_name": "엔젠바이오",
+   "corp_code": "01397903",
+   "stock_code": "354200",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "엔젠바이오",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110000233"
   },
   {
    "rcept_no": "20261110000209",
