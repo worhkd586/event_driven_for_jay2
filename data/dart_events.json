@@ -1,6 +1,59 @@
 {
- "updated_at": "2026-11-11T16:18+09:00",
+ "updated_at": "2026-11-11T16:45+09:00",
  "events": [
+  {
+   "rcept_no": "20261111900649",
+   "rcept_dt": "20261111",
+   "first_seen": "2026-11-11T16:45+09:00",
+   "type": "merge",
+   "corp_name": "케이쓰리아이",
+   "corp_code": "01689266",
+   "stock_code": "431190",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]최대주주변경을수반하는주식양수도계약체결",
+   "filer": "케이쓰리아이",
+   "amended": true,
+   "krx": true,
+   "flags": [
+    "경영권 양수도"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261111900649"
+  },
+  {
+   "rcept_no": "20261111000346",
+   "rcept_dt": "20261111",
+   "first_seen": "2026-11-11T16:45+09:00",
+   "type": "rights",
+   "corp_name": "삼보산업",
+   "corp_code": "00125822",
+   "stock_code": "009620",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "삼보산업",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261111000346"
+  },
+  {
+   "rcept_no": "20261111000328",
+   "rcept_dt": "20261111",
+   "first_seen": "2026-11-11T16:45+09:00",
+   "type": "rights",
+   "corp_name": "하이퍼코퍼레이션",
+   "corp_code": "00391197",
+   "stock_code": "065650",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "하이퍼코퍼레이션",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261111000328"
+  },
   {
    "rcept_no": "20261111000265",
    "rcept_dt": "20261111",
