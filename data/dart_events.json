@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-11T16:45+09:00",
+ "updated_at": "2026-11-11T16:58+09:00",
  "events": [
   {
    "rcept_no": "20261111900649",
@@ -36,6 +36,23 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261111000346"
+  },
+  {
+   "rcept_no": "20261111000344",
+   "rcept_dt": "20261111",
+   "first_seen": "2026-11-11T16:58+09:00",
+   "type": "exchange",
+   "corp_name": "에이플러스에셋",
+   "corp_code": "00684802",
+   "stock_code": "244920",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(주식교환ㆍ이전결정)",
+   "filer": "에이플러스에셋",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261111000344"
   },
   {
    "rcept_no": "20261111000328",
