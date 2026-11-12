@@ -1,6 +1,26 @@
 {
- "updated_at": "2026-11-12T11:49+09:00",
+ "updated_at": "2026-11-12T12:56+09:00",
  "events": [
+  {
+   "rcept_no": "20261112000227",
+   "rcept_dt": "20261112",
+   "first_seen": "2026-11-12T12:56+09:00",
+   "type": "merge",
+   "corp_name": "알테오젠",
+   "corp_code": "00989619",
+   "stock_code": "196170",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
+   "filer": "알테오젠",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병",
+    "소규모합병"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261112000227"
+  },
   {
    "rcept_no": "20261112000210",
    "rcept_dt": "20261112",
