@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-11-12T16:41+09:00",
+ "updated_at": "2026-11-12T17:23+09:00",
  "events": [
+  {
+   "rcept_no": "20261112901040",
+   "rcept_dt": "20261112",
+   "first_seen": "2026-11-12T17:23+09:00",
+   "type": "merge",
+   "corp_name": "디에스케이",
+   "corp_code": "00530121",
+   "stock_code": "109740",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]최대주주변경을수반하는주식양수도계약체결",
+   "filer": "디에스케이",
+   "amended": true,
+   "krx": true,
+   "flags": [
+    "경영권 양수도"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261112901040"
+  },
   {
    "rcept_no": "20261112000574",
    "rcept_dt": "20261112",
