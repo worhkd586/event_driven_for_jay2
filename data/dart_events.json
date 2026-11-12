@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-12T17:23+09:00",
+ "updated_at": "2026-11-12T17:36+09:00",
  "events": [
   {
    "rcept_no": "20261112901040",
@@ -19,6 +19,59 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261112901040"
+  },
+  {
+   "rcept_no": "20261112000698",
+   "rcept_dt": "20261112",
+   "first_seen": "2026-11-12T17:36+09:00",
+   "type": "merge",
+   "corp_name": "케이디켐",
+   "corp_code": "00370918",
+   "stock_code": "221980",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "케이디켐",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261112000698"
+  },
+  {
+   "rcept_no": "20261112000665",
+   "rcept_dt": "20261112",
+   "first_seen": "2026-11-12T17:36+09:00",
+   "type": "rights",
+   "corp_name": "바이브컴퍼니",
+   "corp_code": "00403793",
+   "stock_code": "301300",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "바이브컴퍼니",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261112000665"
+  },
+  {
+   "rcept_no": "20261112000633",
+   "rcept_dt": "20261112",
+   "first_seen": "2026-11-12T17:36+09:00",
+   "type": "rights",
+   "corp_name": "바이브컴퍼니",
+   "corp_code": "00403793",
+   "stock_code": "301300",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "바이브컴퍼니",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261112000633"
   },
   {
    "rcept_no": "20261112000574",
