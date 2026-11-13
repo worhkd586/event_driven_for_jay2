@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-11-13T00:01+09:00",
+ "updated_at": "2026-11-13T11:51+09:00",
  "events": [
+  {
+   "rcept_no": "20261113000316",
+   "rcept_dt": "20261113",
+   "first_seen": "2026-11-13T11:51+09:00",
+   "type": "merge",
+   "corp_name": "진에어",
+   "corp_code": "00653024",
+   "stock_code": "272450",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(회사합병결정)",
+   "filer": "진에어",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113000316"
+  },
   {
    "rcept_no": "20261112901182",
    "rcept_dt": "20261112",
