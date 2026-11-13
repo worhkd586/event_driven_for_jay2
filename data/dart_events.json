@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-13T12:05+09:00",
+ "updated_at": "2026-11-13T15:42+09:00",
  "events": [
+  {
+   "rcept_no": "20261113000828",
+   "rcept_dt": "20261113",
+   "first_seen": "2026-11-13T15:42+09:00",
+   "type": "rights",
+   "corp_name": "바이브컴퍼니",
+   "corp_code": "00403793",
+   "stock_code": "301300",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "바이브컴퍼니",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113000828"
+  },
   {
    "rcept_no": "20261113000342",
    "rcept_dt": "20261113",
