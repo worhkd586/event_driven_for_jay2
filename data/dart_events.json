@@ -1,6 +1,40 @@
 {
- "updated_at": "2026-11-13T16:39+09:00",
+ "updated_at": "2026-11-13T17:36+09:00",
  "events": [
+  {
+   "rcept_no": "20261113001610",
+   "rcept_dt": "20261113",
+   "first_seen": "2026-11-13T17:36+09:00",
+   "type": "rights",
+   "corp_name": "삼영이엔씨",
+   "corp_code": "00288343",
+   "stock_code": "065570",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "삼영이엔씨",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001610"
+  },
+  {
+   "rcept_no": "20261113001593",
+   "rcept_dt": "20261113",
+   "first_seen": "2026-11-13T17:36+09:00",
+   "type": "rights",
+   "corp_name": "우성머티리얼스",
+   "corp_code": "00132868",
+   "stock_code": "011300",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "우성머티리얼스",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001593"
+  },
   {
    "rcept_no": "20261113001161",
    "rcept_dt": "20261113",
