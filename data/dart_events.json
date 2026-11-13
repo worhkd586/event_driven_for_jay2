@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-13T16:10+09:00",
+ "updated_at": "2026-11-13T16:39+09:00",
  "events": [
+  {
+   "rcept_no": "20261113001161",
+   "rcept_dt": "20261113",
+   "first_seen": "2026-11-13T16:39+09:00",
+   "type": "rights",
+   "corp_name": "금호전기",
+   "corp_code": "00106395",
+   "stock_code": "001210",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "금호전기",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001161"
+  },
   {
    "rcept_no": "20261113001117",
    "rcept_dt": "20261113",
