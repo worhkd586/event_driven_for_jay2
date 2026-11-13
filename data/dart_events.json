@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-11-13T11:51+09:00",
+ "updated_at": "2026-11-13T12:05+09:00",
  "events": [
+  {
+   "rcept_no": "20261113000342",
+   "rcept_dt": "20261113",
+   "first_seen": "2026-11-13T12:05+09:00",
+   "type": "merge",
+   "corp_name": "에어부산",
+   "corp_code": "00651901",
+   "stock_code": "298690",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(회사합병결정)",
+   "filer": "에어부산",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113000342"
+  },
   {
    "rcept_no": "20261113000316",
    "rcept_dt": "20261113",
@@ -17,7 +36,7 @@
    "flags": [
     "합병"
    ],
-   "appraisal": "?",
+   "appraisal": "Y",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113000316"
   },
   {
