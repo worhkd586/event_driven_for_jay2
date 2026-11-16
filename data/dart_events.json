@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-13T17:36+09:00",
+ "updated_at": "2026-11-16T14:38+09:00",
  "events": [
+  {
+   "rcept_no": "20261116000574",
+   "rcept_dt": "20261116",
+   "first_seen": "2026-11-16T14:38+09:00",
+   "type": "exchange",
+   "corp_name": "네오오토",
+   "corp_code": "00876865",
+   "stock_code": "212560",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]주요사항보고서(주식교환ㆍ이전결정)",
+   "filer": "네오오토",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116000574"
+  },
   {
    "rcept_no": "20261113001610",
    "rcept_dt": "20261113",
