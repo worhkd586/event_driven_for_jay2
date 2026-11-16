@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-16T16:40+09:00",
+ "updated_at": "2026-11-16T17:30+09:00",
  "events": [
   {
    "rcept_no": "20261116901749",
@@ -19,6 +19,23 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116901749"
+  },
+  {
+   "rcept_no": "20261116002004",
+   "rcept_dt": "20261116",
+   "first_seen": "2026-11-16T17:30+09:00",
+   "type": "rights",
+   "corp_name": "한세엠케이",
+   "corp_code": "00357360",
+   "stock_code": "069640",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "한세엠케이",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116002004"
   },
   {
    "rcept_no": "20261116001506",
