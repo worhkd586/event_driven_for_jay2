@@ -1,6 +1,44 @@
 {
- "updated_at": "2026-11-16T15:43+09:00",
+ "updated_at": "2026-11-16T15:58+09:00",
  "events": [
+  {
+   "rcept_no": "20261116001145",
+   "rcept_dt": "20261116",
+   "first_seen": "2026-11-16T15:58+09:00",
+   "type": "attach",
+   "corp_name": "한솔아이원스",
+   "corp_code": "00625942",
+   "stock_code": "114810",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "한솔아이원스",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116001145"
+  },
+  {
+   "rcept_no": "20261116001097",
+   "rcept_dt": "20261116",
+   "first_seen": "2026-11-16T15:58+09:00",
+   "type": "merge",
+   "corp_name": "에어부산",
+   "corp_code": "00651901",
+   "stock_code": "298690",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(회사합병결정)",
+   "filer": "에어부산",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116001097"
+  },
   {
    "rcept_no": "20261116000892",
    "rcept_dt": "20261116",
