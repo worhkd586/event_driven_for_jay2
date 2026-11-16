@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-16T17:30+09:00",
+ "updated_at": "2026-11-16T17:58+09:00",
  "events": [
   {
    "rcept_no": "20261116901749",
@@ -19,6 +19,25 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116901749"
+  },
+  {
+   "rcept_no": "20261116002208",
+   "rcept_dt": "20261116",
+   "first_seen": "2026-11-16T17:58+09:00",
+   "type": "transfer",
+   "corp_name": "진시스템",
+   "corp_code": "01437858",
+   "stock_code": "363250",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(영업양수결정)",
+   "filer": "진시스템",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "영업양수"
+   ],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116002208"
   },
   {
    "rcept_no": "20261116002004",
@@ -108,7 +127,7 @@
    "flags": [
     "합병"
    ],
-   "appraisal": "?",
+   "appraisal": "Y",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116000892"
   },
   {
