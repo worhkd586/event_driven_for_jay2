@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-17T18:08+09:00",
+ "updated_at": "2026-11-18T00:06+09:00",
  "events": [
   {
    "rcept_no": "20261117900603",
@@ -19,6 +19,23 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261117900603"
+  },
+  {
+   "rcept_no": "20261117000263",
+   "rcept_dt": "20261118",
+   "first_seen": "2026-11-18T00:06+09:00",
+   "type": "rights",
+   "corp_name": "우진비앤지",
+   "corp_code": "00103547",
+   "stock_code": "018620",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "우진비앤지",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261117000263"
   },
   {
    "rcept_no": "20261117000256",
