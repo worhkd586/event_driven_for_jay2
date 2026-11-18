@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-19T00:02+09:00",
+ "updated_at": "2026-11-19T07:39+09:00",
  "events": [
   {
    "rcept_no": "20261118900573",
@@ -38,6 +38,23 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261118900309"
+  },
+  {
+   "rcept_no": "20261118000367",
+   "rcept_dt": "20261119",
+   "first_seen": "2026-11-19T07:39+09:00",
+   "type": "rights",
+   "corp_name": "판타지오",
+   "corp_code": "00231691",
+   "stock_code": "032800",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]주요사항보고서(유상증자결정)",
+   "filer": "판타지오",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261118000367"
   },
   {
    "rcept_no": "20261118000366",
