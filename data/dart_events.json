@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-18T16:30+09:00",
+ "updated_at": "2026-11-18T16:43+09:00",
  "events": [
   {
    "rcept_no": "20261118900309",
@@ -19,6 +19,42 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261118900309"
+  },
+  {
+   "rcept_no": "20261118000242",
+   "rcept_dt": "20261118",
+   "first_seen": "2026-11-18T16:43+09:00",
+   "type": "attach",
+   "corp_name": "이렘",
+   "corp_code": "00116426",
+   "stock_code": "009730",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]증권신고서(지분증권)",
+   "filer": "이렘",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261118000242"
+  },
+  {
+   "rcept_no": "20261118000239",
+   "rcept_dt": "20261118",
+   "first_seen": "2026-11-18T16:43+09:00",
+   "type": "rights",
+   "corp_name": "썸에이지",
+   "corp_code": "01049422",
+   "stock_code": "208640",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "썸에이지",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261118000239"
   },
   {
    "rcept_no": "20261118000231",
