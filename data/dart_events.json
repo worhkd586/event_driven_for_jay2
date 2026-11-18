@@ -1,6 +1,42 @@
 {
- "updated_at": "2026-11-18T15:23+09:00",
+ "updated_at": "2026-11-18T16:03+09:00",
  "events": [
+  {
+   "rcept_no": "20261118900309",
+   "rcept_dt": "20261118",
+   "first_seen": "2026-11-18T16:03+09:00",
+   "type": "merge",
+   "corp_name": "화일약품",
+   "corp_code": "00188973",
+   "stock_code": "061250",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]최대주주변경을수반하는주식양수도계약체결",
+   "filer": "화일약품",
+   "amended": true,
+   "krx": true,
+   "flags": [
+    "경영권 양수도"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261118900309"
+  },
+  {
+   "rcept_no": "20261118000201",
+   "rcept_dt": "20261118",
+   "first_seen": "2026-11-18T16:03+09:00",
+   "type": "rights",
+   "corp_name": "엑스페릭스",
+   "corp_code": "01231786",
+   "stock_code": "317770",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "엑스페릭스",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261118000201"
+  },
   {
    "rcept_no": "20261118000167",
    "rcept_dt": "20261118",
