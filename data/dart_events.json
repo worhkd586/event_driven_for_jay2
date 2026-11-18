@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-18T11:25+09:00",
+ "updated_at": "2026-11-18T14:15+09:00",
  "events": [
+  {
+   "rcept_no": "20261118000125",
+   "rcept_dt": "20261118",
+   "first_seen": "2026-11-18T14:15+09:00",
+   "type": "rights",
+   "corp_name": "인산가",
+   "corp_code": "01243161",
+   "stock_code": "277410",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "인산가",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261118000125"
+  },
   {
    "rcept_no": "20261118000079",
    "rcept_dt": "20261118",
