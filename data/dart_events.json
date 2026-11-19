@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-19T16:53+09:00",
+ "updated_at": "2026-11-19T17:06+09:00",
  "events": [
+  {
+   "rcept_no": "20261119000342",
+   "rcept_dt": "20261119",
+   "first_seen": "2026-11-19T17:06+09:00",
+   "type": "rights",
+   "corp_name": "서남",
+   "corp_code": "00867973",
+   "stock_code": "294630",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "서남",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261119000342"
+  },
   {
    "rcept_no": "20261119000322",
    "rcept_dt": "20261119",
@@ -15,9 +32,10 @@
    "amended": false,
    "krx": false,
    "flags": [
-    "합병"
+    "합병",
+    "소규모합병"
    ],
-   "appraisal": "?",
+   "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261119000322"
   },
   {
