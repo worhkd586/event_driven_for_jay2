@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-19T07:39+09:00",
+ "updated_at": "2026-11-19T15:59+09:00",
  "events": [
+  {
+   "rcept_no": "20261119000223",
+   "rcept_dt": "20261119",
+   "first_seen": "2026-11-19T15:59+09:00",
+   "type": "rights",
+   "corp_name": "타임X AI",
+   "corp_code": "01118281",
+   "stock_code": "304840",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "타임X AI",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261119000223"
+  },
   {
    "rcept_no": "20261118900573",
    "rcept_dt": "20261118",
