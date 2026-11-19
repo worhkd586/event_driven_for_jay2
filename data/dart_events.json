@@ -1,6 +1,45 @@
 {
- "updated_at": "2026-11-19T17:06+09:00",
+ "updated_at": "2026-11-19T17:45+09:00",
  "events": [
+  {
+   "rcept_no": "20261119000398",
+   "rcept_dt": "20261119",
+   "first_seen": "2026-11-19T17:45+09:00",
+   "type": "merge",
+   "corp_name": "HLB",
+   "corp_code": "00199252",
+   "stock_code": "028300",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "HLB",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병",
+    "소규모합병"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261119000398"
+  },
+  {
+   "rcept_no": "20261119000371",
+   "rcept_dt": "20261119",
+   "first_seen": "2026-11-19T17:45+09:00",
+   "type": "merge",
+   "corp_name": "HLB생명과학",
+   "corp_code": "00365590",
+   "stock_code": "067630",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "HLB생명과학",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "Y",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261119000371"
+  },
   {
    "rcept_no": "20261119000342",
    "rcept_dt": "20261119",
