@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-20T16:13+09:00",
+ "updated_at": "2026-11-20T16:54+09:00",
  "events": [
+  {
+   "rcept_no": "20261120000562",
+   "rcept_dt": "20261120",
+   "first_seen": "2026-11-20T16:54+09:00",
+   "type": "rights",
+   "corp_name": "에이프로젠",
+   "corp_code": "00152385",
+   "stock_code": "007460",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "에이프로젠",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261120000562"
+  },
   {
    "rcept_no": "20261120000499",
    "rcept_dt": "20261120",
