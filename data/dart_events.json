@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-23T17:28+09:00",
+ "updated_at": "2026-11-23T17:41+09:00",
  "events": [
   {
    "rcept_no": "20261123900699",
@@ -38,6 +38,42 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123900529"
+  },
+  {
+   "rcept_no": "20261123000390",
+   "rcept_dt": "20261123",
+   "first_seen": "2026-11-23T17:41+09:00",
+   "type": "rights",
+   "corp_name": "엔젠바이오",
+   "corp_code": "01397903",
+   "stock_code": "354200",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "엔젠바이오",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000390"
+  },
+  {
+   "rcept_no": "20261123000383",
+   "rcept_dt": "20261123",
+   "first_seen": "2026-11-23T17:41+09:00",
+   "type": "merge",
+   "corp_name": "케이티스카이라이프",
+   "corp_code": "00349097",
+   "stock_code": "053210",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(회사합병결정)",
+   "filer": "케이티스카이라이프",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000383"
   },
   {
    "rcept_no": "20261123000342",
