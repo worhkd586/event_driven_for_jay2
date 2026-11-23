@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-11-23T02:45+09:00",
+ "updated_at": "2026-11-23T15:37+09:00",
  "events": [
+  {
+   "rcept_no": "20261123000211",
+   "rcept_dt": "20261123",
+   "first_seen": "2026-11-23T15:37+09:00",
+   "type": "merge",
+   "corp_name": "한화솔루션",
+   "corp_code": "00162461",
+   "stock_code": "009830",
+   "market": "KOSPI",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "한화솔루션",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000211"
+  },
   {
    "rcept_no": "20261120900959",
    "rcept_dt": "20261120",
