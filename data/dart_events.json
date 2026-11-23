@@ -1,6 +1,44 @@
 {
- "updated_at": "2026-11-23T16:31+09:00",
+ "updated_at": "2026-11-23T16:44+09:00",
  "events": [
+  {
+   "rcept_no": "20261123900529",
+   "rcept_dt": "20261123",
+   "first_seen": "2026-11-23T16:44+09:00",
+   "type": "cancel",
+   "corp_name": "판타지오",
+   "corp_code": "00231691",
+   "stock_code": "032800",
+   "market": "KOSDAQ",
+   "report_nm": "기타주요경영사항              (일반공모 유상증자결정 철회)",
+   "filer": "판타지오",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123900529"
+  },
+  {
+   "rcept_no": "20261123000308",
+   "rcept_dt": "20261123",
+   "first_seen": "2026-11-23T16:44+09:00",
+   "type": "merge",
+   "corp_name": "SK이노베이션",
+   "corp_code": "00631518",
+   "stock_code": "096770",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(회사합병결정)",
+   "filer": "SK이노베이션",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000308"
+  },
   {
    "rcept_no": "20261123000305",
    "rcept_dt": "20261123",
@@ -21,6 +59,23 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000305"
   },
   {
+   "rcept_no": "20261123000297",
+   "rcept_dt": "20261123",
+   "first_seen": "2026-11-23T16:44+09:00",
+   "type": "rights",
+   "corp_name": "판타지오",
+   "corp_code": "00231691",
+   "stock_code": "032800",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "판타지오",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000297"
+  },
+  {
    "rcept_no": "20261123000288",
    "rcept_dt": "20261123",
    "first_seen": "2026-11-23T16:31+09:00",
@@ -36,7 +91,7 @@
    "flags": [
     "합병"
    ],
-   "appraisal": "?",
+   "appraisal": "Y",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000288"
   },
   {
