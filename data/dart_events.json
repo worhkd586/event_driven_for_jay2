@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-23T17:41+09:00",
+ "updated_at": "2026-11-23T17:54+09:00",
  "events": [
   {
    "rcept_no": "20261123900699",
@@ -40,6 +40,25 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123900529"
   },
   {
+   "rcept_no": "20261123000392",
+   "rcept_dt": "20261123",
+   "first_seen": "2026-11-23T17:54+09:00",
+   "type": "merge",
+   "corp_name": "에이프로",
+   "corp_code": "00604268",
+   "stock_code": "262260",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(회사합병결정)",
+   "filer": "에이프로",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000392"
+  },
+  {
    "rcept_no": "20261123000390",
    "rcept_dt": "20261123",
    "first_seen": "2026-11-23T17:41+09:00",
@@ -70,9 +89,10 @@
    "amended": true,
    "krx": false,
    "flags": [
-    "합병"
+    "합병",
+    "소규모합병"
    ],
-   "appraisal": "?",
+   "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000383"
   },
   {
