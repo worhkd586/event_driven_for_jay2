@@ -1,6 +1,59 @@
 {
- "updated_at": "2026-11-23T15:51+09:00",
+ "updated_at": "2026-11-23T16:04+09:00",
  "events": [
+  {
+   "rcept_no": "20261123000258",
+   "rcept_dt": "20261123",
+   "first_seen": "2026-11-23T16:04+09:00",
+   "type": "rights",
+   "corp_name": "셀리드",
+   "corp_code": "01235296",
+   "stock_code": "299660",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "셀리드",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000258"
+  },
+  {
+   "rcept_no": "20261123000256",
+   "rcept_dt": "20261123",
+   "first_seen": "2026-11-23T16:04+09:00",
+   "type": "attach",
+   "corp_name": "이렘",
+   "corp_code": "00116426",
+   "stock_code": "009730",
+   "market": "KOSDAQ",
+   "report_nm": "[발행조건확정]증권신고서(지분증권)",
+   "filer": "이렘",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "rights"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000256"
+  },
+  {
+   "rcept_no": "20261123000236",
+   "rcept_dt": "20261123",
+   "first_seen": "2026-11-23T16:04+09:00",
+   "type": "rights",
+   "corp_name": "이렘",
+   "corp_code": "00116426",
+   "stock_code": "009730",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "이렘",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000236"
+  },
   {
    "rcept_no": "20261123000211",
    "rcept_dt": "20261123",
