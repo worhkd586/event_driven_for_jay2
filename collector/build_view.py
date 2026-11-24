@@ -252,7 +252,20 @@ def offer_price_from_doc(key, rcept_no):
         cnt, price, total = (num(m.group(i)) for i in (1, 3, 4))
         if cnt and price and total and abs(cnt * price - total) <= max(1000, total * 0.001):
             hit = int(price)
+    if hit is None:
+        # [발행조건확정] 정정본에는 모집조건 표가 빠지고 첫머리 요약만 남기도 한다:
+        # '주당 모집(매출)가액: 9,940원 모집(매출)총액: 70,574,000,000원' (정정 전 → 정정 후 순, 마지막이 최신)
+        cm = re.search(r"보통주\s*([\d,]{3,})\s*주", plain[:3000])
+        cnt = num(cm.group(1)) if cm else None
+        for m in re.finditer(r"주당\s*모집\s*\(?매출\)?\s*가액\s*:?\s*([\d,]{3,9})\s*원\s*모집\s*\(?매출\)?\s*총액\s*:?\s*([\d,]{5,})\s*원", plain[:6000]):
+            price, total = num(m.group(1)), num(m.group(2))
+            if price and total and (not cnt or abs(cnt * price - total) <= max(1000, total * 0.001)):
+                hit = int(price)
     final = bool(re.search(r"(최종|확정)\s*발행가액을?\s*기준으로\s*산정", plain)) if hit else False
+    # 확정발행가액 산정표: '- 확정발행가액 9,940원 Max[A,(Min(B,C)]'. 확정 신고서면 이 값을 우선한다
+    fx = re.findall(r"-\s*확정\s*발행\s*가액\s*:?\s*([\d,]{3,9})\s*원", plain)
+    if fx and (final or re.search(r"증권발행조건확정|확정\s*발행\s*가액\s*확정", plain[:3000])):
+        hit, final = int(num(fx[-1])), True
     stage = "확정" if final else None
     if hit and not final:   # 정정사유 머리말: '1차 발행가액 확정에 따른 정정' / '[2차발행가액]'
         head = plain[:4000]
@@ -354,7 +367,7 @@ def rights_trading_period(plain):
 
 TENDER_V = 2    # 파서가 바뀌면 올려서 기존 캐시를 다시 읽게 한다
 APDOC_V = 2
-OFFER_V = 7
+OFFER_V = 8   # 8: 모집조건 표가 없는 발행조건확정 정정본(첫머리 요약·확정발행가액 산정표)
 MDOC_V = 2
 
 
