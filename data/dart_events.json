@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-24T11:38+09:00",
+ "updated_at": "2026-11-24T13:34+09:00",
  "events": [
+  {
+   "rcept_no": "20261124000172",
+   "rcept_dt": "20261124",
+   "first_seen": "2026-11-24T13:34+09:00",
+   "type": "rights",
+   "corp_name": "엑셀세라퓨틱스",
+   "corp_code": "01492217",
+   "stock_code": "373110",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "엑셀세라퓨틱스",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261124000172"
+  },
   {
    "rcept_no": "20261124000146",
    "rcept_dt": "20261124",
