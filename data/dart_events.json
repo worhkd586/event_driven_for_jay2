@@ -1,6 +1,44 @@
 {
- "updated_at": "2026-11-24T17:05+09:00",
+ "updated_at": "2026-11-24T17:32+09:00",
  "events": [
+  {
+   "rcept_no": "20261124000508",
+   "rcept_dt": "20261124",
+   "first_seen": "2026-11-24T17:32+09:00",
+   "type": "merge",
+   "corp_name": "SK아이이테크놀로지",
+   "corp_code": "01386916",
+   "stock_code": "361610",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(회사합병결정)",
+   "filer": "SK아이이테크놀로지",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261124000508"
+  },
+  {
+   "rcept_no": "20261124000487",
+   "rcept_dt": "20261124",
+   "first_seen": "2026-11-24T17:32+09:00",
+   "type": "merge",
+   "corp_name": "SK이노베이션",
+   "corp_code": "00631518",
+   "stock_code": "096770",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(회사합병결정)",
+   "filer": "SK이노베이션",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병"
+   ],
+   "appraisal": "?",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261124000487"
+  },
   {
    "rcept_no": "20261124000455",
    "rcept_dt": "20261124",
