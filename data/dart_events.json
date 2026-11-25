@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-24T17:45+09:00",
+ "updated_at": "2026-11-25T11:12+09:00",
  "events": [
+  {
+   "rcept_no": "20261125000185",
+   "rcept_dt": "20261125",
+   "first_seen": "2026-11-25T11:12+09:00",
+   "type": "bonus",
+   "corp_name": "액트로",
+   "corp_code": "01141942",
+   "stock_code": "290740",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(무상증자결정)",
+   "filer": "액트로",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261125000185"
+  },
   {
    "rcept_no": "20261124000508",
    "rcept_dt": "20261124",
@@ -19122,132 +19139,6 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260728000112"
-  },
-  {
-   "rcept_no": "20260727900645",
-   "rcept_dt": "20260727",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "merge",
-   "corp_name": "선광",
-   "corp_code": "00131896",
-   "stock_code": "003100",
-   "market": "KOSDAQ",
-   "report_nm": "[기재정정]최대주주변경을수반하는주식양수도계약체결",
-   "filer": "선광",
-   "amended": true,
-   "flags": [
-    "경영권 양수도"
-   ],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260727900645"
-  },
-  {
-   "rcept_no": "20260727000299",
-   "rcept_dt": "20260727",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "merge",
-   "corp_name": "한화플러스제5호스팩",
-   "corp_code": "01881800",
-   "stock_code": "498390",
-   "market": "KOSDAQ",
-   "report_nm": "주요사항보고서(회사합병결정)",
-   "filer": "한화플러스제5호스팩",
-   "amended": false,
-   "flags": [
-    "합병",
-    "간이합병"
-   ],
-   "appraisal": "Y",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260727000299"
-  },
-  {
-   "rcept_no": "20260727000262",
-   "rcept_dt": "20260727",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "merge",
-   "corp_name": "KR모터스",
-   "corp_code": "00112378",
-   "stock_code": "000040",
-   "market": "KOSPI",
-   "report_nm": "주요사항보고서(회사합병결정)",
-   "filer": "KR모터스",
-   "amended": false,
-   "flags": [
-    "합병",
-    "소규모합병"
-   ],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260727000262"
-  },
-  {
-   "rcept_no": "20260727000259",
-   "rcept_dt": "20260727",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "merge",
-   "corp_name": "KR모터스",
-   "corp_code": "00112378",
-   "stock_code": "000040",
-   "market": "KOSPI",
-   "report_nm": "주요사항보고서(회사합병결정)",
-   "filer": "KR모터스",
-   "amended": false,
-   "flags": [
-    "합병",
-    "소규모합병"
-   ],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260727000259"
-  },
-  {
-   "rcept_no": "20260727000216",
-   "rcept_dt": "20260727",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "rights",
-   "corp_name": "더코디",
-   "corp_code": "00530413",
-   "stock_code": "224060",
-   "market": "KOSDAQ",
-   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
-   "filer": "더코디",
-   "amended": true,
-   "flags": [],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260727000216"
-  },
-  {
-   "rcept_no": "20260727000198",
-   "rcept_dt": "20260727",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "merge",
-   "corp_name": "동아제약",
-   "corp_code": "00116824",
-   "stock_code": "000640",
-   "market": "KOSPI",
-   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
-   "filer": "동아제약",
-   "amended": true,
-   "flags": [
-    "합병",
-    "소규모합병"
-   ],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260727000198"
-  },
-  {
-   "rcept_no": "20260727000001",
-   "rcept_dt": "20260727",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "rights",
-   "corp_name": "NAVER",
-   "corp_code": "00266961",
-   "stock_code": "035420",
-   "market": "KOSPI",
-   "report_nm": "주요사항보고서(유상증자결정)",
-   "filer": "NAVER",
-   "amended": false,
-   "flags": [],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260727000001"
   }
  ]
 }
