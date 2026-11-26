@@ -1,6 +1,26 @@
 {
- "updated_at": "2026-11-26T11:53+09:00",
+ "updated_at": "2026-11-26T14:44+09:00",
  "events": [
+  {
+   "rcept_no": "20261126000410",
+   "rcept_dt": "20261126",
+   "first_seen": "2026-11-26T14:44+09:00",
+   "type": "merge",
+   "corp_name": "대한광통신",
+   "corp_code": "00113261",
+   "stock_code": "010170",
+   "market": "KOSDAQ",
+   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
+   "filer": "대한광통신",
+   "amended": true,
+   "krx": false,
+   "flags": [
+    "합병",
+    "소규모합병"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261126000410"
+  },
   {
    "rcept_no": "20261126000229",
    "rcept_dt": "20261126",
