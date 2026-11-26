@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-26T15:52+09:00",
+ "updated_at": "2026-11-26T16:05+09:00",
  "events": [
+  {
+   "rcept_no": "20261126000602",
+   "rcept_dt": "20261126",
+   "first_seen": "2026-11-26T16:05+09:00",
+   "type": "rights",
+   "corp_name": "하이퍼코퍼레이션",
+   "corp_code": "00391197",
+   "stock_code": "065650",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "하이퍼코퍼레이션",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261126000602"
+  },
   {
    "rcept_no": "20261126000567",
    "rcept_dt": "20261126",
