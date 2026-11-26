@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-26T14:44+09:00",
+ "updated_at": "2026-11-26T15:52+09:00",
  "events": [
+  {
+   "rcept_no": "20261126000567",
+   "rcept_dt": "20261126",
+   "first_seen": "2026-11-26T15:52+09:00",
+   "type": "rights",
+   "corp_name": "진원생명과학",
+   "corp_code": "00118521",
+   "stock_code": "011000",
+   "market": "KOSPI",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "진원생명과학",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261126000567"
+  },
   {
    "rcept_no": "20261126000410",
    "rcept_dt": "20261126",
