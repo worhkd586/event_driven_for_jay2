@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-26T17:42+09:00",
+ "updated_at": "2026-11-27T00:44+09:00",
  "events": [
   {
    "rcept_no": "20261126900725",
@@ -19,6 +19,23 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261126900725"
+  },
+  {
+   "rcept_no": "20261126000966",
+   "rcept_dt": "20261127",
+   "first_seen": "2026-11-27T00:44+09:00",
+   "type": "rights",
+   "corp_name": "KS인더스트리",
+   "corp_code": "00618410",
+   "stock_code": "101000",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "KS인더스트리",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261126000966"
   },
   {
    "rcept_no": "20261126000908",
@@ -18993,24 +19010,6 @@
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260730000170"
   },
   {
-   "rcept_no": "20260729900002",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "merge",
-   "corp_name": "디에스케이",
-   "corp_code": "00530121",
-   "stock_code": "109740",
-   "market": "KOSDAQ",
-   "report_nm": "[기재정정]최대주주변경을수반하는주식양수도계약체결",
-   "filer": "디에스케이",
-   "amended": true,
-   "flags": [
-    "경영권 양수도"
-   ],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729900002"
-  },
-  {
    "rcept_no": "20260729000536",
    "rcept_dt": "20260730",
    "first_seen": "2026-10-19T14:41+09:00",
@@ -19025,229 +19024,6 @@
    "flags": [],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000536"
-  },
-  {
-   "rcept_no": "20260729000514",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "rights",
-   "corp_name": "풀무원",
-   "corp_code": "00155355",
-   "stock_code": "017810",
-   "market": "KOSPI",
-   "report_nm": "주요사항보고서(유상증자결정)",
-   "filer": "풀무원",
-   "amended": false,
-   "flags": [],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000514"
-  },
-  {
-   "rcept_no": "20260729000497",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "rights",
-   "corp_name": "서울전자통신",
-   "corp_code": "00130587",
-   "stock_code": "027040",
-   "market": "KOSDAQ",
-   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
-   "filer": "서울전자통신",
-   "amended": true,
-   "flags": [],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000497"
-  },
-  {
-   "rcept_no": "20260729000359",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "rights",
-   "corp_name": "푸드나무",
-   "corp_code": "01259311",
-   "stock_code": "290720",
-   "market": "KOSDAQ",
-   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
-   "filer": "푸드나무",
-   "amended": true,
-   "flags": [],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000359"
-  },
-  {
-   "rcept_no": "20260729000348",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "rights",
-   "corp_name": "푸드나무",
-   "corp_code": "01259311",
-   "stock_code": "290720",
-   "market": "KOSDAQ",
-   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
-   "filer": "푸드나무",
-   "amended": true,
-   "flags": [],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000348"
-  },
-  {
-   "rcept_no": "20260729000331",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "merge",
-   "corp_name": "한중엔시에스",
-   "corp_code": "00474588",
-   "stock_code": "107640",
-   "market": "KOSDAQ",
-   "report_nm": "주요사항보고서(회사합병결정)",
-   "filer": "한중엔시에스",
-   "amended": false,
-   "flags": [
-    "합병",
-    "소규모합병"
-   ],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000331"
-  },
-  {
-   "rcept_no": "20260729000313",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "rights",
-   "corp_name": "아이오케이이엔엠",
-   "corp_code": "00543204",
-   "stock_code": "078860",
-   "market": "KOSDAQ",
-   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
-   "filer": "아이오케이이엔엠",
-   "amended": true,
-   "flags": [],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000313"
-  },
-  {
-   "rcept_no": "20260729000259",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "merge",
-   "corp_name": "싸이토젠",
-   "corp_code": "01046391",
-   "stock_code": "217330",
-   "market": "KOSDAQ",
-   "report_nm": "주요사항보고서(회사합병결정)",
-   "filer": "싸이토젠",
-   "amended": false,
-   "flags": [
-    "합병",
-    "소규모합병"
-   ],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000259"
-  },
-  {
-   "rcept_no": "20260729000256",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "merge",
-   "corp_name": "메타케어",
-   "corp_code": "00791209",
-   "stock_code": "118000",
-   "market": "KOSPI",
-   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
-   "filer": "메타케어",
-   "amended": true,
-   "flags": [
-    "합병",
-    "소규모합병"
-   ],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000256"
-  },
-  {
-   "rcept_no": "20260729000247",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "rights",
-   "corp_name": "한국유니온제약",
-   "corp_code": "00532855",
-   "stock_code": "080720",
-   "market": "KOSDAQ",
-   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
-   "filer": "한국유니온제약",
-   "amended": true,
-   "flags": [],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000247"
-  },
-  {
-   "rcept_no": "20260729000244",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "rights",
-   "corp_name": "한국유니온제약",
-   "corp_code": "00532855",
-   "stock_code": "080720",
-   "market": "KOSDAQ",
-   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
-   "filer": "한국유니온제약",
-   "amended": true,
-   "flags": [],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000244"
-  },
-  {
-   "rcept_no": "20260729000238",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "rights",
-   "corp_name": "이오플로우",
-   "corp_code": "01274310",
-   "stock_code": "294090",
-   "market": "KOSDAQ",
-   "report_nm": "주요사항보고서(유상증자결정)",
-   "filer": "이오플로우",
-   "amended": false,
-   "flags": [],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000238"
-  },
-  {
-   "rcept_no": "20260729000155",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "merge",
-   "corp_name": "KR모터스",
-   "corp_code": "00112378",
-   "stock_code": "000040",
-   "market": "KOSPI",
-   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
-   "filer": "KR모터스",
-   "amended": true,
-   "flags": [
-    "합병",
-    "소규모합병"
-   ],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000155"
-  },
-  {
-   "rcept_no": "20260729000154",
-   "rcept_dt": "20260729",
-   "first_seen": "2026-10-19T14:41+09:00",
-   "type": "merge",
-   "corp_name": "KR모터스",
-   "corp_code": "00112378",
-   "stock_code": "000040",
-   "market": "KOSPI",
-   "report_nm": "[첨부정정]주요사항보고서(회사합병결정)",
-   "filer": "KR모터스",
-   "amended": true,
-   "flags": [
-    "합병",
-    "소규모합병"
-   ],
-   "appraisal": "N",
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260729000154"
   }
  ]
 }
