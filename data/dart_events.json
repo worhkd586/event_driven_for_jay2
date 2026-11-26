@@ -1,6 +1,25 @@
 {
- "updated_at": "2026-11-26T16:19+09:00",
+ "updated_at": "2026-11-26T16:33+09:00",
  "events": [
+  {
+   "rcept_no": "20261126000721",
+   "rcept_dt": "20261126",
+   "first_seen": "2026-11-26T16:33+09:00",
+   "type": "bw",
+   "corp_name": "심텍",
+   "corp_code": "01095722",
+   "stock_code": "222800",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(신주인수권부사채권발행결정)",
+   "filer": "심텍",
+   "amended": false,
+   "krx": false,
+   "flags": [
+    "발행방법 확인 필요"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261126000721"
+  },
   {
    "rcept_no": "20261126000602",
    "rcept_dt": "20261126",
