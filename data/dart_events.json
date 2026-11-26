@@ -1,6 +1,23 @@
 {
- "updated_at": "2026-11-26T00:17+09:00",
+ "updated_at": "2026-11-26T11:53+09:00",
  "events": [
+  {
+   "rcept_no": "20261126000229",
+   "rcept_dt": "20261126",
+   "first_seen": "2026-11-26T11:53+09:00",
+   "type": "rights",
+   "corp_name": "유디엠텍",
+   "corp_code": "01498576",
+   "stock_code": "389680",
+   "market": "KOSDAQ",
+   "report_nm": "주요사항보고서(유상증자결정)",
+   "filer": "유디엠텍",
+   "amended": false,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261126000229"
+  },
   {
    "rcept_no": "20261125900452",
    "rcept_dt": "20261125",
