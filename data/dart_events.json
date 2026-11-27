@@ -1,6 +1,43 @@
 {
- "updated_at": "2026-11-27T14:44+09:00",
+ "updated_at": "2026-11-27T15:51+09:00",
  "events": [
+  {
+   "rcept_no": "20261127900648",
+   "rcept_dt": "20261127",
+   "first_seen": "2026-11-27T15:51+09:00",
+   "type": "merge",
+   "corp_name": "케이쓰리아이",
+   "corp_code": "01689266",
+   "stock_code": "431190",
+   "market": "KOSDAQ",
+   "report_nm": "최대주주변경을수반하는주식양수도계약해제ㆍ취소등",
+   "filer": "케이쓰리아이",
+   "amended": false,
+   "krx": true,
+   "flags": [
+    "경영권 양수도",
+    "계약 해제·취소"
+   ],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261127900648"
+  },
+  {
+   "rcept_no": "20261127001424",
+   "rcept_dt": "20261127",
+   "first_seen": "2026-11-27T15:51+09:00",
+   "type": "rights",
+   "corp_name": "아이오케이이엔엠",
+   "corp_code": "00543204",
+   "stock_code": "078860",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "아이오케이이엔엠",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261127001424"
+  },
   {
    "rcept_no": "20261127001157",
    "rcept_dt": "20261127",
