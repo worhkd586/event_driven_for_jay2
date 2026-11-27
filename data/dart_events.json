@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-27T16:44+09:00",
+ "updated_at": "2026-11-27T17:11+09:00",
  "events": [
   {
    "rcept_no": "20261127900648",
@@ -20,6 +20,23 @@
    ],
    "appraisal": "N",
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261127900648"
+  },
+  {
+   "rcept_no": "20261127001873",
+   "rcept_dt": "20261127",
+   "first_seen": "2026-11-27T17:11+09:00",
+   "type": "rights",
+   "corp_name": "그린플러스",
+   "corp_code": "00602279",
+   "stock_code": "186230",
+   "market": "KOSDAQ",
+   "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+   "filer": "그린플러스",
+   "amended": true,
+   "krx": false,
+   "flags": [],
+   "appraisal": "N",
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261127001873"
   },
   {
    "rcept_no": "20261127001690",
